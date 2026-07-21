@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BannerNode · 사용 설명서</title>
+<meta name="theme-color" content="#0a0b0f">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iMTE4IiBmaWxsPSIjYTJmZjAwIi8+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyOC4wOSAxMjguMDApIHNjYWxlKDQuNjUyOSkiIGZpbGw9IiMwYTBiMGYiPjxwYXRoIGQ9Ik00OS42NywxMS4wMmMtLjA2LDAtLjEyLDAtLjE4LDAtMy4wNCwwLTUuNS0yLjQ2LTUuNS01LjVoMHMwLS4wMiwwLS4wNGMwLTMuMDQtMi40Ni01LjUtNS41LTUuNS0uMjEsMC0uNDIuMDEtLjYyLjA0aC05Ljc2Yy0uMi0uMDItLjQxLS4wNC0uNjItLjA0cy0uNDIuMDEtLjYyLjA0aC05Ljc2Yy0uMi0uMDItLjQxLS4wNC0uNjItLjA0LTMuMDQsMC01LjUsMi40Ni01LjUsNS41LDAsLjAxLDAsLjAyLDAsLjA0aDBjMCwzLjA0LTIuNDYsNS41LTUuNSw1LjVTMCwxMy40OSwwLDE2LjUzYzAsMCwwLDAsMCwwdjEwLjk4czAsMCwwLDAsMCwwLDAsMHYxMC45OHMwLDAsMCwwLDAsMCwwLDB2MTAuOThzMCwwLDAsMGMwLDMuMDQsMi40Niw1LjUsNS41LDUuNWgzMi45OWMzLjA0LDAsNS41LTIuNDYsNS41LTUuNXMyLjQ2LTUuNSw1LjUtNS41LDUuNS0yLjQ2LDUuNS01LjUtMi40Ni01LjUtNS41LTUuNS01LjUtMi40Ni01LjUtNS41LDIuNDYtNS41LDUuNS01LjV2LS4wMmMzLjA0LDAsNS41LTIuNDYsNS41LTUuNXMtMi4zNi01LjM5LTUuMzEtNS40OVpNMzguNDksNDQuMDJoLTIxLjk5Yy0zLjA0LDAtNS41LTIuNDYtNS41LTUuNXMyLjQ2LTUuNSw1LjUtNS41aDIxLjk5YzMuMDQsMCw1LjUsMi40Niw1LjUsNS41cy0yLjQ2LDUuNS01LjUsNS41Wk0zOC40OSwyMi4wM2MtLjEyLDAtLjI1LS4wMS0uMzctLjAyaC0xMC4yNmMtLjEyLDAtLjI0LjAyLS4zNy4wMnMtLjI1LS4wMS0uMzctLjAyaC0xMC4yNmMtLjEyLDAtLjI0LjAyLS4zNy4wMi0zLjA0LDAtNS41LTIuNDYtNS41LTUuNXMyLjQ2LTUuNSw1LjUtNS41aDIxLjk5YzMuMDQsMCw1LjUsMi40Niw1LjUsNS41cy0yLjQ2LDUuNS01LjUsNS41WiIvPjwvZz48L3N2Zz4=">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --bg:#ffffff; --bg-soft:#f5f5f4; --surface:#ffffff; --surface-2:#fafafa;
+    --ink:#0a0a0a; --ink-2:#71717a; --ink-3:#a1a1aa; --line:#ebebe8;
+    --pill:#0a0a0a; --pill-text:#ffffff; --shadow:rgba(10,10,10,0.08);
+    --lime:#a2ff00; --lime-ink:#0a0b0f; --lime-bg:#f4ffdb;
+    --red:#dc2626; --red-bg:#fef2f2; --orange:#ea580c; --orange-bg:#fff7ed;
+    --green:#16a34a; --green-bg:#f0fdf4;
+    --radius:18px;
+  }
+  html.dark{
+    --bg:#0a0b0f; --bg-soft:#141519; --surface:#141519; --surface-2:#1c1d22;
+    --ink:#e8e8ec; --ink-2:#8f8f97; --ink-3:#5f6068; --line:#26272d;
+    --pill:#e8e8ec; --pill-text:#141519; --shadow:rgba(0,0,0,0.5);
+    --lime-bg:#1b2408;
+    --red:#f87171; --red-bg:#2a1414; --orange:#fb923c; --orange-bg:#2a1c10; --green:#4ade80; --green-bg:#0f2417;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth; scroll-padding-top:90px;}
+  body{
+    font-family:'Inter Tight','Pretendard',sans-serif;
+    background:var(--bg); color:var(--ink);
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+    letter-spacing:-0.011em;
+    transition:background .35s ease, color .35s ease;
+  }
+  body::before{
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background:radial-gradient(120% 60% at 50% -10%, var(--lime-bg) 0%, transparent 55%);
+    opacity:.5;
+  }
+
+  /* ── 상단바 ── */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter:blur(14px) saturate(1.2);
+    border-bottom:1px solid var(--line);
+  }
+  .bar{max-width:1080px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; gap:14px;}
+  .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:-0.03em; font-size:16px;}
+  .logo{width:30px; height:30px; border-radius:9px; overflow:hidden; flex-shrink:0; display:grid; place-items:center;}
+  .logo img{width:100%; height:100%; display:block;}
+  .ver{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--ink-3); border:1px solid var(--line); padding:2px 7px; border-radius:20px; font-weight:600;}
+  .spacer{flex:1;}
+  .theme-btn{
+    width:38px; height:38px; border-radius:11px; border:1px solid var(--line);
+    background:var(--surface); color:var(--ink-2); cursor:pointer; display:grid; place-items:center;
+    transition:all .15s;
+  }
+  .theme-btn:hover{color:var(--ink); border-color:var(--ink-3);}
+  .theme-btn svg{width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:2;}
+
+  /* ── 레이아웃 ── */
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px; position:relative; z-index:1;}
+  .layout{display:grid; grid-template-columns:200px 1fr; gap:48px; align-items:start;}
+  nav.toc{position:sticky; top:90px; padding:36px 0; display:flex; flex-direction:column; gap:2px;}
+  nav.toc a{
+    font-size:13px; color:var(--ink-3); text-decoration:none; padding:7px 12px; border-radius:9px;
+    transition:all .15s; font-weight:500; border-left:2px solid transparent;
+  }
+  nav.toc a:hover{color:var(--ink); background:var(--surface-2);}
+  nav.toc a.active{color:var(--ink); background:var(--surface-2); font-weight:600; border-left-color:var(--lime);}
+  main{padding:36px 0 120px; min-width:0;}
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr;}
+    nav.toc{display:none;}
+  }
+
+  /* ── 히어로 ── */
+  .hero{padding:46px 0 30px;}
+  .hero .eyebrow{font-size:13px; font-weight:600; color:var(--ink-3); letter-spacing:.04em; text-transform:uppercase; margin-bottom:14px;}
+  .hero h1{font-size:clamp(34px,6vw,54px); font-weight:800; letter-spacing:-0.04em; line-height:1.18;}
+  .hero h1 .hl{background:linear-gradient(180deg,transparent 62%, color-mix(in srgb, var(--lime) 55%, transparent) 62%);}
+  .hero p{font-size:17px; color:var(--ink-2); margin-top:18px; max-width:580px;}
+  .hero .meta{display:flex; gap:8px; margin-top:26px; flex-wrap:wrap;}
+  .chip{font-size:12.5px; font-weight:600; padding:7px 13px; border-radius:20px; background:var(--surface-2); border:1px solid var(--line); color:var(--ink-2);}
+  .chip.dark{background:var(--lime); color:var(--lime-ink); border-color:var(--lime);}
+
+  /* ── 섹션 ── */
+  section{padding:30px 0; scroll-margin-top:90px; opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease;}
+  section.in{opacity:1; transform:none;}
+  .sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:6px;}
+  .sec-num{font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700; color:var(--lime-ink); background:var(--lime); padding:1px 8px; border-radius:20px;}
+  html.dark .sec-num{color:var(--lime-ink);}
+  h2{font-size:27px; font-weight:700; letter-spacing:-0.03em;}
+  .lead{color:var(--ink-2); font-size:15.5px; margin:10px 0 22px; max-width:640px;}
+  h3{font-size:16px; font-weight:700; margin:24px 0 10px; letter-spacing:-0.02em;}
+
+  /* ── 카드 ── */
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:24px 26px; box-shadow:0 1px 2px var(--shadow);}
+  .card + .card{margin-top:14px;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:stretch;}
+  .grid2 > .card{height:100%;}
+  .grid2 > .card + .card{margin-top:0;}
+  @media(max-width:680px){.grid2{grid-template-columns:1fr;}}
+  .card h3:first-child{margin-top:0;}
+
+  /* 단계 리스트 */
+  ol.steps{list-style:none; counter-reset:s; display:flex; flex-direction:column; gap:14px;}
+  ol.steps li{counter-increment:s; display:flex; gap:14px; align-items:flex-start;}
+  ol.steps li::before{
+    content:counter(s); flex-shrink:0; width:26px; height:26px; border-radius:8px;
+    background:var(--pill); color:var(--pill-text); font-size:13px; font-weight:700;
+    display:grid; place-items:center; font-family:'JetBrains Mono',monospace; margin-top:1px;
+  }
+  ol.steps li .t{font-size:14.5px; line-height:1.7;}
+  ol.steps li .t b{font-weight:700;}
+
+  ul.bul{list-style:none; display:flex; flex-direction:column; gap:14px;}
+  ul.bul li{display:flex; gap:11px; align-items:flex-start; font-size:14.5px; line-height:1.7; color:var(--ink);}
+  ul.bul li::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--lime); margin-top:9px; flex-shrink:0;}
+  ul.bul li b{font-weight:700;}
+  ul.bul li small{color:var(--ink-3); font-weight:500;}
+
+  /* 키캡 */
+  .kbd{
+    display:inline-grid; place-items:center; min-width:30px; height:30px; padding:0 9px;
+    font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700;
+    background:var(--surface-2); border:1.5px solid var(--line); border-bottom-width:3px; border-radius:8px; color:var(--ink);
+    vertical-align:middle;
+  }
+  .key-table{display:flex; flex-direction:column; gap:0;}
+  .key-row{display:flex; align-items:center; justify-content:space-between; gap:14px; padding:11px 0; border-bottom:1px solid var(--line);}
+  .key-row:last-child{border-bottom:none;}
+  .key-row .label{font-size:14px;}
+  .key-row .label small{color:var(--ink-3); font-weight:500; display:block; margin-top:1px;}
+  .key-row .keys{display:flex; gap:5px; flex-shrink:0;}
+  .key-cap{font-size:11px; font-weight:700; color:var(--lime-ink); background:var(--lime); padding:2px 8px; border-radius:20px; font-family:'JetBrains Mono',monospace;}
+
+  /* 노트 박스 */
+  .note{display:flex; gap:12px; padding:15px 17px; border-radius:13px; background:var(--surface-2); border:1px solid var(--line); font-size:13.5px; color:var(--ink-2); margin-top:16px;}
+  .note .ic{flex-shrink:0; width:20px; height:20px; border-radius:50%; background:var(--lime); color:var(--lime-ink); display:grid; place-items:center; font-weight:800; font-size:12px; margin-top:1px;}
+  .note b{color:var(--ink); font-weight:700;}
+  .note.warn{background:var(--orange-bg); border-color:transparent;}
+  .note.warn .ic{background:var(--orange); color:#fff;}
+
+  /* 미니 UI 데모 */
+  .demo-flow{display:flex; align-items:center; gap:14px; flex-wrap:wrap; justify-content:center; padding:8px 0;}
+  .demo-node{background:var(--surface-2); border:1px solid var(--line); border-radius:14px; padding:14px 16px; min-width:120px; text-align:center;}
+  .demo-node .dn-t{font-size:11px; font-weight:700; color:var(--ink-3); text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px;}
+  .demo-node .dn-box{height:52px; border-radius:8px; display:grid; place-items:center; font-size:12px; color:var(--ink-2);}
+  .demo-node.vid .dn-box{background:linear-gradient(135deg,#3b82f6,#8b5cf6); color:#fff; font-weight:600;}
+  .demo-node.ban .dn-box{background:repeating-conic-gradient(var(--line) 0% 25%, transparent 0% 50%) 50% / 16px 16px; border:1px dashed var(--ink-3);}
+  .demo-arrow{color:var(--lime); flex-shrink:0;}
+  .demo-arrow svg{width:34px; height:20px; stroke:currentColor; fill:none; stroke-width:2.2; stroke-linecap:round; stroke-linejoin:round;}
+  .demo-node.out .dn-box{background:var(--lime); color:var(--lime-ink); font-weight:700;}
+
+  code{font-family:'JetBrains Mono','Pretendard',monospace; font-size:.88em; background:var(--surface-2); border:1px solid var(--line); padding:1px 6px; border-radius:6px; color:var(--ink);}
+
+  /* 체인지로그 */
+  .changelog{position:relative; padding-left:26px;}
+  .changelog::before{content:""; position:absolute; left:5px; top:14.5px; bottom:14.5px; width:2px; background:var(--line);}
+  .cl-entry{position:relative; margin-bottom:10px;}
+  .cl-entry:last-child{margin-bottom:0;}
+  .cl-entry::before{content:""; position:absolute; left:-25.5px; top:9px; width:11px; height:11px; border-radius:50%; background:var(--pill); border:2px solid var(--bg); box-sizing:border-box; z-index:1;}
+  .cl-entry.current::before{background:var(--lime);}
+  .cl-head{display:flex; align-items:center; gap:9px; padding:3px 0; cursor:pointer; user-select:none; -webkit-user-select:none; list-style:none;}
+  .cl-head::-webkit-details-marker{display:none;}
+  .cl-chev{margin-left:auto; color:var(--ink-3); transition:transform .28s cubic-bezier(.4,0,.2,1); display:inline-flex;}
+  .cl-chev svg{width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round;}
+  details[open] > .cl-head .cl-chev{transform:rotate(180deg);}
+  .cl-ver{font-family:'JetBrains Mono',monospace; font-weight:700; font-size:14px; color:var(--ink);}
+  .cl-badge{font-size:11px; font-weight:700; color:var(--lime-ink); background:var(--lime); padding:2px 8px; border-radius:20px;}
+  .cl-date{font-size:12.5px; color:var(--ink-3); font-family:'JetBrains Mono',monospace;}
+  .cl-body{display:grid; grid-template-rows:0fr; transition:grid-template-rows .3s cubic-bezier(.4,0,.2,1);}
+  details[open] > .cl-body{grid-template-rows:1fr;}
+  .cl-body-inner{overflow:hidden;}
+  .changelog ul{margin:8px 0 4px; padding-left:18px; display:flex; flex-direction:column; gap:5px;}
+  .changelog li{font-size:14px; color:var(--ink-2); line-height:1.65;}
+
+  footer{max-width:1080px; margin:0 auto; padding:30px 24px 50px; color:var(--ink-3); font-size:13px; border-top:1px solid var(--line);}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="brand">
+      <span class="logo"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iMTE4IiBmaWxsPSIjYTJmZjAwIi8+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDEyOC4wOSAxMjguMDApIHNjYWxlKDQuNjUyOSkiIGZpbGw9IiMwYTBiMGYiPjxwYXRoIGQ9Ik00OS42NywxMS4wMmMtLjA2LDAtLjEyLDAtLjE4LDAtMy4wNCwwLTUuNS0yLjQ2LTUuNS01LjVoMHMwLS4wMiwwLS4wNGMwLTMuMDQtMi40Ni01LjUtNS41LTUuNS0uMjEsMC0uNDIuMDEtLjYyLjA0aC05Ljc2Yy0uMi0uMDItLjQxLS4wNC0uNjItLjA0cy0uNDIuMDEtLjYyLjA0aC05Ljc2Yy0uMi0uMDItLjQxLS4wNC0uNjItLjA0LTMuMDQsMC01LjUsMi40Ni01LjUsNS41LDAsLjAxLDAsLjAyLDAsLjA0aDBjMCwzLjA0LTIuNDYsNS41LTUuNSw1LjVTMCwxMy40OSwwLDE2LjUzYzAsMCwwLDAsMCwwdjEwLjk4czAsMCwwLDAsMCwwLDAsMHYxMC45OHMwLDAsMCwwLDAsMCwwLDB2MTAuOThzMCwwLDAsMGMwLDMuMDQsMi40Niw1LjUsNS41LDUuNWgzMi45OWMzLjA0LDAsNS41LTIuNDYsNS41LTUuNXMyLjQ2LTUuNSw1LjUtNS41LDUuNS0yLjQ2LDUuNS01LjUtMi40Ni01LjUtNS41LTUuNS01LjUtMi40Ni01LjUtNS41LDIuNDYtNS41LDUuNS01LjV2LS4wMmMzLjA0LDAsNS41LTIuNDYsNS41LTUuNXMtMi4zNi01LjM5LTUuMzEtNS40OVpNMzguNDksNDQuMDJoLTIxLjk5Yy0zLjA0LDAtNS41LTIuNDYtNS41LTUuNXMyLjQ2LTUuNSw1LjUtNS41aDIxLjk5YzMuMDQsMCw1LjUsMi40Niw1LjUsNS41cy0yLjQ2LDUuNS01LjUsNS41Wk0zOC40OSwyMi4wM2MtLjEyLDAtLjI1LS4wMS0uMzctLjAyaC0xMC4yNmMtLjEyLDAtLjI0LjAyLS4zNy4wMnMtLjI1LS4wMS0uMzctLjAyaC0xMC4yNmMtLjEyLDAtLjI0LjAyLS4zNy4wMi0zLjA0LDAtNS41LTIuNDYtNS41LTUuNXMyLjQ2LTUuNSw1LjUtNS41aDIxLjk5YzMuMDQsMCw1LjUsMi40Niw1LjUsNS41cy0yLjQ2LDUuNS01LjUsNS41WiIvPjwvZz48L3N2Zz4=" alt="BannerNode"></span>
+      BannerNode
+    </div>
+    <span class="ver">v1.0.111</span>
+    <span class="spacer"></span>
+    <button class="theme-btn" id="theme" aria-label="테마 전환">
+      <svg id="theme-ic" viewBox="0 0 24 24"><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>
+    </button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="layout">
+    <nav class="toc">
+      <a href="#start">시작하기</a>
+      <a href="#layout">화면 구성</a>
+      <a href="#import">소스 불러오기</a>
+      <a href="#render">노드 연결 · 렌더</a>
+      <a href="#vary">사이즈 · 용량 베리</a>
+      <a href="#cut">컷 편집</a>
+      <a href="#nas">NAS 브라우저</a>
+      <a href="#shortcuts">단축키</a>
+      <a href="#window">창 · 새로고침</a>
+      <a href="#faq">자주 묻는 질문</a>
+      <a href="#changelog">변경 내역</a>
+    </nav>
+
+    <main>
+      <div class="hero">
+        <div class="eyebrow">영상팀 배너 합성 도구 · 사용 설명서</div>
+        <h1>배너 구멍에 영상을,<br><span class="hl">노드로 연결</span>하면 끝.</h1>
+        <p>BannerNode는 배너 PNG의 투명하게 뚫린 구멍에 영상을 합성해 넣는 데스크톱 앱이에요. 영상 노드와 배너 노드를 선으로 잇기만 하면 렌더 잡 하나가 만들어지고, ffmpeg로 내 PC에서 바로 렌더합니다. 사내 NAS 브라우저도 앱 안에 들어 있어요.</p>
+        <div class="meta">
+          <span class="chip dark">Windows</span>
+          <span class="chip">노드 그래프</span>
+          <span class="chip">NAS 브라우저</span>
+          <span class="chip">로컬 렌더</span>
+        </div>
+      </div>
+
+      <!-- 1. 시작하기 -->
+      <section id="start">
+        <div class="sec-head"><span class="sec-num">01</span><h2>시작하기</h2></div>
+        <p class="lead">설치 없이 실행 파일 하나로 켜집니다. 처음 한 번만 아래를 확인하면 돼요.</p>
+        <div class="card">
+          <ol class="steps">
+            <li><span class="t"><b>BannerNode.exe 실행</b> — 받은 폴더 안의 <code>BannerNode.exe</code>를 더블클릭하면 앱 창이 뜹니다. 별도 설치 과정은 없어요.</span></li>
+            <li><span class="t"><b>NAS 자동 로그인</b> — 처음 한 번 사내 NAS 계정으로 로그인하면 다음부터는 자동으로 연결됩니다.</span></li>
+            <li><span class="t"><b>바로 사용</b> — 왼쪽에 영상·배너를 불러오고, 캔버스에서 노드를 이어 렌더하면 됩니다.</span></li>
+          </ol>
+          <div class="note warn"><span class="ic">!</span><span>처음 실행 시 Windows <b>스마트 앱 컨트롤 / SmartScreen</b>이 앱을 막을 수 있어요. 사내 배포용 앱이니 <b>추가 정보 → 실행</b>으로 열면 됩니다. 빌드 직후 첫 실행은 검사 때문에 뜨는 데 몇 초 걸릴 수 있어요(두 번째부터 빠름).</span></div>
+        </div>
+      </section>
+
+      <!-- 2. 화면 구성 -->
+      <section id="layout">
+        <div class="sec-head"><span class="sec-num">02</span><h2>화면 구성</h2></div>
+        <p class="lead">화면은 크게 세 부분이에요. 왼쪽에서 소스를 고르고, 가운데에서 잇고, 오른쪽에서 결과를 관리합니다.</p>
+        <div class="grid2">
+          <div class="card">
+            <h3>왼쪽 · 소스 패널</h3>
+            <ul class="bul">
+              <li><b>영상 · 배너 라이브러리</b> — 불러온 소스가 카드로 쌓여요. 마우스를 올리면 미리보기가 뜹니다.</li>
+              <li>카드를 <b>캔버스로 드래그</b>하면 노드가 만들어져요.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>가운데 · 노드 캔버스</h3>
+            <ul class="bul">
+              <li><b>영상 노드 → 배너 노드</b>로 선을 연결. 연결 하나가 렌더 잡 하나예요.</li>
+              <li>휠로 확대·축소, 빈 곳 드래그로 이동. <span class="kbd">S</span>로 화면 맞춤.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>오른쪽 · 렌더큐</h3>
+            <ul class="bul">
+              <li>연결한 잡이 카드로 쌓이고, <b>진행률</b>이 실시간으로 표시돼요.</li>
+              <li>출력 포맷(mp4 · mov · gif · png)과 옵션을 잡별로 정합니다.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>오른쪽 · NAS 브라우저</h3>
+            <ul class="bul">
+              <li><span class="kbd">Tab</span>으로 렌더큐 ↔ NAS 브라우저를 전환해요.</li>
+              <li>NAS의 영상·배너를 미리보고, 바로 라이브러리로 가져옵니다.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. 소스 불러오기 -->
+      <section id="import">
+        <div class="sec-head"><span class="sec-num">03</span><h2>소스 불러오기</h2></div>
+        <p class="lead">영상과 배너를 왼쪽 라이브러리에 담는 네 가지 방법.</p>
+        <div class="card">
+          <ul class="bul">
+            <li><b>파일 추가</b> <small>· <span class="kbd">D</span></small> — 파일 선택창에서 영상·배너를 골라 추가.</li>
+            <li><b>폴더 스캔</b> <small>· <span class="kbd">A</span></small> — 폴더를 통째로 훑어 영상·배너를 한 번에 담기.</li>
+            <li><b>드래그 앤 드롭</b> — 탐색기에서 파일을 앱 위로 끌어다 놓기.</li>
+            <li><b>NAS에서 가져오기</b> — NAS 브라우저에서 파일을 골라 라이브러리로. <small>영상은 스트리밍으로 미리보기까지 돼요.</small></li>
+          </ul>
+          <div class="note"><span class="ic">i</span><span>배너는 <b>구멍이 투명하게(알파) 뚫린 PNG</b>를 써야 그 자리에 영상이 비쳐요. 배너가 위, 영상이 아래에 깔립니다.</span></div>
+        </div>
+      </section>
+
+      <!-- 4. 노드 연결 & 렌더 -->
+      <section id="render">
+        <div class="sec-head"><span class="sec-num">04</span><h2>노드 연결 · 렌더</h2></div>
+        <p class="lead">BannerNode의 핵심. 영상 노드에서 배너 노드로 선을 이으면 그 조합이 렌더 잡이 됩니다.</p>
+        <div class="card">
+          <div class="demo-flow">
+            <div class="demo-node vid"><div class="dn-t">영상</div><div class="dn-box">영상 클립</div></div>
+            <div class="demo-arrow"><svg viewBox="0 0 34 20"><path d="M2 10h26M22 4l7 6-7 6"/></svg></div>
+            <div class="demo-node ban"><div class="dn-t">배너</div><div class="dn-box"></div></div>
+            <div class="demo-arrow"><svg viewBox="0 0 34 20"><path d="M2 10h26M22 4l7 6-7 6"/></svg></div>
+            <div class="demo-node out"><div class="dn-t">결과</div><div class="dn-box">합성 영상</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <ol class="steps">
+            <li><span class="t"><b>노드 배치</b> — 영상·배너 카드를 캔버스로 드래그해 노드로 만들어요.</span></li>
+            <li><span class="t"><b>선 연결</b> — 영상 노드의 출력점에서 배너 노드로 드래그해 연결. 연결 1개 = 렌더 잡 1개.</span></li>
+            <li><span class="t"><b>포맷 · 옵션</b> — 오른쪽 렌더큐에서 잡별로 <b>mp4 · mov · gif · png</b> 포맷과 옵션을 정합니다.</span></li>
+            <li><span class="t"><b>렌더 실행</b> <small>·</small> <span class="kbd">Enter</span> — 로컬에서 ffmpeg가 돌고 진행률이 실시간으로 차올라요.</span></li>
+            <li><span class="t"><b>출력 폴더 열기</b> <small>·</small> <span class="kbd">M</span> — 완성된 파일이 담긴 폴더를 바로 엽니다.</span></li>
+          </ol>
+          <div class="note"><span class="ic">i</span><span>음원 노드를 함께 연결하면 <b>영상 + 배너 + BGM</b>이 한 번에 합성돼요. 여러 잡을 걸어 두면 순서대로 렌더됩니다.</span></div>
+        </div>
+      </section>
+
+      <!-- 5. 사이즈·용량 베리 -->
+      <section id="vary">
+        <div class="sec-head"><span class="sec-num">05</span><h2>사이즈 · 용량 베리</h2></div>
+        <p class="lead">같은 소스를 여러 규격·용량으로 뽑아내는 두 가지 변형 기능.</p>
+        <div class="grid2">
+          <div class="card">
+            <h3>사이즈 베리</h3>
+            <ul class="bul">
+              <li>영상을 <b>잘리지 않게</b> 원하는 해상도로 리사이즈해요(맞춤 + 가운데 정렬).</li>
+              <li>남는 여백은 <b>레터박스</b>로 — 검정 · 지정 색 · 원본 블러 중 선택.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>용량 베리</h3>
+            <ul class="bul">
+              <li>파일 <b>용량을 줄여요</b> — 해상도 · fps · 비트레이트로 조절.</li>
+              <li><b>목표 MB</b>를 정하면 2-pass 인코딩으로 그 용량에 맞춰 뽑습니다.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="note"><span class="ic">i</span><span>두 기능 모두 화면 하단의 <b>접이식 확장 패널</b>에서 켜요. 설정은 렌더큐의 모든 잡(합성 · 음원 · 리사이즈 · 컷)에 <b>일괄 적용</b>됩니다.</span></div>
+      </section>
+
+      <!-- 6. 컷 편집 -->
+      <section id="cut">
+        <div class="sec-head"><span class="sec-num">06</span><h2>컷 편집</h2></div>
+        <p class="lead">영상의 앞뒤를 다듬는 가벼운 트림. 프레임 단위로 정확하게.</p>
+        <div class="card">
+          <ul class="bul">
+            <li><b>컷편집</b> — 영상을 우클릭 → <b>컷편집</b>으로 시작·끝 구간을 지정해요.</li>
+            <li><b>프레임 이동</b> — 영상 크게 보기에서 <span class="kbd">A</span> <span class="kbd">S</span> <span class="kbd">D</span> <span class="kbd">W</span>로 프레임을 한 칸씩 넘기며 정확한 지점을 잡습니다.</li>
+            <li>지정한 구간은 그 영상에 <b>기억</b>돼서, 배너·음원과 함께 렌더할 때도 그대로 적용돼요.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 7. NAS 브라우저 -->
+      <section id="nas">
+        <div class="sec-head"><span class="sec-num">07</span><h2>NAS 브라우저</h2></div>
+        <p class="lead">사내 NAS를 앱 안에서 바로 탐색·미리보기·다운로드. <span class="kbd">Tab</span>으로 렌더큐와 전환해요.</p>
+        <div class="grid2">
+          <div class="card">
+            <h3>탐색 · 미리보기</h3>
+            <ul class="bul">
+              <li>폴더를 오가며 영상·배너를 <b>썸네일</b>로 확인.</li>
+              <li>영상 카드에 마우스를 올리면 <b>스트리밍 미리보기</b>가 재생돼요.</li>
+              <li>파일을 골라 <b>라이브러리로 가져오기</b> — 바로 노드로 쓸 수 있어요.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>다운로드 센터</h3>
+            <ul class="bul">
+              <li>다운로드하면 우하단에 <b>링 진행 팝업</b>이 떠요(드래그로 이동).</li>
+              <li>완료되면 <b>파일 열기 · 경로 열기</b> 버튼으로 바로 접근.</li>
+              <li>여러 파일은 <b>ZIP</b>으로 묶어 받기 — 파일이 든 <b>폴더명.zip</b>으로 저장돼요.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <h3>파일 조작</h3>
+          <ul class="bul">
+            <li><b>이름 바꾸기</b> <small>· <span class="kbd">F2</span></small> — 기본은 파일명만 선택돼요. 확장자(.mp4 등)는 건드리지 않고 이름만 바뀝니다. <small>확장자까지 바꾸려면 직접 드래그해 포함하세요.</small></li>
+            <li><b>이동 · 삭제 · 새 폴더</b> — 우클릭 메뉴에서 파일을 정리.</li>
+          </ul>
+          <div class="note"><span class="ic">i</span><span>이름 바꾸기가 잠깐 안 될 때가 있어요. NAS가 <b>방금 미리보기·전송한 파일</b>을 잠시 잡고 있을 때인데, 앱이 자동으로 재시도해 처리합니다. 그래도 안 되면 잠시 뒤 다시 시도해 보세요.</span></div>
+        </div>
+      </section>
+
+      <!-- 8. 단축키 -->
+      <section id="shortcuts">
+        <div class="sec-head"><span class="sec-num">08</span><h2>단축키</h2></div>
+        <p class="lead">대부분의 조작은 키 하나로. 설정에서 원하는 키로 바꿀 수도 있어요(고정 키 제외).</p>
+        <div class="card">
+          <div class="key-table">
+            <div class="key-row"><div class="label">줌 −  /  줌 +</div><div class="keys"><span class="key-cap">Q</span><span class="key-cap">E</span></div></div>
+            <div class="key-row"><div class="label">100% 보기</div><div class="keys"><span class="key-cap">W</span></div></div>
+            <div class="key-row"><div class="label">화면 맞춤</div><div class="keys"><span class="key-cap">S</span></div></div>
+            <div class="key-row"><div class="label">폴더 스캔</div><div class="keys"><span class="key-cap">A</span></div></div>
+            <div class="key-row"><div class="label">파일 추가</div><div class="keys"><span class="key-cap">D</span></div></div>
+            <div class="key-row"><div class="label">출력 폴더 열기</div><div class="keys"><span class="key-cap">M</span></div></div>
+            <div class="key-row"><div class="label">렌더 실행</div><div class="keys"><span class="key-cap">Enter</span></div></div>
+            <div class="key-row"><div class="label">렌더큐 · NAS 전환</div><div class="keys"><span class="key-cap">Tab</span></div></div>
+            <div class="key-row"><div class="label">이름 바꾸기 / 출력 설정 <small>NAS 항목 / 렌더큐 카드</small></div><div class="keys"><span class="key-cap">F2</span></div></div>
+            <div class="key-row"><div class="label">사용 설명서 열기 <small>이 페이지</small></div><div class="keys"><span class="key-cap">F1</span></div></div>
+            <div class="key-row"><div class="label">새로고침 <small>일반: 앱 전체 · NAS 브라우저: 폴더 새로고침 · 고정</small></div><div class="keys"><span class="key-cap">F5</span></div></div>
+            <div class="key-row"><div class="label">창 모드 순환 <small>일반 → 최대화 → 전체화면</small></div><div class="keys"><span class="key-cap">F</span></div></div>
+            <div class="key-row"><div class="label">창 스왑 <small>일반 ↔ 최대화 · 고정</small></div><div class="keys"><span class="key-cap">F11</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. 창·새로고침 -->
+      <section id="window">
+        <div class="sec-head"><span class="sec-num">09</span><h2>창 · 새로고침</h2></div>
+        <div class="grid2">
+          <div class="card">
+            <h3>창 모드</h3>
+            <ul class="bul">
+              <li><span class="kbd">F</span> — 일반 → 최대화 → 전체화면을 순서대로 돌아요.</li>
+              <li><span class="kbd">F11</span> — 일반 ↔ 최대화 빠른 전환(고정 키).</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>새로고침</h3>
+            <ul class="bul">
+              <li><span class="kbd">F5</span> 또는 <b>좌상단 로고 클릭</b> — 앱 전체를 부드럽게 새로고침.</li>
+              <li>NAS 브라우저를 보는 중이면 <b>현재 폴더만</b> 다시 읽어요.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="note"><span class="ic">i</span><span><span class="kbd">F1</span>을 누르면 이 <b>사용 설명서</b>가 브라우저에서 열립니다.</span></div>
+      </section>
+
+      <!-- 10. FAQ -->
+      <section id="faq">
+        <div class="sec-head"><span class="sec-num">10</span><h2>자주 묻는 질문</h2></div>
+        <div class="card">
+          <h3>NAS 파일 이름 바꾸기가 안 돼요.</h3>
+          <p class="lead" style="margin-bottom:0">NAS가 방금 미리보기·다운로드한 파일을 잠시 잡고 있을 때 생기는 현상이에요. 앱이 자동으로 재시도해 대부분 바로 처리되고, 안 되면 잠깐 뒤 다시 하면 됩니다. 이름을 바꿀 때 <b>확장자(.mp4)는 기본으로 유지</b>되니 이름만 입력하면 돼요.</p>
+        </div>
+        <div class="card">
+          <h3>처음 켤 때 검은 화면이 잠깐 떠요.</h3>
+          <p class="lead" style="margin-bottom:0">새 버전을 처음 실행할 때 Windows 보안 검사 때문에 뜨는 데 몇 초 걸릴 수 있어요. 두 번째 실행부터는 빠르게 뜹니다.</p>
+        </div>
+        <div class="card">
+          <h3>앱이 처음에 클릭해야 반응해요 / SmartScreen이 막아요.</h3>
+          <p class="lead" style="margin-bottom:0">최신 버전에서 첫 실행 포커스는 자동으로 잡히도록 개선됐어요. SmartScreen·스마트 앱 컨트롤이 막으면 <b>추가 정보 → 실행</b>으로 열면 됩니다(사내 배포용 앱).</p>
+        </div>
+      </section>
+
+      <!-- 11. 변경 내역 -->
+      <section id="changelog">
+        <div class="sec-head"><span class="sec-num">11</span><h2>변경 내역</h2></div>
+        <p class="lead">최근 업데이트 요약이에요.</p>
+        <div class="changelog">
+          <details class="cl-entry current" open>
+            <summary class="cl-head"><span class="cl-ver">v1.0.111</span><span class="cl-badge">최신</span><span class="cl-date">2026-07-21</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+            <div class="cl-body"><div class="cl-body-inner"><ul>
+              <li>NAS 파일 이름 바꾸기 안정화 — 즉시 처리되도록 개선</li>
+              <li><b>F5 새로고침</b> 추가 — 일반은 앱 전체, NAS 브라우저는 폴더만</li>
+              <li><b>F1</b>로 사용 설명서 열기</li>
+              <li>이름 바꾸기 시 확장자 자동 보호(파일명만 선택)</li>
+            </ul></div></div>
+          </details>
+          <details class="cl-entry">
+            <summary class="cl-head"><span class="cl-ver">v1.0.104</span><span class="cl-date">2026-07-21</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+            <div class="cl-body"><div class="cl-body-inner"><ul>
+              <li>NAS 브라우저 반응성 개선 — 폴더 연타 시 멈춤 현상 수정</li>
+              <li>첫 실행 창 포커스 · 부팅 안정화</li>
+            </ul></div></div>
+          </details>
+          <details class="cl-entry">
+            <summary class="cl-head"><span class="cl-ver">v1.0.98</span><span class="cl-date">2026-07-21</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+            <div class="cl-body"><div class="cl-body-inner"><ul>
+              <li><b>다운로드 센터</b> 추가 — 링 진행 표시 · 파일/경로 바로 열기 · 드래그 이동</li>
+              <li>ZIP 다운로드는 폴더명으로 저장</li>
+              <li><span class="kbd">Tab</span>으로 렌더큐 ↔ NAS 전환 · 새 잡 추가 시 렌더큐 자동 전환</li>
+            </ul></div></div>
+          </details>
+          <details class="cl-entry">
+            <summary class="cl-head"><span class="cl-ver">v1.0.58</span><span class="cl-date">2026-07</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+            <div class="cl-body"><div class="cl-body-inner"><ul>
+              <li><b>용량 베리</b> — 목표 MB에 맞춰 파일 용량 줄이기(2-pass)</li>
+              <li><b>사이즈 베리</b> · <b>컷 편집</b> 추가</li>
+            </ul></div></div>
+          </details>
+          <details class="cl-entry">
+            <summary class="cl-head"><span class="cl-ver">v1.0.0</span><span class="cl-date">2026-07</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+            <div class="cl-body"><div class="cl-body-inner"><ul>
+              <li>독립 데스크톱 앱으로 전환 — 노드 그래프 · 로컬 렌더 · NAS 브라우저</li>
+            </ul></div></div>
+          </details>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<footer>BannerNode v1.0.111 · 영상팀 내부용 · ADEF</footer>
+
+<script>
+  // 테마 토글
+  const root = document.documentElement;
+  const tIc = document.getElementById('theme-ic');
+  const SUN = 'M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4M12 8a4 4 0 100 8 4 4 0 000-8z';
+  const MOON = 'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z';
+  function setTheme(dark){
+    root.classList.toggle('dark', dark);
+    tIc.innerHTML = '<path d="'+(dark?SUN:MOON)+'"/>';
+    try{ localStorage.setItem('bnManualTheme', dark?'1':'0'); }catch(e){}
+  }
+  (function(){
+    let dark = false;
+    try{ const s = localStorage.getItem('bnManualTheme'); dark = s===null ? matchMedia('(prefers-color-scheme: dark)').matches : s==='1'; }catch(e){}
+    setTheme(dark);
+  })();
+  document.getElementById('theme').addEventListener('click', ()=> setTheme(!root.classList.contains('dark')));
+
+  // 스크롤 등장
+  const io = new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('in'); }); }, {threshold:.12});
+  document.querySelectorAll('section').forEach(s=> io.observe(s));
+
+  // TOC 스크롤스파이
+  const links = [...document.querySelectorAll('nav.toc a')];
+  const map = {};
+  links.forEach(a=>{ const id=a.getAttribute('href').slice(1); const el=document.getElementById(id); if(el) map[id]=a; });
+  const secEls = [...document.querySelectorAll('section')].filter(s=> map[s.id]);
+  function updateActiveToc(){
+    let curId;
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) {
+      curId = secEls[secEls.length-1].id;
+    } else {
+      const line = window.innerHeight * 0.32;
+      curId = secEls[0].id;
+      for (const el of secEls){ if (el.getBoundingClientRect().top <= line) curId = el.id; else break; }
+    }
+    links.forEach(l=> l.classList.toggle('active', l === map[curId]));
+  }
+  window.addEventListener('scroll', updateActiveToc, {passive:true});
+  window.addEventListener('resize', updateActiveToc);
+  updateActiveToc();
+  links.forEach(a=> a.addEventListener('click', ()=>{ links.forEach(l=>l.classList.remove('active')); a.classList.add('active'); }));
+</script>
+</body>
+</html>

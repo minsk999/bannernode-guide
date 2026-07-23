@@ -36,7 +36,10 @@
   #authgate .ag-mark{ font-size:12.5px; font-weight:800; letter-spacing:.2em; color:#a2ff00; text-transform:uppercase; margin-bottom:9px; }
   #authgate .ag-title{ font-size:22px; font-weight:700; letter-spacing:-.02em; margin:0 0 10px; }
   #authgate .ag-sub{ color:#9aa0ad; font-size:13.5px; line-height:1.65; margin:0 0 24px; }
-  #authgate .ag-btn{ display:flex; justify-content:center; min-height:44px; }
+  #authgate .ag-btn{ display:inline-flex; align-items:center; gap:11px; padding:12px 22px 12px 19px; border-radius:999px; border:1px solid #2a2e39; background:#1b1f28; color:#e7e9ef; font:inherit; font-weight:600; font-size:14px; cursor:pointer; transition:.15s; }
+  #authgate .ag-btn:hover{ border-color:#a2ff00; color:#a2ff00; }
+  #authgate .ag-btn:disabled{ opacity:.5; cursor:default; }
+  #authgate .ag-btn svg{ width:18px; height:18px; }
   #authgate .ag-err{ color:#ff6b6b; font-size:13px; line-height:1.55; margin:18px auto 0; max-width:320px; }
   #authgate .ag-note{ color:#5b6270; font-size:12px; margin:22px 0 0; }
 </style>
@@ -394,10 +397,9 @@
 <div id="authgate" role="dialog" aria-modal="true">
   <div class="ag-card">
     <svg class="ag-logo" viewBox="0 0 512 512"><rect width="512" height="512" rx="118" fill="#a2ff00"/><g transform="translate(128.09 128) scale(4.6529)" fill="#0a0b0f"><path d="M49.67,11.02c-.06,0-.12,0-.18,0-3.04,0-5.5-2.46-5.5-5.5h0s0-.02,0-.04c0-3.04-2.46-5.5-5.5-5.5-.21,0-.42.01-.62.04h-9.76c-.2-.02-.41-.04-.62-.04s-.42.01-.62.04h-9.76c-.2-.02-.41-.04-.62-.04-3.04,0-5.5,2.46-5.5,5.5,0,.01,0,.02,0,.04h0c0,3.04-2.46,5.5-5.5,5.5S0,13.49,0,16.53c0,0,0,0,0,0v10.98s0,0,0,0,0,0,0,0v10.98s0,0,0,0,0,0,0,0v10.98s0,0,0,0c0,3.04,2.46,5.5,5.5,5.5h32.99c3.04,0,5.5-2.46,5.5-5.5s2.46-5.5,5.5-5.5,5.5-2.46,5.5-5.5-2.46-5.5-5.5-5.5-5.5-2.46-5.5-5.5,2.46-5.5,5.5-5.5v-.02c3.04,0,5.5-2.46,5.5-5.5s-2.36-5.39-5.31-5.49ZM38.49,44.02h-21.99c-3.04,0-5.5-2.46-5.5-5.5s2.46-5.5,5.5-5.5h21.99c3.04,0,5.5,2.46,5.5,5.5s-2.46,5.5-5.5,5.5ZM38.49,22.03c-.12,0-.25-.01-.37-.02h-10.26c-.12,0-.24.02-.37.02s-.25-.01-.37-.02h-10.26c-.12,0-.24.02-.37.02-3.04,0-5.5-2.46-5.5-5.5s2.46-5.5,5.5-5.5h21.99c3.04,0,5.5,2.46,5.5,5.5s-2.46,5.5-5.5,5.5Z"/></g></svg>
-    <div class="ag-mark">BannerNode 사용 설명서</div>
-    <div class="ag-title">ADEF 구글 계정으로 로그인</div>
-    <p class="ag-sub">이 설명서는 ADEF 구성원만 열람할 수 있어요.<br>구글 계정으로 로그인해 주세요.</p>
-    <div id="gaBtn" class="ag-btn"></div>
+    <div class="ag-title">ADEF 계정 로그인</div>
+    <p class="ag-sub">이 설명서는 ADEF 구성원만 열람할 수 있어요.</p>
+    <button class="ag-btn" id="gaBtn"><svg class="gg" viewBox="0 0 48 48" fill="#a2ff00"><path d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"/><path d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>구글 계정으로 로그인</button>
     <p class="ag-err" id="gaErr" hidden></p>
     <p class="ag-note">@adef.co.kr 계정만 접근할 수 있습니다.</p>
   </div>
@@ -1127,20 +1129,24 @@
 (function(){
   var CID='575127134030-0023iive0i5aejtcmloa89nadhrnfmuc.apps.googleusercontent.com', DOM='adef.co.kr';
   function unlock(){ var g=document.getElementById('authgate'); if(g) g.style.display='none'; document.documentElement.classList.remove('gate-locked'); }
-  function err(m){ var e=document.getElementById('gaErr'); if(e){ e.textContent=m; e.hidden=false; } }
+  function err(m){ var e=document.getElementById('gaErr'); if(e){ e.textContent=m||''; e.hidden=!m; } }
   function valid(){ try{ var s=JSON.parse(localStorage.getItem('bn-guide-auth')||'null'); return !!(s&&s.hd===DOM&&s.exp>Date.now()/1000); }catch(_){ return false; } }
-  function decode(jwt){ var p=jwt.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'); return JSON.parse(decodeURIComponent(atob(p).split('').map(function(c){return '%'+('00'+c.charCodeAt(0).toString(16)).slice(-2);}).join(''))); }
-  function cb(resp){ try{ var c=decode(resp.credential); var dom=c.hd||(String(c.email||'').split('@')[1]);
-    if(c.email_verified && dom===DOM){ try{ localStorage.setItem('bn-guide-auth', JSON.stringify({email:c.email,hd:DOM,exp:c.exp})); }catch(_){ } unlock(); }
-    else { err('ADEF 계정(@'+DOM+')만 열람할 수 있어요. 로그인한 계정: '+(c.email||'알 수 없음')); try{ google.accounts.id.disableAutoSelect(); }catch(_){ } }
-  }catch(e){ err('로그인 처리 중 오류가 발생했어요. 새로고침 후 다시 시도해 주세요.'); } }
+  var btn=document.getElementById('gaBtn'), tokenClient=null;
+  function onToken(resp){
+    if(resp && resp.error){ if(btn) btn.disabled=false; err(resp.error==='access_denied'?'로그인이 취소됐어요.':'로그인에 실패했어요. 다시 시도해 주세요.'); return; }
+    fetch('https://www.googleapis.com/oauth2/v3/userinfo',{headers:{Authorization:'Bearer '+resp.access_token}})
+      .then(function(r){ return r.json(); }).then(function(info){
+        var dom=(info.hd||(String(info.email||'').split('@')[1]||'')).toLowerCase();
+        if(info.email_verified && dom===DOM){ try{ localStorage.setItem('bn-guide-auth', JSON.stringify({email:info.email,hd:DOM,exp:Math.floor(Date.now()/1000)+2592000})); }catch(_){ } unlock(); }
+        else { if(btn) btn.disabled=false; err('ADEF 계정(@'+DOM+')만 열람할 수 있어요. 로그인한 계정: '+(info.email||'알 수 없음')); }
+      }).catch(function(){ if(btn) btn.disabled=false; err('로그인 확인 중 오류가 발생했어요. 다시 시도해 주세요.'); });
+  }
   function init(){
     if(valid()){ unlock(); return; }
-    if(!(window.google&&google.accounts&&google.accounts.id)){ return setTimeout(init,120); }
+    if(!(window.google&&google.accounts&&google.accounts.oauth2)){ return setTimeout(init,120); }
     try{
-      google.accounts.id.initialize({ client_id:CID, callback:cb, hosted_domain:DOM, auto_select:false, cancel_on_tap_outside:false });
-      google.accounts.id.renderButton(document.getElementById('gaBtn'), { theme:'filled_black', size:'large', text:'signin_with', shape:'pill', width:260 });
-      google.accounts.id.prompt();
+      tokenClient=google.accounts.oauth2.initTokenClient({ client_id:CID, scope:'openid email profile', callback:onToken });
+      if(btn) btn.onclick=function(){ btn.disabled=true; err(''); tokenClient.requestAccessToken({prompt:'select_account'}); };
     }catch(e){ err('로그인 초기화 실패 — 잠시 후 다시 시도해 주세요.'); }
   }
   var lo=document.getElementById('logout');

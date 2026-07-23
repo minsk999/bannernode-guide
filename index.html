@@ -22,6 +22,25 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
+<style>
+  /* ADEF 구글 로그인 게이트 (클라이언트측) */
+  html.gate-locked, html.gate-locked body{ overflow:hidden !important; }
+  #authgate{ position:fixed; inset:0; z-index:2147483000; display:flex; align-items:center; justify-content:center;
+    background:radial-gradient(1100px 560px at 50% -8%, #10131b 0%, #0a0b0f 62%); color:#e7e9ef;
+    font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
+  #authgate .ag-card{ text-align:center; padding:46px 40px; max-width:410px; width:calc(100% - 40px);
+    background:rgba(22,25,33,.55); border:1px solid #23262f; border-radius:22px; box-shadow:0 24px 70px rgba(0,0,0,.45); }
+  #authgate .ag-logo{ width:56px; height:56px; margin:0 auto 20px; display:block; filter:drop-shadow(0 8px 22px rgba(162,255,0,.28)); }
+  #authgate .ag-mark{ font-size:12.5px; font-weight:800; letter-spacing:.2em; color:#a2ff00; text-transform:uppercase; margin-bottom:9px; }
+  #authgate .ag-title{ font-size:22px; font-weight:700; letter-spacing:-.02em; margin:0 0 10px; }
+  #authgate .ag-sub{ color:#9aa0ad; font-size:13.5px; line-height:1.65; margin:0 0 24px; }
+  #authgate .ag-btn{ display:flex; justify-content:center; min-height:44px; }
+  #authgate .ag-err{ color:#ff6b6b; font-size:13px; line-height:1.55; margin:18px auto 0; max-width:320px; }
+  #authgate .ag-note{ color:#5b6270; font-size:12px; margin:22px 0 0; }
+</style>
+
 <style>
 
   :root{
@@ -372,6 +391,19 @@
 
 <body>
 
+<div id="authgate" role="dialog" aria-modal="true">
+  <div class="ag-card">
+    <svg class="ag-logo" viewBox="0 0 512 512"><rect width="512" height="512" rx="118" fill="#a2ff00"/><g transform="translate(128.09 128) scale(4.6529)" fill="#0a0b0f"><path d="M49.67,11.02c-.06,0-.12,0-.18,0-3.04,0-5.5-2.46-5.5-5.5h0s0-.02,0-.04c0-3.04-2.46-5.5-5.5-5.5-.21,0-.42.01-.62.04h-9.76c-.2-.02-.41-.04-.62-.04s-.42.01-.62.04h-9.76c-.2-.02-.41-.04-.62-.04-3.04,0-5.5,2.46-5.5,5.5,0,.01,0,.02,0,.04h0c0,3.04-2.46,5.5-5.5,5.5S0,13.49,0,16.53c0,0,0,0,0,0v10.98s0,0,0,0,0,0,0,0v10.98s0,0,0,0,0,0,0,0v10.98s0,0,0,0c0,3.04,2.46,5.5,5.5,5.5h32.99c3.04,0,5.5-2.46,5.5-5.5s2.46-5.5,5.5-5.5,5.5-2.46,5.5-5.5-2.46-5.5-5.5-5.5-5.5-2.46-5.5-5.5,2.46-5.5,5.5-5.5v-.02c3.04,0,5.5-2.46,5.5-5.5s-2.36-5.39-5.31-5.49ZM38.49,44.02h-21.99c-3.04,0-5.5-2.46-5.5-5.5s2.46-5.5,5.5-5.5h21.99c3.04,0,5.5,2.46,5.5,5.5s-2.46,5.5-5.5,5.5ZM38.49,22.03c-.12,0-.25-.01-.37-.02h-10.26c-.12,0-.24.02-.37.02s-.25-.01-.37-.02h-10.26c-.12,0-.24.02-.37.02-3.04,0-5.5-2.46-5.5-5.5s2.46-5.5,5.5-5.5h21.99c3.04,0,5.5,2.46,5.5,5.5s-2.46,5.5-5.5,5.5Z"/></g></svg>
+    <div class="ag-mark">BannerNode 사용 설명서</div>
+    <div class="ag-title">ADEF 구글 계정으로 로그인</div>
+    <p class="ag-sub">이 설명서는 ADEF 구성원만 열람할 수 있어요.<br>구글 계정으로 로그인해 주세요.</p>
+    <div id="gaBtn" class="ag-btn"></div>
+    <p class="ag-err" id="gaErr" hidden></p>
+    <p class="ag-note">@adef.co.kr 계정만 접근할 수 있습니다.</p>
+  </div>
+</div>
+<script>document.documentElement.classList.add('gate-locked');</script>
+
 <header>
 
   <div class="bar">
@@ -391,6 +423,12 @@
     <button class="theme-btn" id="theme" aria-label="테마 전환">
 
       <svg id="theme-ic" viewBox="0 0 24 24"><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>
+
+    </button>
+
+    <button class="theme-btn" id="logout" aria-label="ADEF 계정 로그아웃" title="ADEF 계정 로그아웃">
+
+      <svg viewBox="0 0 24 24"><path d="M15 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h9M10 12h11m0 0l-4-4m4 4l-4 4"></path></svg>
 
     </button>
 
@@ -1082,6 +1120,33 @@
 
   links.forEach(a=> a.addEventListener('click', ()=>{ links.forEach(l=>l.classList.remove('active')); a.classList.add('active'); }));
 
+</script>
+
+<script>
+/* 회사 구글 로그인 게이트 — 클라이언트측(GIS). 정적 사이트라 소프트 차단(우회 가능성 있음, 캐주얼 제한용). */
+(function(){
+  var CID='575127134030-0023iive0i5aejtcmloa89nadhrnfmuc.apps.googleusercontent.com', DOM='adef.co.kr';
+  function unlock(){ var g=document.getElementById('authgate'); if(g) g.style.display='none'; document.documentElement.classList.remove('gate-locked'); }
+  function err(m){ var e=document.getElementById('gaErr'); if(e){ e.textContent=m; e.hidden=false; } }
+  function valid(){ try{ var s=JSON.parse(localStorage.getItem('bn-guide-auth')||'null'); return !!(s&&s.hd===DOM&&s.exp>Date.now()/1000); }catch(_){ return false; } }
+  function decode(jwt){ var p=jwt.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'); return JSON.parse(decodeURIComponent(atob(p).split('').map(function(c){return '%'+('00'+c.charCodeAt(0).toString(16)).slice(-2);}).join(''))); }
+  function cb(resp){ try{ var c=decode(resp.credential); var dom=c.hd||(String(c.email||'').split('@')[1]);
+    if(c.email_verified && dom===DOM){ try{ localStorage.setItem('bn-guide-auth', JSON.stringify({email:c.email,hd:DOM,exp:c.exp})); }catch(_){ } unlock(); }
+    else { err('회사 계정(@'+DOM+')만 열람할 수 있어요. 로그인한 계정: '+(c.email||'알 수 없음')); try{ google.accounts.id.disableAutoSelect(); }catch(_){ } }
+  }catch(e){ err('로그인 처리 중 오류가 발생했어요. 새로고침 후 다시 시도해 주세요.'); } }
+  function init(){
+    if(valid()){ unlock(); return; }
+    if(!(window.google&&google.accounts&&google.accounts.id)){ return setTimeout(init,120); }
+    try{
+      google.accounts.id.initialize({ client_id:CID, callback:cb, hosted_domain:DOM, auto_select:false, cancel_on_tap_outside:false });
+      google.accounts.id.renderButton(document.getElementById('gaBtn'), { theme:'filled_black', size:'large', text:'signin_with', shape:'pill', width:260 });
+      google.accounts.id.prompt();
+    }catch(e){ err('로그인 초기화 실패 — 잠시 후 다시 시도해 주세요.'); }
+  }
+  var lo=document.getElementById('logout');
+  if(lo) lo.onclick=function(){ try{ localStorage.removeItem('bn-guide-auth'); }catch(_){ } try{ if(window.google&&google.accounts&&google.accounts.id) google.accounts.id.disableAutoSelect(); }catch(_){ } location.reload(); };
+  init();
+})();
 </script>
 
 </body>

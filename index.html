@@ -1123,7 +1123,7 @@
 </script>
 
 <script>
-/* 회사 구글 로그인 게이트 — 클라이언트측(GIS). 정적 사이트라 소프트 차단(우회 가능성 있음, 캐주얼 제한용). */
+/* ADEF 구글 로그인 게이트 — 클라이언트측(GIS). 정적 사이트라 소프트 차단(우회 가능성 있음, 캐주얼 제한용). */
 (function(){
   var CID='575127134030-0023iive0i5aejtcmloa89nadhrnfmuc.apps.googleusercontent.com', DOM='adef.co.kr';
   function unlock(){ var g=document.getElementById('authgate'); if(g) g.style.display='none'; document.documentElement.classList.remove('gate-locked'); }
@@ -1132,7 +1132,7 @@
   function decode(jwt){ var p=jwt.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'); return JSON.parse(decodeURIComponent(atob(p).split('').map(function(c){return '%'+('00'+c.charCodeAt(0).toString(16)).slice(-2);}).join(''))); }
   function cb(resp){ try{ var c=decode(resp.credential); var dom=c.hd||(String(c.email||'').split('@')[1]);
     if(c.email_verified && dom===DOM){ try{ localStorage.setItem('bn-guide-auth', JSON.stringify({email:c.email,hd:DOM,exp:c.exp})); }catch(_){ } unlock(); }
-    else { err('회사 계정(@'+DOM+')만 열람할 수 있어요. 로그인한 계정: '+(c.email||'알 수 없음')); try{ google.accounts.id.disableAutoSelect(); }catch(_){ } }
+    else { err('ADEF 계정(@'+DOM+')만 열람할 수 있어요. 로그인한 계정: '+(c.email||'알 수 없음')); try{ google.accounts.id.disableAutoSelect(); }catch(_){ } }
   }catch(e){ err('로그인 처리 중 오류가 발생했어요. 새로고침 후 다시 시도해 주세요.'); } }
   function init(){
     if(valid()){ unlock(); return; }

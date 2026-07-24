@@ -135,7 +135,7 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 @keyframes jtxt{0%,45.9%{content:"대기"} 46%{content:"6%"} 48%{content:"19%"} 50%{content:"33%"} 52%{content:"47%"} 54%{content:"60%"} 56%{content:"74%"} 58%{content:"87%"} 60%{content:"96%"} 62%,100%{content:"완료"}}
 .jbar{position:relative;height:6px;background:var(--field);border-radius:3px;overflow:hidden;margin:9px 0 8px}   /* 트랙도 메인바(--field)와 동일 — 밝은 회색 트랙이 라임을 물빠져 보이게 하던 것 제거 */
 .jbarfill{position:absolute;left:0;top:0;height:100%;width:0;background:rgb(var(--accRGB));border-radius:3px;overflow:hidden;animation:jfill var(--T) linear infinite}
-.jbarfill::after{content:"";position:absolute;top:0;bottom:0;left:0;right:0;background-image:linear-gradient(135deg,rgba(255,255,255,.32) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.32) 50%,rgba(255,255,255,.32) 75%,transparent 75%,transparent);background-size:22px 22px;opacity:0;animation:stripeOn var(--T) steps(1) infinite,barflow .6s linear infinite}
+.jbarfill::after{content:"";position:absolute;top:0;bottom:0;left:0;right:0;background-image:linear-gradient(135deg,#7ec943 25%,transparent 25%,transparent 50%,#7ec943 50%,#7ec943 75%,transparent 75%,transparent);background-size:22px 22px;opacity:0;animation:stripeOn var(--T) steps(1) infinite,barflow .6s linear infinite}
 @keyframes jfill{0%,45.5%{width:0} 62%,86%{width:100%} 89.5%,100%{width:100%;opacity:0}}   /* 완료 시 --ok(어두운 청록) 전환 제거 — 하단 메인바처럼 라임 유지(완료 표시는 칩·테두리가 담당) */
 @keyframes stripeOn{0%,45.9%{opacity:0} 46%,61.9%{opacity:1} 62%,100%{opacity:0}}
 @keyframes barflow{from{background-position:0 0}to{background-position:22px 0}}   /* transform 이동은 임베드 scale+backdrop 조상 밑에서 합성 누락(실사이트 미표시) → bg-position 이동으로 */
@@ -147,7 +147,7 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 @keyframes ptxt{0%,45.9%{content:"준비됨"} 46%{content:"6% (0/1)"} 48%{content:"19% (0/1)"} 50%{content:"33% (0/1)"} 52%{content:"47% (0/1)"} 54%{content:"60% (0/1)"} 56%{content:"74% (0/1)"} 58%{content:"87% (0/1)"} 60%{content:"96% (0/1)"} 62%,68.5%{content:"100% (1/1)"} 69.5%,100%{content:"준비됨"}}
 .bar{height:9px;background:var(--field);border-radius:5px;overflow:hidden}
 .bar>i{display:block;height:100%;width:0;border-radius:4px;background:rgb(var(--accRGB));position:relative;overflow:hidden;animation:mfill var(--T) linear infinite}
-.bar>i::after{content:"";position:absolute;top:0;bottom:0;left:0;right:0;background-image:linear-gradient(135deg,rgba(255,255,255,.32) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.32) 50%,rgba(255,255,255,.32) 75%,transparent 75%,transparent);background-size:22px 22px;opacity:0;animation:stripeOn var(--T) steps(1) infinite,barflow .6s linear infinite}
+.bar>i::after{content:"";position:absolute;top:0;bottom:0;left:0;right:0;background-image:linear-gradient(135deg,#7ec943 25%,transparent 25%,transparent 50%,#7ec943 50%,#7ec943 75%,transparent 75%,transparent);background-size:22px 22px;opacity:0;animation:stripeOn var(--T) steps(1) infinite,barflow .6s linear infinite}
 @keyframes mfill{0%,45.5%{width:0} 62%{width:100%} 68.5%{width:100%} 69.5%,100%{width:0}}
 .rbtn{height:48px;border-radius:12px;border:none;background:var(--acc);color:#0a0b0f;font:inherit;font-weight:800;font-size:17px;display:flex;align-items:center;justify-content:center;gap:9px;animation:rbtn var(--T) var(--ease) infinite}
 .rbtn svg{width:17px;height:17px}

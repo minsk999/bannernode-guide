@@ -189,10 +189,10 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
   11.1%{opacity:.95}
   16.5%{opacity:.95;left:var(--p2x,40%);top:var(--p2y,50%)}
   17.1%,100%{opacity:0;left:var(--p2x,40%);top:var(--p2y,50%)}}
-.doneov{inset:0;z-index:5;background:rgba(6,7,11,.45);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;animation:dov var(--T) var(--ease) infinite}
+.doneov{inset:0;z-index:5;background:rgba(6,7,11,.34);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;animation:dov var(--T) var(--ease) infinite}   /* blur 제거: 이게 중간 backdrop-root라 팝업 블러를 약화시켰음 → 팝업이 스테이지를 직접 프로스팅 */
 @keyframes dov{0%,62%{opacity:0} 65%,74.5%{opacity:1} 79.5%,100%{opacity:0}}
-.done{background:var(--surface2);border:1px solid var(--stroke2);border-radius:24px;padding:46px 78px;text-align:center;
-  box-shadow:0 24px 70px rgba(0,0,0,.55);backdrop-filter:blur(20px);animation:dpop var(--T) var(--ease) infinite}
+.done{background:var(--surface);border:1px solid var(--stroke2);border-radius:24px;padding:46px 78px;text-align:center;
+  box-shadow:0 24px 70px rgba(0,0,0,.55);backdrop-filter:blur(22px) saturate(1.3);-webkit-backdrop-filter:blur(22px) saturate(1.3);animation:dpop var(--T) var(--ease) infinite}   /* 패널(.pal/.rq)과 동일 blur/saturate/틴트 → 동일하게 강한 프로스트 */
 @keyframes dpop{0%,62%{transform:scale(.88)} 66%{transform:scale(1.02)} 68%,100%{transform:scale(1)}}
 .done .big{width:72px;height:72px;margin:0 auto 18px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;
   box-shadow:0 0 30px -5px rgba(var(--accRGB),.6)}   /* 라임 체크 배지 */

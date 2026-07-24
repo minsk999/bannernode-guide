@@ -47,35 +47,13 @@
 <style>
 
   :root{
-
-    --bg:#ffffff; --bg-soft:#f5f5f4; --surface:#ffffff; --surface-2:#fafafa;
-
-    --ink:#0a0a0a; --ink-2:#71717a; --ink-3:#a1a1aa; --line:#ebebe8;
-
-    --pill:#0a0a0a; --pill-text:#ffffff; --shadow:rgba(10,10,10,0.08);
-
-    --lime:#a2ff00; --lime-ink:#0a0b0f; --lime-bg:#f4ffdb; --lime-fg:#65a30d;
-
-    --red:#dc2626; --red-bg:#fef2f2; --orange:#ea580c; --orange-bg:#fff7ed;
-
-    --green:#16a34a; --green-bg:#f0fdf4;
-
-    --radius:18px;
-
-  }
-
-  html.dark{
-
     --bg:#0a0b0f; --bg-soft:#141519; --surface:#141519; --surface-2:#1c1d22;
-
     --ink:#e8e8ec; --ink-2:#8f8f97; --ink-3:#5f6068; --line:#26272d;
-
     --pill:#e8e8ec; --pill-text:#141519; --shadow:rgba(0,0,0,0.5);
-
-    --lime-bg:#1b2408; --lime-fg:#a2ff00;
-
-    --red:#f87171; --red-bg:#2a1414; --orange:#fb923c; --orange-bg:#2a1c10; --green:#4ade80; --green-bg:#0f2417;
-
+    --lime:#a2ff00; --lime-ink:#0a0b0f; --lime-bg:#1b2408; --lime-fg:#a2ff00;
+    --red:#f87171; --red-bg:#2a1414; --orange:#fb923c; --orange-bg:#2a1c10;
+    --green:#4ade80; --green-bg:#0f2417;
+    --radius:18px;
   }
 
   *{box-sizing:border-box; margin:0; padding:0;}
@@ -214,8 +192,6 @@
 
   .sec-num{font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:700; color:var(--lime-ink); background:var(--lime); padding:1px 8px; border-radius:20px;}
 
-  html.dark .sec-num{color:var(--lime-ink);}
-
   h2{font-size:27px; font-weight:700; letter-spacing:-0.03em;}
 
   .lead{color:var(--ink-2); font-size:15.5px; margin:10px 0 22px; max-width:760px;}
@@ -228,7 +204,7 @@
 
   .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:24px 26px; box-shadow:0 1px 2px var(--shadow);}
 
-  .card + .card{margin-top:14px;}
+  .card + .card, .grid2 + .card{margin-top:14px;}
 
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:stretch;}
 
@@ -266,9 +242,9 @@
 
   ul.bul{list-style:none; display:flex; flex-direction:column; gap:14px;}
 
-  ul.bul li{position:relative; padding-left:17px; font-size:14.5px; line-height:1.7; color:var(--ink);}   /* flex 금지 — <b>·키캡이 섞여도 칼럼으로 쪼개지지 않게 인라인 흐름 */
+  ul.bul li{padding-left:0; font-size:14.5px; line-height:1.7; color:var(--ink);}   /* flex 금지 — <b>·키캡이 섞여도 칼럼으로 쪼개지지 않게 인라인 흐름 */
 
-  ul.bul li::before{content:""; position:absolute; left:0; top:9.5px; width:6px; height:6px; border-radius:50%; background:var(--lime-fg);}
+  ul.bul li::before{content:""; display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--lime-fg); vertical-align:middle; margin:-2px 9px 0 0;}
 
   ul.bul li b{font-weight:700;}
 
@@ -278,13 +254,13 @@
 
   /* 기능 아이콘 칩 — 앱 아이콘 SVG 그대로 */
 
-  .fic{display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6.5px; background:var(--surface-2); border:1px solid var(--line); vertical-align:-5px; margin-right:3px;}
+  .fic{display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:6.5px; background:var(--surface-2); border:1px solid var(--line); vertical-align:middle; margin-right:4px; position:relative; top:-1px;}
 
   .fic svg{width:13px; height:13px; fill:currentColor; color:var(--ink-2);}
 
   .fic.st svg{fill:none; stroke:currentColor; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round;}
 
-  h3 .fic{width:24px; height:24px; vertical-align:-5px; margin-right:6px;}
+  h3 .fic{width:24px; height:24px; vertical-align:middle; margin-right:7px; top:-1px;}
 
   h3 .fic svg{width:14px; height:14px;}
 
@@ -354,7 +330,7 @@
 
   .key-row .keys{display:flex; gap:5px; flex-shrink:0;}
 
-  .key-cap{font-size:11px; font-weight:700; color:var(--lime-ink); background:var(--lime); padding:2px 8px; border-radius:20px; font-family:'JetBrains Mono',monospace;}
+  .key-cap{display:inline-grid; place-items:center; min-width:23px; height:23px; padding:0 7px; font-size:12px; font-weight:700; color:var(--ink); background:var(--surface-2); border:1px solid var(--line); border-bottom-width:2.5px; border-radius:6px; font-family:'JetBrains Mono',monospace; vertical-align:middle;}
 
 
 
@@ -463,12 +439,6 @@
     <span class="ver">v1.0.141</span>
 
     <span class="spacer"></span>
-
-    <button class="theme-btn" id="theme" aria-label="테마 전환">
-
-      <svg id="theme-ic" viewBox="0 0 24 24"><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>
-
-    </button>
 
     <button class="theme-btn" id="logout" aria-label="ADEF 계정 로그아웃" title="ADEF 계정 로그아웃">
 
@@ -1138,40 +1108,6 @@
     if(isMac && btns && mac){ btns.prepend(mac); (MAC_READY ? mac : win).classList.add('primary'); }   // 맥 접속: 맥 버튼 앞에(준비 전엔 실 다운로드=Windows가 주 버튼)
     else if(win){ win.classList.add('primary'); }
   })();
-
-  // 테마 토글
-
-  const root = document.documentElement;
-
-  const tIc = document.getElementById('theme-ic');
-
-  const SUN = 'M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4M12 8a4 4 0 100 8 4 4 0 000-8z';
-
-  const MOON = 'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z';
-
-  function setTheme(dark){
-
-    root.classList.toggle('dark', dark);
-
-    tIc.innerHTML = '<path d="'+(dark?SUN:MOON)+'"/>';
-
-    try{ localStorage.setItem('bnManualTheme', dark?'1':'0'); }catch(e){}
-
-    try{ document.querySelector('meta[name="theme-color"]').setAttribute('content', dark?'#0a0b0f':'#ffffff'); }catch(e){}
-
-  }
-
-  (function(){
-
-    let dark = true;   // 기본 = 다크 테마(앱과 동일). 사용자가 토글하면 그 선택을 기억.
-
-    try{ const s = localStorage.getItem('bnManualTheme'); if(s!==null) dark = s==='1'; }catch(e){}
-
-    setTheme(dark);
-
-  })();
-
-  document.getElementById('theme').addEventListener('click', ()=> setTheme(!root.classList.contains('dark')));
 
 
 

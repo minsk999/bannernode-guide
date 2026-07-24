@@ -204,7 +204,7 @@
 
   .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:24px 26px; box-shadow:0 1px 2px var(--shadow);}
 
-  .card + .card, .grid2 + .card{margin-top:14px;}
+  .card + .card, .grid2 + .card, .grid2 + .note, .card + .note{margin-top:14px;}   /* 섹션 직계 note(콜아웃)도 카드 리듬 14px로 통일(기본 .note 16px는 카드 내부용) */
 
   .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px; align-items:stretch;}
 

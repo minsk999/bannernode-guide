@@ -530,7 +530,7 @@
 
         <div class="card demo-embed">
 
-          <iframe src="workflow-demo.html?embed=1&v=148" aria-label="BannerNode 워크플로 데모 — 소스 담기부터 렌더 완료까지 자동 재생" loading="lazy" scrolling="no"></iframe>
+          <iframe src="workflow-demo.html?embed=1&v=149" aria-label="BannerNode 워크플로 데모 — 소스 담기부터 렌더 완료까지 자동 재생" loading="lazy" scrolling="no"></iframe>
 
         </div>
 
@@ -1200,7 +1200,10 @@
 /* ADEF 구글 로그인 게이트 — 클라이언트측(GIS). 정적 사이트라 소프트 차단(우회 가능성 있음, 캐주얼 제한용). */
 (function(){
   var CID='575127134030-0023iive0i5aejtcmloa89nadhrnfmuc.apps.googleusercontent.com', DOM='adef.co.kr';
-  function unlock(){ var g=document.getElementById('authgate'); if(g) g.style.display='none'; document.documentElement.classList.remove('gate-locked'); }
+  function unlock(){ var g=document.getElementById('authgate'); if(g) g.style.display='none'; document.documentElement.classList.remove('gate-locked');
+    try{ var f=document.querySelector('.demo-embed iframe'); if(f){ var go=function(){ try{ if(f.contentWindow&&f.contentWindow.__bnDemoRestart) f.contentWindow.__bnDemoRestart(); }catch(_){ } };
+      go(); f.addEventListener('load',go,{once:true}); } }catch(_){ }   // 게이트 해제 = 데모를 1국면부터(로그인 후 처음 보는 순간 시작) — iframe이 늦게 로드돼도 load에서 재시도
+  }
   function err(m){ var e=document.getElementById('gaErr'); if(e){ e.textContent=m||''; e.hidden=!m; } }
   function saved(){ try{ return JSON.parse(localStorage.getItem('bn-guide-auth')||'null'); }catch(_){ return null; } }
   function valid(){ var s=saved(); return !!(s&&s.hd===DOM&&s.exp>Date.now()/1000); }

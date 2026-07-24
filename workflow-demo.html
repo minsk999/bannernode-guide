@@ -189,11 +189,16 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
   11.1%{opacity:.95}
   16.5%{opacity:.95;left:var(--p2x,40%);top:var(--p2y,50%)}
   17.1%,100%{opacity:0;left:var(--p2x,40%);top:var(--p2y,50%)}}
-.doneov{inset:0;z-index:5;background:rgba(6,7,11,.34);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;animation:dov var(--T) var(--ease) infinite}   /* blur 제거: 이게 중간 backdrop-root라 팝업 블러를 약화시켰음 → 팝업이 스테이지를 직접 프로스팅 */
-@keyframes dov{0%,62%{opacity:0} 65%,74.5%{opacity:1} 79.5%,100%{opacity:0}}
-.done{background:var(--surface);border:1px solid var(--stroke2);border-radius:24px;padding:46px 78px;text-align:center;
-  box-shadow:0 24px 70px rgba(0,0,0,.55);backdrop-filter:blur(22px) saturate(1.3);-webkit-backdrop-filter:blur(22px) saturate(1.3);animation:dpop var(--T) var(--ease) infinite}   /* 패널(.pal/.rq)과 동일 blur/saturate/틴트 → 동일하게 강한 프로스트 */
-@keyframes dpop{0%,62%{transform:scale(.88)} 66%{transform:scale(1.02)} 68%,100%{transform:scale(1)}}
+/* 딤은 opacity가 아니라 background-alpha로 페이드 — opacity 애니는 doneov를 compositing/backdrop-root로 격리시켜 팝업 블러를 죽임 */
+.doneov{inset:0;z-index:5;background:rgba(6,7,11,0);display:flex;align-items:center;justify-content:center;pointer-events:none;animation:dovbg var(--T) var(--ease) infinite}
+@keyframes dovbg{0%,62%{background:rgba(6,7,11,0)} 65%,74.5%{background:rgba(6,7,11,.34)} 79.5%,100%{background:rgba(6,7,11,0)}}
+/* .done은 transform/opacity 없음 → ::before frost의 backdrop-root가 .stage가 되어 노드를 직접 프로스팅(패널과 동일 원리) */
+.done{position:relative;border-radius:24px;padding:46px 78px;text-align:center}
+.done::before{content:"";position:absolute;inset:0;border-radius:inherit;border:1px solid var(--stroke2);background:var(--surface);
+  box-shadow:0 24px 70px rgba(0,0,0,.55);backdrop-filter:blur(22px) saturate(1.3);-webkit-backdrop-filter:blur(22px) saturate(1.3);opacity:0;animation:donefr var(--T) var(--ease) infinite}
+@keyframes donefr{0%,62%{opacity:0} 65%,74.5%{opacity:1} 79.5%,100%{opacity:0}}
+.done-in{position:relative;animation:dpop var(--T) var(--ease) infinite}
+@keyframes dpop{0%,62%{transform:scale(.88);opacity:0} 66%{transform:scale(1.02);opacity:1} 68%,74.5%{transform:scale(1);opacity:1} 79.5%,100%{transform:scale(1);opacity:0}}
 .done .big{width:72px;height:72px;margin:0 auto 18px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;
   box-shadow:0 0 30px -5px rgba(var(--accRGB),.6)}   /* 라임 체크 배지 */
 .done .big svg{width:36px;height:36px;color:#0a0b0f}
@@ -271,7 +276,7 @@ html.paused *{animation-play-state:paused!important}
     <svg class="sh-grab" viewBox="0 0 24 24"><path fill="#fff" stroke="#0a0b0f" stroke-width="1.3" stroke-linejoin="round" d="M7.2 9.6c0-.9.7-1.6 1.5-1.6.4 0 .8.2 1.1.5.2-.7.8-1.2 1.5-1.2.6 0 1.2.4 1.4 1 .3-.4.7-.6 1.2-.6.9 0 1.6.7 1.6 1.6v.3c.2-.1.5-.2.8-.2.9 0 1.6.7 1.6 1.6V15c0 3.3-2.7 6-6 6h-.8c-1.9 0-3.7-.9-4.8-2.4l-1.6-2.1c-.5-.7-.4-1.7.3-2.2.6-.5 1.5-.4 2 .2l.2.2V9.6z"/></svg>
     <svg class="sh-point" viewBox="0 0 24 24"><path fill="#fff" stroke="#0a0b0f" stroke-width="1.3" d="M9.2 12.6V5.4a1.5 1.5 0 0 1 3 0v5.5l4.6 1c1 .2 1.7 1.1 1.7 2.1V17a4.4 4.4 0 0 1-4.4 4.4h-2.4a4.4 4.4 0 0 1-3.5-1.7l-3-3.9a1.6 1.6 0 0 1 2.4-2.1l1.6 1.5z"/></svg>
   </div>
-  <div class="doneov"><div class="done"><div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"/></svg></div><b>렌더 완료!</b><p>배너__영상_소스.mp4 · 출력 폴더에 저장됨</p></div></div>
+  <div class="doneov"><div class="done"><div class="done-in"><div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"/></svg></div><b>렌더 완료!</b><p>배너__영상_소스.mp4 · 출력 폴더에 저장됨</p></div></div></div>
 </div>
 <div class="steps">
   <div class="stp s1"><i>1</i>드래그로 소스를 넣고</div>

@@ -9,6 +9,7 @@
   --acc:#a2ff00;--accRGB:162,255,0;--banner:#006eff;--banRGB:0,110,255;--bgm:#ff4d9d;--bgmRGB:255,77,157;--ok:#3bb985;
   --glowS:0 0 0 1.5px var(--acc),0 0 30px -5px rgba(var(--accRGB),.45);
   --glowG:0 0 0 1.5px var(--bgm),0 0 30px -5px rgba(var(--bgmRGB),.42);
+  --glowB:0 0 0 1.5px var(--banner),0 0 30px -5px rgba(var(--banRGB),.45);
   --shadow:0 11px 28px rgba(0,0,0,.30);
   --chkbg:repeating-conic-gradient(#232838 0 90deg,#181d29 0 180deg);
   --bangrad:linear-gradient(140deg,#12307a,#0a63d8 60%,#39b3ff);
@@ -107,11 +108,13 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 .pal h4{margin:12px 4px 9px;color:var(--dim);font-size:13.5px;text-transform:uppercase;letter-spacing:1.4px;font-weight:700;opacity:0}
 /* 실물 검증: dedupAdd→renderPalette 1회 — 새 카드 전원이 .justadded(listin .32s, 7px↑)를 동시에 받음. 스태거 없음 */
 .g1,.g2,.g3{animation:cardIn var(--T) var(--ease) infinite}
-.c1,.c2{animation:cardIn var(--T) var(--ease) infinite,cselS var(--T) steps(1) infinite}
+.c1{animation:cardIn var(--T) var(--ease) infinite,cselS var(--T) steps(1) infinite}
+.c2{animation:cardIn var(--T) var(--ease) infinite,cselB var(--T) steps(1) infinite}   /* 배너 카드 선택 = 파랑(타입 컬러) */
 .c3{animation:cardIn var(--T) var(--ease) infinite,cselG var(--T) steps(1) infinite}   /* 음원 카드 선택 = 핑크 글로우(실물 .card.audio.sel) */
 @keyframes cardIn{0%,4.5%{opacity:0;transform:translateY(7px)} 6.8%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}
 @keyframes cselS{0%,8.9%{border-color:var(--stroke);box-shadow:none} 9%,16.4%{border-color:transparent;box-shadow:var(--glowS)} 16.5%,100%{border-color:var(--stroke);box-shadow:none}}
 @keyframes cselG{0%,8.9%{border-color:var(--stroke);box-shadow:none} 9%,16.4%{border-color:transparent;box-shadow:var(--glowG)} 16.5%,100%{border-color:var(--stroke);box-shadow:none}}
+@keyframes cselB{0%,8.9%{border-color:var(--stroke);box-shadow:none} 9%,16.4%{border-color:transparent;box-shadow:var(--glowB)} 16.5%,100%{border-color:var(--stroke);box-shadow:none}}
 /* 렌더 큐 — 잡 행 = 실물(.job flex + .jthumb 50×38 미니 합성 프리뷰 + .jbody), 상태 테두리(run=라임/done=그린) */
 .job{background:var(--inset);border:2px solid var(--stroke);border-radius:14px;padding:12px;display:flex;gap:13px;align-items:center;opacity:0;   /* 2px = 임베드 스케일(×0.667) 후에도 4변 균일(1px는 0.67px가 돼 좌변이 얇게 앨리어싱) */
   animation:jobIn var(--T) var(--ease) infinite,jbord var(--T) steps(1) infinite}
@@ -130,10 +133,10 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 .jstat::after{content:"대기";animation:jtxt var(--T) steps(1) infinite}
 @keyframes jchip{0%,45.9%{background:var(--chip);color:var(--dim)} 46%,61.9%{background:rgba(var(--accRGB),.15);color:var(--acc)} 62%,100%{background:rgba(59,185,133,.16);color:var(--ok)}}
 @keyframes jtxt{0%,45.9%{content:"대기"} 46%{content:"6%"} 48%{content:"19%"} 50%{content:"33%"} 52%{content:"47%"} 54%{content:"60%"} 56%{content:"74%"} 58%{content:"87%"} 60%{content:"96%"} 62%,100%{content:"완료"}}
-.jbar{position:relative;height:6px;background:rgba(140,140,150,.22);border-radius:3px;overflow:hidden;margin:9px 0 8px}
-.jbarfill{position:absolute;left:0;top:0;height:100%;width:0;background:var(--acc);border-radius:3px;overflow:hidden;animation:jfill var(--T) linear infinite}
+.jbar{position:relative;height:6px;background:var(--field);border-radius:3px;overflow:hidden;margin:9px 0 8px}   /* 트랙도 메인바(--field)와 동일 — 밝은 회색 트랙이 라임을 물빠져 보이게 하던 것 제거 */
+.jbarfill{position:absolute;left:0;top:0;height:100%;width:0;background:rgb(var(--accRGB));border-radius:3px;overflow:hidden;animation:jfill var(--T) linear infinite}
 .jbarfill::after{content:"";position:absolute;top:0;bottom:0;left:0;right:0;background-image:linear-gradient(135deg,#7ec943 25%,transparent 25%,transparent 50%,#7ec943 50%,#7ec943 75%,transparent 75%,transparent);background-size:22px 22px;opacity:0;animation:stripeOn var(--T) steps(1) infinite,barflow .6s linear infinite}
-@keyframes jfill{0%,45.5%{width:0;background:var(--acc)} 62%{width:100%;background:var(--acc)} 62.2%,86%{width:100%;background:var(--ok)} 89.5%,100%{width:100%;opacity:0}}
+@keyframes jfill{0%,45.5%{width:0} 62%,86%{width:100%} 89.5%,100%{width:100%;opacity:0}}   /* 완료 시 --ok(어두운 청록) 전환 제거 — 하단 메인바처럼 라임 유지(완료 표시는 칩·테두리가 담당) */
 @keyframes stripeOn{0%,45.9%{opacity:0} 46%,61.9%{opacity:1} 62%,100%{opacity:0}}
 @keyframes barflow{from{background-position:0 0}to{background-position:22px 0}}   /* transform 이동은 임베드 scale+backdrop 조상 밑에서 합성 누락(실사이트 미표시) → bg-position 이동으로 */
 .jsrc{font-size:13.5px;color:var(--mut);white-space:nowrap;overflow:hidden;

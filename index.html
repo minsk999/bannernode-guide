@@ -102,7 +102,7 @@
 
   }
 
-  .bar{max-width:1240px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; gap:14px;}
+  .bar{max-width:1460px; margin:0 auto; padding:14px 28px; display:flex; align-items:center; gap:14px;}
 
   .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:-0.03em; font-size:16px;}
 
@@ -132,7 +132,7 @@
 
   /* ── 레이아웃 ── */
 
-  .wrap{max-width:1240px; margin:0 auto; padding:0 28px; position:relative; z-index:1;}
+  .wrap{max-width:1460px; margin:0 auto; padding:0 28px; position:relative; z-index:1;}   /* 1240→1460 확폭 — 본문 컬럼 ≈1122px(데모 iframe 동반 확대) */
 
   .layout{display:grid; grid-template-columns:210px 1fr; gap:72px; align-items:start;}
 
@@ -249,6 +249,10 @@
   ul.bul li b{font-weight:700;}
 
   ul.bul li small{color:var(--ink-3); font-weight:500;}
+
+  /* 확폭(1460) 후 텍스트 measure 상한 — 카드·데모 임베드·키테이블은 풀폭 유지, 문단 계열 텍스트만 줄길이 제한 */
+
+  ol.steps li .t, ul.bul li, .note > span:last-child, .changelog li{max-width:820px;}
 
 
 
@@ -409,7 +413,7 @@
 
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} section{opacity:1; transform:none; transition:none}}
 
-  footer{max-width:1240px; margin:0 auto; padding:30px 28px 50px; color:var(--ink-3); font-size:13px; border-top:1px solid var(--line);}
+  footer{max-width:1460px; margin:0 auto; padding:30px 28px 50px; color:var(--ink-3); font-size:13px; border-top:1px solid var(--line);}
 
 </style>
 

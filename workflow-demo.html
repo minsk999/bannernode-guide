@@ -201,9 +201,10 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 @keyframes s3{0%,42.4%{color:var(--dim)} 42.5%,86%{color:var(--acc)} 86.5%,100%{color:var(--dim)}}
 
 /* 임베드(가이드 iframe): 크롬 제거 → .stage(2.9) 비율이 iframe과 정확히 일치 */
-html.embed body{padding:0;gap:0;min-height:0}
+html.embed body{padding:0;gap:0;min-height:0;overflow:hidden}
 html.embed .hd,html.embed .steps{display:none}
-html.embed .stage{width:100vw;border:0;border-radius:0;box-shadow:none}
+/* 임베드: 스테이지를 '설계 폭(1680)' 그대로 렌더한 뒤 통째로 스케일 → 내부 요소(음원 등) 안 잘리고 데모 비율 그대로 보존 */
+html.embed .stage{width:1680px;border:0;border-radius:0;box-shadow:none;transform-origin:top left}
 /* 일시정지(화면 밖·클릭·prefers-reduced-motion) */
 html.paused *{animation-play-state:paused!important}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -318,8 +319,10 @@ html.paused *{animation-play-state:paused!important}
   try{ new IntersectionObserver(es=>{ if(!PRM) setPaused(!es[0].isIntersecting); },{threshold:0.05}).observe(stage); }catch(e){}
   stage.addEventListener('click',()=>setPaused(!document.documentElement.classList.contains('paused')));
   stage.style.cursor='pointer'; stage.setAttribute('title','클릭: 일시정지/재생');
-  addEventListener('resize',layout); addEventListener('load',layout);
-  layout(); setTimeout(layout,300); setTimeout(layout,900);
+  const EMBED=document.documentElement.classList.contains('embed');
+  function fitEmbed(){ if(EMBED) stage.style.transform='scale('+(innerWidth/1680)+')'; }
+  addEventListener('resize',()=>{layout();fitEmbed();}); addEventListener('load',()=>{layout();fitEmbed();});
+  layout(); fitEmbed(); setTimeout(()=>{layout();fitEmbed();},300); setTimeout(()=>{layout();fitEmbed();},900);
   if(PRM){ document.documentElement.classList.add('paused'); pausedAt=performance.now(); }
   else rafId=requestAnimationFrame(tick);
 })();

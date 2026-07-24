@@ -446,7 +446,7 @@
 
     </div>
 
-    <span class="ver">v1.0.141</span>
+    <span class="ver">v1.0.145</span>
 
     <span class="spacer"></span>
 
@@ -550,7 +550,7 @@
 
           </ol>
 
-          <div class="note"><span class="ic">i</span><span>음원 노드를 함께 연결하면 <b>영상 + 배너 + BGM</b>이 한 번에 합성돼요. 여러 잡을 걸어 두면 순서대로 렌더됩니다.</span></div>
+          <div class="note"><span class="ic">i</span><span>음원 노드를 함께 연결하면 <b>영상 + 배너 + BGM</b>이 한 번에 합성돼요. 여러 잡을 걸어 두면 순서대로 렌더됩니다. 영상 노드를 우클릭하면 <b>렌더큐로 바로 보내기</b>로 배너 없이 영상만 출력 잡으로 넣을 수도 있어요.</span></div>
 
         </div>
 
@@ -566,7 +566,7 @@
 
           <div class="dl-head">
 
-            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.141</span></h3><p class="dl-sub">무설치 — 압축을 풀고 <code>BannerNode.exe</code>를 실행하면 끝.</p></div>
+            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.145</span></h3><p class="dl-sub">무설치 — 압축을 풀고 <code>BannerNode.exe</code>를 실행하면 끝.</p></div>
 
             <div class="dl-detect" id="dlDetect" role="status">접속 기기 확인 중…</div>
 
@@ -588,11 +588,11 @@
 
             <li><span class="t"><b>압축 풀고 실행</b> — 받은 zip을 풀고 폴더 안의 <code>BannerNode.exe</code>를 더블클릭하면 앱 창이 뜹니다. 별도 설치 과정은 없어요.</span></li>
 
-            <li><span class="t"><b>ADEF 구글 로그인</b> — 처음 한 번 브라우저가 열리며 구글 로그인을 해요. <b>@adef.co.kr</b> 계정만 사용할 수 있고, 이후 30일간 유지됩니다.</span></li>
+            <li><span class="t"><b>ADEF 구글 로그인</b> — 처음 한 번 브라우저가 열리며 구글 로그인을 해요. <b>@adef.co.kr</b> 계정만 사용할 수 있고, 이후 180일간 유지됩니다.</span></li>
 
             <li><span class="t"><b>NAS 자동 로그인</b> — 처음 한 번 사내 NAS 계정으로 로그인하면 다음부터는 자동으로 연결됩니다.</span></li>
 
-            <li><span class="t"><b>바로 사용</b> — 왼쪽에 영상·배너를 불러오고, 캔버스에서 노드를 이어 렌더하면 됩니다.</span></li>
+            <li><span class="t"><b>바로 사용</b> — 켜면 <b>시작 화면</b>에서 새 프로젝트를 만들거나 최근 프로젝트를 이어서 열어요. 왼쪽에 영상·배너를 불러오고, 캔버스에서 노드를 이어 렌더하면 됩니다.</span></li>
 
           </ol>
 
@@ -694,7 +694,7 @@
 
             <li><span class="fic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/></svg></span> <b>폴더 스캔</b> <small>· <span class="kbd">A</span></small> — 폴더를 통째로 훑어 영상·배너를 한 번에 담기.</li>
 
-            <li><b>드래그 앤 드롭</b> — 탐색기에서 파일을 앱 위로 끌어다 놓기.</li>
+            <li><b>드래그 앤 드롭</b> — 탐색기에서 파일을 앱 위로 끌어다 놓기. 놓는 즉시 카드가 생기고 썸네일이 바로 채워져요.</li>
 
             <li><span class="fic" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M3.5 5h17a1.4 1.4 0 0 1 1.4 1.4v3.2a1.4 1.4 0 0 1-1.4 1.4h-17A1.4 1.4 0 0 1 2.1 9.6V6.4A1.4 1.4 0 0 1 3.5 5zm1.6 1.9v2.2h2.2V6.9z"/><path fill-rule="evenodd" d="M3.5 13h17a1.4 1.4 0 0 1 1.4 1.4v3.2a1.4 1.4 0 0 1-1.4 1.4h-17A1.4 1.4 0 0 1 2.1 17.6v-3.2A1.4 1.4 0 0 1 3.5 13zm1.6 1.9v2.2h2.2v-2.2z"/></svg></span> <b>NAS에서 가져오기</b> — NAS 브라우저에서 파일을 골라 라이브러리로. <small>영상은 스트리밍으로 미리보기까지 돼요.</small></li>
 
@@ -951,7 +951,7 @@
 
           <h3>처음 켰더니 로그인하라고 떠요.</h3>
 
-          <p class="lead" style="margin-bottom:0">BannerNode는 ADEF 구성원 전용이라 처음 한 번 <b>ADEF 구글 계정(@adef.co.kr)</b>으로 로그인해야 해요. 버튼을 누르면 브라우저가 열리고, 로그인하면 30일간 유지됩니다. 로그아웃은 앱 설정의 <b>ADEF 계정</b>에서.</p>
+          <p class="lead" style="margin-bottom:0">BannerNode는 ADEF 구성원 전용이라 처음 한 번 <b>ADEF 구글 계정(@adef.co.kr)</b>으로 로그인해야 해요. 버튼을 누르면 브라우저가 열리고, 로그인하면 180일간 유지됩니다. 로그아웃은 앱 설정의 <b>ADEF 계정</b>에서.</p>
 
         </div>
 
@@ -995,7 +995,29 @@
 
           <details class="cl-entry current" open>
 
-            <summary class="cl-head"><span class="cl-ver">v1.0.141</span><span class="cl-badge">최신</span><span class="cl-date">2026-07-24</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+            <summary class="cl-head"><span class="cl-ver">v1.0.145</span><span class="cl-badge">최신</span><span class="cl-date">2026-07-24</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+
+            <div class="cl-body"><div class="cl-body-inner"><ul>
+
+              <li><b>시작 화면</b> — 켜면 새 프로젝트 · 프로젝트 열기 · 최근 프로젝트를 바로 선택(Esc = 새 프로젝트)</li>
+
+              <li><b>종료 확인</b> — 저장 안 된 변경이 있으면 저장 후 종료 / 저장 안 함 / 취소 선택</li>
+
+              <li>영상 노드 우클릭 → <b>렌더큐로 바로 보내기</b>(배너 없이 영상만 출력 잡으로)</li>
+
+              <li><b>드래그 임포트 가속</b> — 놓는 즉시 카드·썸네일, 같은 파일 재드롭은 업로드 생략</li>
+
+              <li>ADEF 구글 로그인 유지 기간 <b>30일 → 180일</b></li>
+
+              <li>사용 설명서 개편 — 다크 전용 · 확폭 · 데모 확대/개선</li>
+
+            </ul></div></div>
+
+          </details>
+
+          <details class="cl-entry">
+
+            <summary class="cl-head"><span class="cl-ver">v1.0.141</span><span class="cl-date">2026-07-24</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
 
             <div class="cl-body"><div class="cl-body-inner"><ul>
 
@@ -1099,7 +1121,7 @@
 
 
 
-<footer>BannerNode v1.0.141 · 영상팀 내부용 · ADEF</footer>
+<footer>BannerNode v1.0.145 · 영상팀 내부용 · ADEF</footer>
 
 
 
@@ -1187,7 +1209,7 @@
     fetch('https://www.googleapis.com/oauth2/v3/userinfo',{headers:{Authorization:'Bearer '+resp.access_token}})
       .then(function(r){ return r.json(); }).then(function(info){
         var dom=(info.hd||(String(info.email||'').split('@')[1]||'')).toLowerCase();
-        if(info.email_verified && dom===DOM){ try{ localStorage.setItem('bn-guide-auth', JSON.stringify({email:info.email,hd:DOM,exp:Math.floor(Date.now()/1000)+2592000})); }catch(_){ } unlock(); }
+        if(info.email_verified && dom===DOM){ try{ localStorage.setItem('bn-guide-auth', JSON.stringify({email:info.email,hd:DOM,exp:Math.floor(Date.now()/1000)+15552000})); }catch(_){ } unlock(); }
         else { if(btn) btn.disabled=false; err('ADEF 계정(@'+DOM+')만 열람할 수 있어요. 로그인한 계정: '+(info.email||'알 수 없음')); }
       }).catch(function(){ if(btn) btn.disabled=false; err('로그인 확인 중 오류가 발생했어요. 다시 시도해 주세요.'); });
   }

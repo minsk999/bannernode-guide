@@ -35,7 +35,7 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 .zoomw{position:absolute;inset:0;transform-origin:var(--zox,50%) var(--zoy,55%);animation:zoomK var(--T) var(--ease) infinite}
 @keyframes zoomK{0%,19.5%{transform:scale(1)} 24%,95%{transform:translateY(-10px) scale(1.55)} 100%{transform:scale(1)}}   /* 확대 유지(10px 상향) — 시작을 앞당겨 더 천천히 */
 /* 노드 = 실물(폭 208px 고정, r16, 헤더 구분선) — ::before가 그림자/아웃라인 캐리어(실물 구조) */
-.node{position:absolute;width:208px;background:rgba(17,19,27,.82);border:1px solid var(--stroke);border-radius:16px;opacity:0}
+.node{position:absolute;width:208px;background:rgba(17,19,27,.82);border:1px solid var(--stroke);border-radius:16px;opacity:0;transform-origin:0 0}   /* 실물 nodein과 동일 좌상단 앵커 */
 .node::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:var(--shadow)}
 .node .nhd{display:flex;align-items:center;gap:8px;padding:10px 12px;font-size:12.5px;font-weight:650;border-bottom:1px solid var(--stroke)}
 .node .pdot{width:8px;height:8px;border-radius:50%;flex:none}
@@ -74,9 +74,9 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 @keyframes bordV{0%,23.9%{border-color:var(--stroke)} 24%,44.4%{border-color:transparent} 44.5%,100%{border-color:var(--stroke)}}
 @keyframes bordB{0%,30.9%{border-color:var(--stroke)} 31%,44.4%{border-color:transparent} 44.5%,100%{border-color:var(--stroke)}}
 @keyframes bordA{0%,37.9%{border-color:var(--stroke)} 38%,44.4%{border-color:transparent} 44.5%,100%{border-color:var(--stroke)}}
-@keyframes nodeV{0%,16.5%{opacity:0;transform:scale(.85)} 18%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}
-@keyframes nodeB{0%,16.5%{opacity:0;transform:scale(.85)} 18%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}   /* 동시 임포트: V와 동일 타이밍 */
-@keyframes nodeA{0%,16.5%{opacity:0;transform:scale(.85)} 18%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}   /* 동시 임포트: V와 동일 타이밍 */
+@keyframes nodeV{0%,16.5%{opacity:0;transform:scale(.45)} 18%{opacity:1;transform:scale(1.04)} 18.9%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}
+@keyframes nodeB{0%,16.5%{opacity:0;transform:scale(.45)} 18%{opacity:1;transform:scale(1.04)} 18.9%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}   /* 동시 임포트 · 실물 nodein 커브 */
+@keyframes nodeA{0%,16.5%{opacity:0;transform:scale(.45)} 18%{opacity:1;transform:scale(1.04)} 18.9%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}   /* 동시 임포트 · 실물 nodein 커브 */
 .wires{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .wires path{fill:none;stroke-width:2.2}
 .e1{stroke:url(#g1);opacity:0;animation:edge1 var(--T) var(--ease) infinite}
@@ -136,7 +136,7 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 .jbar{position:relative;height:9px;background:var(--field);border-radius:5px;overflow:hidden;margin:9px 0 8px}   /* 하단 메인바(.bar)와 동일 9px — 얇은 바는 축소 후 스트라이프와 평균돼 어둡게 보임 */   /* 트랙도 메인바(--field)와 동일 — 밝은 회색 트랙이 라임을 물빠져 보이게 하던 것 제거 */
 .jbarfill{position:absolute;left:0;top:0;height:100%;width:0;background:rgb(var(--accRGB));border-radius:4px;overflow:hidden;animation:jfill var(--T) linear infinite}
 .jbarfill::after{content:"";position:absolute;top:0;bottom:0;left:0;right:0;background-image:linear-gradient(135deg,#7ec943 25%,transparent 25%,transparent 50%,#7ec943 50%,#7ec943 75%,transparent 75%,transparent);background-size:22px 22px;opacity:0;animation:stripeOn var(--T) steps(1) infinite,barflow .6s linear infinite}
-@keyframes jfill{0%,45.5%{width:0} 62%,86%{width:100%} 89.5%,100%{width:100%;opacity:0}}   /* 완료 시 --ok(어두운 청록) 전환 제거 — 하단 메인바처럼 라임 유지(완료 표시는 칩·테두리가 담당) */
+@keyframes jfill{0%,45.5%{width:0;opacity:1} 62%,86%{width:100%;opacity:1} 89.5%,100%{width:100%;opacity:0}}   /* opacity:1 앵커 필수 — 없으면 89.5% 선언까지 1→0 암묵 보간돼 렌더 중 반투명(하단바만 밝던 진범) */
 @keyframes stripeOn{0%,45.9%{opacity:0} 46%,61.9%{opacity:1} 62%,100%{opacity:0}}
 @keyframes barflow{from{background-position:0 0}to{background-position:22px 0}}   /* transform 이동은 임베드 scale+backdrop 조상 밑에서 합성 누락(실사이트 미표시) → bg-position 이동으로 */
 .jsrc{font-size:13.5px;color:var(--mut);white-space:nowrap;overflow:hidden;

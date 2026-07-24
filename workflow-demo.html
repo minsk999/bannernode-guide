@@ -203,8 +203,9 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 /* 임베드(가이드 iframe): 크롬 제거 → .stage(2.9) 비율이 iframe과 정확히 일치 */
 html.embed body{padding:0;gap:0;min-height:0;overflow:hidden}
 html.embed .hd,html.embed .steps{display:none}
-/* 임베드: 스테이지를 '설계 폭(1680)' 그대로 렌더한 뒤 통째로 스케일 → 내부 요소(음원 등) 안 잘리고 데모 비율 그대로 보존 */
-html.embed .stage{width:1680px;border:0;border-radius:0;box-shadow:none;transform-origin:top left}
+/* 임베드: 스테이지를 '설계 폭(1680)' 그대로 렌더한 뒤 통째로 스케일 → 내부 요소(음원 등) 안 잘리고 데모 비율 그대로 보존.
+   position:absolute 0,0 = body flex 센터링(align-items:center)이 1680px를 좁은 iframe 가운데로 밀어 좌측이 잘리던 것 차단(스케일 원점=좌상단과 일치) */
+html.embed .stage{position:absolute;left:0;top:0;width:1680px;border:0;border-radius:0;box-shadow:none;transform-origin:top left}
 /* 일시정지(화면 밖·클릭·prefers-reduced-motion) */
 html.paused *{animation-play-state:paused!important}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}

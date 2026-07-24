@@ -113,7 +113,7 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 @keyframes cselS{0%,8.9%{border-color:var(--stroke);box-shadow:none} 9%,16.4%{border-color:transparent;box-shadow:var(--glowS)} 16.5%,100%{border-color:var(--stroke);box-shadow:none}}
 @keyframes cselG{0%,8.9%{border-color:var(--stroke);box-shadow:none} 9%,16.4%{border-color:transparent;box-shadow:var(--glowG)} 16.5%,100%{border-color:var(--stroke);box-shadow:none}}
 /* 렌더 큐 — 잡 행 = 실물(.job flex + .jthumb 50×38 미니 합성 프리뷰 + .jbody), 상태 테두리(run=라임/done=그린) */
-.job{background:var(--inset);border:1px solid var(--stroke);border-radius:14px;padding:12px;display:flex;gap:13px;align-items:center;opacity:0;
+.job{background:var(--inset);border:2px solid var(--stroke);border-radius:14px;padding:12px;display:flex;gap:13px;align-items:center;opacity:0;   /* 2px = 임베드 스케일(×0.667) 후에도 4변 균일(1px는 0.67px가 돼 좌변이 얇게 앨리어싱) */
   animation:jobIn var(--T) var(--ease) infinite,jbord var(--T) steps(1) infinite}
 @keyframes jobIn{0%,38%{opacity:0;transform:translateX(14px)} 39.3%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}
 @keyframes jbord{0%,45.9%{border-color:var(--stroke)} 46%,61.9%{border-color:var(--acc)} 62%,100%{border-color:var(--ok)}}
@@ -132,10 +132,10 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 @keyframes jtxt{0%,45.9%{content:"대기"} 46%{content:"6%"} 48%{content:"19%"} 50%{content:"33%"} 52%{content:"47%"} 54%{content:"60%"} 56%{content:"74%"} 58%{content:"87%"} 60%{content:"96%"} 62%,100%{content:"완료"}}
 .jbar{position:relative;height:6px;background:rgba(140,140,150,.22);border-radius:3px;overflow:hidden;margin:9px 0 8px}
 .jbarfill{position:absolute;left:0;top:0;height:100%;width:0;background:var(--acc);border-radius:3px;overflow:hidden;animation:jfill var(--T) linear infinite}
-.jbarfill::after{content:"";position:absolute;top:0;bottom:0;left:-26px;right:-26px;background-image:linear-gradient(135deg,#7ec943 25%,transparent 25%,transparent 50%,#7ec943 50%,#7ec943 75%,transparent 75%,transparent);background-size:22px 22px;opacity:0;animation:stripeOn var(--T) steps(1) infinite,barflow .6s linear infinite}
+.jbarfill::after{content:"";position:absolute;top:0;bottom:0;left:0;right:0;background-image:linear-gradient(135deg,#7ec943 25%,transparent 25%,transparent 50%,#7ec943 50%,#7ec943 75%,transparent 75%,transparent);background-size:22px 22px;opacity:0;animation:stripeOn var(--T) steps(1) infinite,barflow .6s linear infinite}
 @keyframes jfill{0%,45.5%{width:0;background:var(--acc)} 62%{width:100%;background:var(--acc)} 62.2%,86%{width:100%;background:var(--ok)} 89.5%,100%{width:100%;opacity:0}}
 @keyframes stripeOn{0%,45.9%{opacity:0} 46%,61.9%{opacity:1} 62%,100%{opacity:0}}
-@keyframes barflow{from{transform:translateX(0)}to{transform:translateX(22px)}}
+@keyframes barflow{from{background-position:0 0}to{background-position:22px 0}}   /* transform 이동은 임베드 scale+backdrop 조상 밑에서 합성 누락(실사이트 미표시) → bg-position 이동으로 */
 .jsrc{font-size:13.5px;color:var(--mut);white-space:nowrap;overflow:hidden;
   -webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}   /* 페이드로 통일(렌더 중에도 소스줄 고정) */
 .rqft{margin-top:auto;display:flex;flex-direction:column;gap:11px}
@@ -144,7 +144,7 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 @keyframes ptxt{0%,45.9%{content:"준비됨"} 46%{content:"6% (0/1)"} 48%{content:"19% (0/1)"} 50%{content:"33% (0/1)"} 52%{content:"47% (0/1)"} 54%{content:"60% (0/1)"} 56%{content:"74% (0/1)"} 58%{content:"87% (0/1)"} 60%{content:"96% (0/1)"} 62%,68.5%{content:"100% (1/1)"} 69.5%,100%{content:"준비됨"}}
 .bar{height:9px;background:var(--field);border-radius:5px;overflow:hidden}
 .bar>i{display:block;height:100%;width:0;border-radius:4px;background:rgb(var(--accRGB));position:relative;overflow:hidden;animation:mfill var(--T) linear infinite}
-.bar>i::after{content:"";position:absolute;top:0;bottom:0;left:-26px;right:-26px;background-image:linear-gradient(135deg,#7ec943 25%,transparent 25%,transparent 50%,#7ec943 50%,#7ec943 75%,transparent 75%,transparent);background-size:22px 22px;opacity:0;animation:stripeOn var(--T) steps(1) infinite,barflow .6s linear infinite}
+.bar>i::after{content:"";position:absolute;top:0;bottom:0;left:0;right:0;background-image:linear-gradient(135deg,#7ec943 25%,transparent 25%,transparent 50%,#7ec943 50%,#7ec943 75%,transparent 75%,transparent);background-size:22px 22px;opacity:0;animation:stripeOn var(--T) steps(1) infinite,barflow .6s linear infinite}
 @keyframes mfill{0%,45.5%{width:0} 62%{width:100%} 68.5%{width:100%} 69.5%,100%{width:0}}
 .rbtn{height:48px;border-radius:12px;border:none;background:var(--acc);color:#0a0b0f;font:inherit;font-weight:800;font-size:17px;display:flex;align-items:center;justify-content:center;gap:9px;animation:rbtn var(--T) var(--ease) infinite}
 .rbtn svg{width:17px;height:17px}
@@ -153,8 +153,8 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 .cur{width:58px;height:58px;margin:-7px 0 0 -14px;z-index:9;pointer-events:none;opacity:0;left:var(--p1cx,10%);top:var(--p1cy,40%);animation:curMove var(--T) var(--ease) infinite}   /* 2× 확대 + 화살촉(6,2.8/24 기준) 핫스팟 보정 */
 .cur svg{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 2px 5px rgba(0,0,0,.6));opacity:0}
 .sh-arrow{animation:shArrow var(--T) steps(1) infinite}
-.sh-grab{animation:shGrab var(--T) steps(1) infinite}
-.sh-point{animation:shPoint var(--T) steps(1) infinite}
+.sh-grab{animation:shGrab var(--T) steps(1) infinite;transform:translate(-14px,-16px)}   /* 핫스팟 보정: 공용 앵커는 화살촉(6,2.8) 기준 → 움켜쥔 손은 그립점(11.6,9.5)이 포인트에 오도록 좌상 이동(우하 쏠림 해소) */
+.sh-point{animation:shPoint var(--T) steps(1) infinite;transform:translate(-12px,-2px)}   /* 검지 손끝(10.7,3.9)이 포인트에 오도록 */
 /* 실제 앱 규칙: 잡는 동안(카드 드래그·포트 드래그)만 grab, 드롭/연결 완료 즉시 화살표, 버튼 접근 시 pointer */
 @keyframes shArrow{0%,8.9%{opacity:1} 9%,16.4%{opacity:0} 16.5%,23.9%{opacity:1} 24%,31%{opacity:0} 31.1%,31.9%{opacity:1} 32%,37.9%{opacity:0} 38%,42.9%{opacity:1} 43%,100%{opacity:0}}
 @keyframes shGrab {0%,8.9%{opacity:0} 9%,16.4%{opacity:1} 16.5%,23.9%{opacity:0} 24%,31%{opacity:1} 31.1%,31.9%{opacity:0} 32%,37.9%{opacity:1} 38%,100%{opacity:0}}

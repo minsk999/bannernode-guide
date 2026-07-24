@@ -208,7 +208,7 @@ html.embed .hd,html.embed .steps{display:none}
 html.embed .stage{position:absolute;left:0;top:0;width:1680px;border:0;border-radius:0;box-shadow:none;transform-origin:top left}
 /* 일시정지(화면 밖·클릭·prefers-reduced-motion) */
 html.paused *{animation-play-state:paused!important}
-.stage.rst *{animation:none!important}   /* 재진입 재시작용 1프레임 리셋(reflow 후 제거 → 전 키프레임 0부터) */
+.stage.rst *,.stage.rst *::before,.stage.rst *::after{animation:none!important}   /* 재진입 재시작용 1프레임 리셋 — ::before/::after까지(빼먹으면 텍스트·스트라이프(::after 애니)가 구 타임라인에 남아 테두리·진행바와 어긋남: "대기+라임테두리" 모순·스트라이프 미표시의 원인) */
 /* 앱 커스텀 툴팁 이식(#tooltip · data-tip — 앱과 동일 룩/모션) */
 #tooltip{position:fixed;z-index:900;pointer-events:none;width:max-content;white-space:normal;max-width:min(280px,86vw);line-height:1.5;font-size:11.5px;font-weight:500;background:#14171f;color:var(--txt);padding:7px 12px 7px 13px;border-radius:9px;border:1px solid var(--stroke2);border-left:2.5px solid var(--acc);box-shadow:0 8px 22px rgba(0,0,0,.4);opacity:0;transform:translate(-50%,6px);transition:opacity .15s var(--ease),transform .22s var(--ease)}
 #tooltip.show{opacity:1;transform:translate(-50%,0)}

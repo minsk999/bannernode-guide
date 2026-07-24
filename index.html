@@ -1205,16 +1205,14 @@
   function saved(){ try{ return JSON.parse(localStorage.getItem('bn-guide-auth')||'null'); }catch(_){ return null; } }
   function valid(){ var s=saved(); return !!(s&&s.hd===DOM&&s.exp>Date.now()/1000); }
   function fresh(){ var s=saved(); return !!(s&&(Date.now()/1000-(s.chk||0))<86400); }   // 24시간 내 구글 계정 생존 확인됨
-  var btn=document.getElementById('gaBtn'), tokenClient=null, _silent=false;
+  var btn=document.getElementById('gaBtn'), tokenClient=null;
+  function markerSet(email){ try{ localStorage.setItem('bn-guide-auth', JSON.stringify({email:email,hd:DOM,exp:Math.floor(Date.now()/1000)+15552000,chk:Math.floor(Date.now()/1000)})); }catch(_){ } }
   function onToken(resp){
-    if(resp && resp.error){ var ws=_silent; _silent=false;
-      if(ws){ err('보안 확인이 필요해요 — 다시 로그인해 주세요.'); return; }   // 조용한 재확인 실패(계정 삭제·정지 등) → 게이트 유지
-      if(btn) btn.disabled=false; err(resp.error==='access_denied'?'로그인이 취소됐어요.':'로그인에 실패했어요. 다시 시도해 주세요.'); return; }
-    _silent=false;
+    if(resp && resp.error){ if(btn) btn.disabled=false; err(resp.error==='access_denied'?'로그인이 취소됐어요.':'로그인에 실패했어요. 다시 시도해 주세요.'); return; }
     fetch('https://www.googleapis.com/oauth2/v3/userinfo',{headers:{Authorization:'Bearer '+resp.access_token}})
       .then(function(r){ return r.json(); }).then(function(info){
         var dom=(info.hd||(String(info.email||'').split('@')[1]||'')).toLowerCase();
-        if(info.email_verified && dom===DOM){ try{ localStorage.setItem('bn-guide-auth', JSON.stringify({email:info.email,hd:DOM,exp:Math.floor(Date.now()/1000)+15552000,chk:Math.floor(Date.now()/1000)})); }catch(_){ } unlock(); }
+        if(info.email_verified && dom===DOM){ markerSet(info.email); unlock(); }
         else { if(btn) btn.disabled=false; err('ADEF 계정(@'+DOM+')만 열람할 수 있어요. 로그인한 계정: '+(info.email||'알 수 없음')); }
       }).catch(function(){ if(btn) btn.disabled=false; err('로그인 확인 중 오류가 발생했어요. 다시 시도해 주세요.'); });
   }
@@ -1227,8 +1225,21 @@
     try{
       tokenClient=google.accounts.oauth2.initTokenClient({ client_id:CID, scope:'openid email profile', callback:onToken,
         error_callback:function(e){ if(btn) btn.disabled=false; err(e&&e.type==='popup_failed_to_open'?'팝업이 차단됐어요 — 팝업 허용 후 다시 시도해 주세요.':'로그인이 취소됐어요.'); } });
-      if(btn) btn.onclick=function(){ btn.disabled=true; err(''); _silent=false; tokenClient.requestAccessToken({prompt:'select_account'}); };
-      if(valid()&&!fresh()){ var s0=saved(); _silent=true; tokenClient.requestAccessToken({prompt:'', hint:(s0&&s0.email)||''}); }   // 24h 경과 — 구글 세션이 살아있으면 통과, 삭제·정지 계정은 차단
+      if(btn) btn.onclick=function(){ btn.disabled=true; err(''); tokenClient.requestAccessToken({prompt:'select_account'}); };
+      if(valid()&&!fresh()){   // 24h 경과 — One Tap으로 무팝업 재확인(requestAccessToken은 팝업이라 클릭 없이 부르면 팝업 차단에 걸림 — 과거 회귀 원인)
+        try{
+          google.accounts.id.initialize({ client_id:CID, auto_select:true, use_fedcm_for_prompt:true, callback:function(cr){
+            try{
+              var pl=cr&&cr.credential&&cr.credential.split('.')[1]; if(!pl) return;
+              pl+=Array(((4-pl.length%4)%4)+1).join('=');
+              var c=JSON.parse(atob(pl.replace(/-/g,'+').replace(/_/g,'/')));
+              var dom=(c.hd||String(c.email||'').split('@')[1]||'').toLowerCase();
+              if(c.aud===CID && (c.iss==='accounts.google.com'||c.iss==='https://accounts.google.com') && c.email_verified && dom===DOM){ markerSet(c.email); unlock(); }
+            }catch(_){ }
+          }});
+          google.accounts.id.prompt();
+        }catch(_){ }
+      }
     }catch(e){ err('로그인 초기화 실패 — 잠시 후 다시 시도해 주세요.'); }
   }
   var lo=document.getElementById('logout');

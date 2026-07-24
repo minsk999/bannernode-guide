@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BannerNode — 연결하면 끝</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{--bg:#0a0b0f;--frame:#0b0d13;--surface:rgba(17,19,27,.60);--surface2:rgba(26,28,40,.78);
+  --field:rgba(0,0,0,.32);--chip:rgba(255,255,255,.06);--inset:rgba(255,255,255,.045);
+  --stroke:rgba(255,255,255,.09);--stroke2:rgba(255,255,255,.15);--txt:#edeef4;--mut:#8b91a4;--dim:#585d6e;
+  --acc:#a2ff00;--accRGB:162,255,0;--banner:#006eff;--banRGB:0,110,255;--bgm:#ff4d9d;--bgmRGB:255,77,157;--ok:#3bb985;
+  --glowS:0 0 0 1.5px var(--acc),0 0 30px -5px rgba(var(--accRGB),.45);
+  --glowG:0 0 0 1.5px var(--bgm),0 0 30px -5px rgba(var(--bgmRGB),.42);
+  --shadow:0 11px 28px rgba(0,0,0,.30);
+  --chkbg:repeating-conic-gradient(#232838 0 90deg,#181d29 0 180deg);
+  --bangrad:linear-gradient(140deg,#12307a,#0a63d8 60%,#39b3ff);
+  --ease:cubic-bezier(.32,.72,0,1);--T:14s}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Variable','Pretendard',-apple-system,'Segoe UI','Malgun Gothic',sans-serif;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:26px;gap:16px}
+.hd{display:flex;align-items:center;gap:12px;width:min(1680px,97vw)}
+.logo{width:30px;height:30px;flex:none;display:block}   /* 실물 파비콘: 라임 라운드박스 + 검은 B */
+.logo svg{width:100%;height:100%;display:block}
+.hd b{font-size:16px;letter-spacing:-.02em} .hd span{color:var(--mut);font-size:12.5px}
+/* 스테이지 = 실제 캔버스 배경(도트 그리드) */
+.stage{position:relative;width:min(1680px,97vw);aspect-ratio:2.9;
+  background:radial-gradient(circle at 1px 1px,rgba(255,255,255,.05) 1px,transparent 0) 0 0/28px 28px,#090a0e;
+  border:1px solid var(--stroke);border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.stage>*{position:absolute}
+.phead{display:flex;align-items:center;gap:8px;margin:2px 2px 11px}
+.phead .hicon{display:inline-flex;color:var(--acc)} .phead .hicon svg{width:15px;height:15px}
+.phead b{font-size:12px;font-weight:700;letter-spacing:-.01em}
+.hcnt{margin-left:auto;font-size:10px;font-weight:700;background:var(--chip);color:var(--dim);border-radius:20px;padding:2px 8px}
+/* ── 캔버스: 풀폭 아래층 — 확대 시 노드가 유리 패널 밑으로 ── */
+.canvas{left:1.8%;right:1.8%;top:8%;bottom:8%;z-index:1}
+.zoomw{position:absolute;inset:0;transform-origin:var(--zox,50%) var(--zoy,55%);animation:zoomK var(--T) var(--ease) infinite}
+@keyframes zoomK{0%,19.5%{transform:scale(1)} 24%,95%{transform:translateY(-10px) scale(1.55)} 100%{transform:scale(1)}}   /* 확대 유지(10px 상향) — 시작을 앞당겨 더 천천히 */
+/* 노드 = 실물(폭 208px 고정, r16, 헤더 구분선) — ::before가 그림자/아웃라인 캐리어(실물 구조) */
+.node{position:absolute;width:208px;background:rgba(17,19,27,.82);border:1px solid var(--stroke);border-radius:16px;opacity:0}
+.node::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;box-shadow:var(--shadow)}
+.node .nhd{display:flex;align-items:center;gap:8px;padding:10px 12px;font-size:12.5px;font-weight:650;border-bottom:1px solid var(--stroke)}
+.node .pdot{width:8px;height:8px;border-radius:50%;flex:none}
+.node .body{padding:10px 12px}
+.node .fr{height:0;padding-bottom:56%;border-radius:8px;position:relative;overflow:hidden;background:var(--frame)}
+.nv{left:21.5%;top:25%} .nv .pdot{background:var(--acc);box-shadow:0 0 8px rgba(var(--accRGB),.42)}
+.nv .fr{background:linear-gradient(135deg,#0fb39a,#1f7ad0)}
+.nb{left:42%;top:47%} .nb .pdot{background:var(--banner);box-shadow:0 0 8px rgba(var(--banRGB),.42)}
+.nb .fr{background:var(--chkbg) 50%/14px 14px}   /* 투명 구멍 = 체커(실제 --chk1/--chk2), 둘레 = 배너 그라데이션 프레임 */
+.nb .fr::after{content:"";position:absolute;inset:0;border:16px solid;border-image:var(--bangrad) 1}
+.na{left:63%;top:25%} .na .pdot{background:var(--bgm);box-shadow:0 0 8px rgba(var(--bgmRGB),.42)}
+/* 음원 노드 = 실물 .audbody: 음표 아이콘 + 파일명/구간, '교체' 뱃지 */
+.audbody{display:flex;align-items:center;gap:11px;padding:1px 0}
+.audbody .ico{flex:none;width:30px;height:30px;color:var(--bgm)}
+.audmeta{min-width:0;flex:1}
+.audnm{font-size:11.5px;color:var(--txt);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.audseg{font-size:10.5px;color:var(--bgm);margin-top:3px;font-variant-numeric:tabular-nums}
+.audmode{display:inline-flex;align-items:center;height:16px;padding:0 7px;border-radius:8px;font-size:9.5px;font-weight:600;margin-left:-3px;color:var(--bgm);background:rgba(var(--bgmRGB),.16);white-space:nowrap}
+/* 포트 = 실물(±8px 바깥, portFill 반투명) — 연결 국면부터 표시 */
+.port{position:absolute;width:14px;height:14px;border-radius:50%;top:50%;margin-top:-7px;background:rgba(10,11,15,.5);opacity:0;animation:portIn var(--T) var(--ease) infinite}
+@keyframes portIn{0%,20.4%{opacity:0} 21.5%,86%{opacity:1} 89.5%,100%{opacity:0}}
+.po{right:-8px} .pi{left:-8px}
+.nv .po{border:2px solid var(--acc);box-shadow:0 0 0 3px rgba(var(--accRGB),.15),0 0 13px -2px rgba(var(--accRGB),.8)}
+.nb .pi,.nb .po{border:2px solid var(--banner);box-shadow:0 0 0 3px rgba(var(--banRGB),.15),0 0 13px -2px rgba(var(--banRGB),.8)}
+.na .pi{border:2px solid var(--bgm);box-shadow:0 0 0 3px rgba(var(--bgmRGB),.15),0 0 13px -2px rgba(var(--bgmRGB),.42)}
+.nv{animation:nodeV var(--T) var(--ease) infinite,bordV var(--T) steps(1) infinite}
+.nb{animation:nodeB var(--T) var(--ease) infinite,bordB var(--T) steps(1) infinite}
+.na{animation:nodeA var(--T) var(--ease) infinite,bordA var(--T) steps(1) infinite}
+/* 작업 중(연결 시작~렌더 클릭) 노드 아웃라인 = 실물 .sel/.linked: border 투명 + ::before에 2px 포인트컬러 링 */
+.nv::before{animation:ringV var(--T) steps(1) infinite}
+.nb::before{animation:ringB var(--T) steps(1) infinite}
+.na::before{animation:ringA var(--T) steps(1) infinite}
+@keyframes ringV{0%,23.9%{box-shadow:var(--shadow)} 24%,44.4%{box-shadow:var(--shadow),0 0 0 2px var(--acc)} 44.5%,100%{box-shadow:var(--shadow)}}
+@keyframes ringB{0%,30.9%{box-shadow:var(--shadow)} 31%,44.4%{box-shadow:var(--shadow),0 0 0 2px var(--banner)} 44.5%,100%{box-shadow:var(--shadow)}}
+@keyframes ringA{0%,37.9%{box-shadow:var(--shadow)} 38%,44.4%{box-shadow:var(--shadow),0 0 0 2px var(--bgm)} 44.5%,100%{box-shadow:var(--shadow)}}
+@keyframes bordV{0%,23.9%{border-color:var(--stroke)} 24%,44.4%{border-color:transparent} 44.5%,100%{border-color:var(--stroke)}}
+@keyframes bordB{0%,30.9%{border-color:var(--stroke)} 31%,44.4%{border-color:transparent} 44.5%,100%{border-color:var(--stroke)}}
+@keyframes bordA{0%,37.9%{border-color:var(--stroke)} 38%,44.4%{border-color:transparent} 44.5%,100%{border-color:var(--stroke)}}
+@keyframes nodeV{0%,16.5%{opacity:0;transform:scale(.85)} 18%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}
+@keyframes nodeB{0%,17.9%{opacity:0;transform:scale(.85)} 19.4%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}
+@keyframes nodeA{0%,19.3%{opacity:0;transform:scale(.85)} 20.8%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}
+.wires{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.wires path{fill:none;stroke-width:1.8}
+.e1{stroke:url(#g1);opacity:0;animation:edge1 var(--T) var(--ease) infinite}
+.e2{stroke:url(#g2);opacity:0;animation:edge2 var(--T) var(--ease) infinite}
+@keyframes edge1{0%,30.9%{opacity:0} 31.3%,86%{opacity:.9} 89.5%,100%{opacity:0}}
+@keyframes edge2{0%,37.9%{opacity:0} 38.3%,86%{opacity:.9} 89.5%,100%{opacity:0}}
+.t1,.t2{stroke-width:1.8;fill:none;opacity:0;stroke-dasharray:6 5;animation:march .5s linear infinite}
+.t1{stroke:url(#g1)} .t2{stroke:url(#g2)}
+@keyframes march{from{stroke-dashoffset:11}to{stroke-dashoffset:0}}
+/* ── 유리 패널: 실물 스펙(r22, surface .60, blur22 sat1.3) — backdrop-filter는 자식 없는 ::before 레이어로 분리
+     (진행바 스트라이프 transform 애니메이션이 조상 backdrop 합성을 깨는 문제 회피, 양 패널 동일 경로) ── */
+.pal,.rq{z-index:3;border:1px solid var(--stroke);border-radius:22px;padding:14px;box-shadow:var(--shadow)}
+.pal::before,.rq::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--surface);
+  backdrop-filter:blur(22px) saturate(1.3);-webkit-backdrop-filter:blur(22px) saturate(1.3)}
+.pal{left:1.8%;top:8%;bottom:8%;width:16.5%}
+.rq{right:1.8%;top:8%;bottom:8%;width:19.5%;display:flex;flex-direction:column}
+/* 라이브러리 카드 = 실물(--inset, r14, gap11, 썸네일 62×44 r9 체커) */
+.card{display:flex;gap:11px;align-items:center;background:var(--inset);border:1px solid var(--stroke);border-radius:14px;padding:9px;margin-bottom:9px;opacity:0}
+.card .th{position:relative;width:62px;height:44px;border-radius:9px;overflow:hidden;flex:none;background:var(--chkbg) 50%/10px 10px}
+.card>div:last-child{flex:1;min-width:0}   /* 텍스트가 카드 밖으로 못 나가게 */
+.card .nm{font-size:12px;line-height:1.3;white-space:nowrap;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}   /* 실물: 페이드, ellipsis 없음 */
+.card .mt{line-height:1.4;font-size:10.5px;color:var(--mut);margin-top:2px}
+.card .th.thv{background:linear-gradient(135deg,#0fb39a,#1f7ad0)}
+.thb::after{content:"";position:absolute;inset:0;border:7px solid;border-image:var(--bangrad) 1}   /* 중앙 구멍 = 체커 노출 */
+.card .th.tha{display:flex;align-items:center;justify-content:center;background:var(--inset);color:var(--bgm)}   /* 실물 .card .th.aud */
+.tha .ico{width:30px;height:30px}
+/* 분류 헤더 = 실물 .plist h4 (영상/배너/음원 (n)) — 각 카드와 같은 타이밍으로 등장/소멸 */
+.pal h4{margin:10px 4px 8px;color:var(--dim);font-size:10.5px;text-transform:uppercase;letter-spacing:1.4px;font-weight:700;opacity:0}
+/* 실물 검증: dedupAdd→renderPalette 1회 — 새 카드 전원이 .justadded(listin .32s, 7px↑)를 동시에 받음. 스태거 없음 */
+.g1,.g2,.g3{animation:cardIn var(--T) var(--ease) infinite}
+.c1,.c2{animation:cardIn var(--T) var(--ease) infinite,cselS var(--T) steps(1) infinite}
+.c3{animation:cardIn var(--T) var(--ease) infinite,cselG var(--T) steps(1) infinite}   /* 음원 카드 선택 = 핑크 글로우(실물 .card.audio.sel) */
+@keyframes cardIn{0%,4.5%{opacity:0;transform:translateY(7px)} 6.8%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}
+@keyframes cselS{0%,8.9%{border-color:var(--stroke);box-shadow:none} 9%,16.4%{border-color:transparent;box-shadow:var(--glowS)} 16.5%,100%{border-color:var(--stroke);box-shadow:none}}
+@keyframes cselG{0%,8.9%{border-color:var(--stroke);box-shadow:none} 9%,16.4%{border-color:transparent;box-shadow:var(--glowG)} 16.5%,100%{border-color:var(--stroke);box-shadow:none}}
+/* 렌더 큐 — 잡 행 = 실물(.job flex + .jthumb 50×38 미니 합성 프리뷰 + .jbody), 상태 테두리(run=라임/done=그린) */
+.job{background:var(--inset);border:1px solid var(--stroke);border-radius:12px;padding:9px;display:flex;gap:10px;align-items:center;opacity:0;
+  animation:jobIn var(--T) var(--ease) infinite,jbord var(--T) steps(1) infinite}
+@keyframes jobIn{0%,38%{opacity:0;transform:translateX(14px)} 39.3%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}
+@keyframes jbord{0%,45.9%{border-color:var(--stroke)} 46%,61.9%{border-color:var(--acc)} 62%,100%{border-color:var(--ok)}}
+.jthumb{width:50px;height:38px;flex:none;border-radius:7px;overflow:hidden;background:var(--frame);display:flex;align-items:center;justify-content:center;position:relative}
+.jt-wrap{position:relative;width:50px;height:50px;flex:none}   /* 1:1 배너 cover 크롭(실물 산식) */
+.jt-v{position:absolute;left:30%;top:30%;width:40%;height:40%;background:linear-gradient(135deg,#0fb39a,#1f7ad0)}   /* 구멍 위치의 영상 */
+.jt-b{position:absolute;inset:0;border:15px solid;border-image:var(--bangrad) 1}   /* 배너 프레임(중앙 투명 구멍) */
+.jbody{flex:1;min-width:0}
+.jtop{display:flex;align-items:center;gap:8px}
+.jfn{flex:1;min-width:0;font-size:11.5px;font-weight:500;overflow:hidden;white-space:nowrap;
+  -webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}
+.jbgm{display:inline-flex;color:var(--bgm);flex:none} .jbgm svg{width:12px;height:12px}
+.jstat{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;line-height:1.4;flex:none;background:var(--chip);color:var(--dim);animation:jchip var(--T) steps(1) infinite}
+.jstat::after{content:"대기";animation:jtxt var(--T) steps(1) infinite}
+@keyframes jchip{0%,45.9%{background:var(--chip);color:var(--dim)} 46%,61.9%{background:rgba(var(--accRGB),.15);color:var(--acc)} 62%,100%{background:rgba(59,185,133,.16);color:var(--ok)}}
+@keyframes jtxt{0%,45.9%{content:"대기"} 46%{content:"6%"} 48%{content:"19%"} 50%{content:"33%"} 52%{content:"47%"} 54%{content:"60%"} 56%{content:"74%"} 58%{content:"87%"} 60%{content:"96%"} 62%,100%{content:"완료"}}
+.jbar{position:relative;height:4px;background:rgba(140,140,150,.22);border-radius:3px;overflow:hidden;margin:7px 0 6px}
+.jbarfill{position:absolute;left:0;top:0;height:100%;width:0;background:var(--acc);border-radius:3px;overflow:hidden;animation:jfill var(--T) linear infinite}
+.jbarfill::after{content:"";position:absolute;top:0;bottom:0;left:-26px;right:-26px;background-image:linear-gradient(135deg,#7ec943 25%,transparent 25%,transparent 50%,#7ec943 50%,#7ec943 75%,transparent 75%,transparent);background-size:22px 22px;opacity:0;animation:stripeOn var(--T) steps(1) infinite,barflow .6s linear infinite}
+@keyframes jfill{0%,45.5%{width:0;background:var(--acc)} 62%{width:100%;background:var(--acc)} 62.2%,86%{width:100%;background:var(--ok)} 89.5%,100%{width:100%;opacity:0}}
+@keyframes stripeOn{0%,45.9%{opacity:0} 46%,61.9%{opacity:1} 62%,100%{opacity:0}}
+@keyframes barflow{from{transform:translateX(0)}to{transform:translateX(22px)}}
+.jsrc{font-size:10.5px;color:var(--mut);white-space:nowrap;overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}   /* 페이드로 통일(렌더 중에도 소스줄 고정) */
+.rqft{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.progtxt{display:flex;justify-content:space-between;font-size:11px;color:var(--mut)}
+.ppct::after{content:"준비됨";animation:ptxt var(--T) steps(1) infinite}
+@keyframes ptxt{0%,45.9%{content:"준비됨"} 46%{content:"6% (0/1)"} 48%{content:"19% (0/1)"} 50%{content:"33% (0/1)"} 52%{content:"47% (0/1)"} 54%{content:"60% (0/1)"} 56%{content:"74% (0/1)"} 58%{content:"87% (0/1)"} 60%{content:"96% (0/1)"} 62%,68.5%{content:"100% (1/1)"} 69.5%,100%{content:"준비됨"}}
+.bar{height:6px;background:var(--field);border-radius:4px;overflow:hidden}
+.bar>i{display:block;height:100%;width:0;border-radius:4px;background:rgb(var(--accRGB));position:relative;overflow:hidden;animation:mfill var(--T) linear infinite}
+.bar>i::after{content:"";position:absolute;top:0;bottom:0;left:-26px;right:-26px;background-image:linear-gradient(135deg,#7ec943 25%,transparent 25%,transparent 50%,#7ec943 50%,#7ec943 75%,transparent 75%,transparent);background-size:22px 22px;opacity:0;animation:stripeOn var(--T) steps(1) infinite,barflow .6s linear infinite}
+@keyframes mfill{0%,45.5%{width:0} 62%{width:100%} 68.5%{width:100%} 69.5%,100%{width:0}}
+.rbtn{height:36px;border-radius:9px;border:none;background:var(--acc);color:#0a0b0f;font:inherit;font-weight:800;font-size:12.5px;display:flex;align-items:center;justify-content:center;gap:7px;animation:rbtn var(--T) var(--ease) infinite}
+.rbtn svg{width:13px;height:13px}
+@keyframes rbtn{0%,43%{transform:none;filter:none} 44.5%{transform:scale(.93);filter:brightness(1.15)} 46.5%,100%{transform:none}}
+/* 커서: 화살표(등장·선택) → 집게(드래그·연결) → 손가락(버튼) */
+.cur{width:20px;height:20px;z-index:9;pointer-events:none;opacity:0;left:var(--p1cx,10%);top:var(--p1cy,40%);animation:curMove var(--T) var(--ease) infinite}
+.cur svg{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 2px 5px rgba(0,0,0,.6));opacity:0}
+.sh-arrow{animation:shArrow var(--T) steps(1) infinite}
+.sh-grab{animation:shGrab var(--T) steps(1) infinite}
+.sh-point{animation:shPoint var(--T) steps(1) infinite}
+/* 실제 앱 규칙: 잡는 동안(카드 드래그·포트 드래그)만 grab, 드롭/연결 완료 즉시 화살표, 버튼 접근 시 pointer */
+@keyframes shArrow{0%,8.9%{opacity:1} 9%,16.4%{opacity:0} 16.5%,23.9%{opacity:1} 24%,31%{opacity:0} 31.1%,31.9%{opacity:1} 32%,37.9%{opacity:0} 38%,42.9%{opacity:1} 43%,100%{opacity:0}}
+@keyframes shGrab {0%,8.9%{opacity:0} 9%,16.4%{opacity:1} 16.5%,23.9%{opacity:0} 24%,31%{opacity:1} 31.1%,31.9%{opacity:0} 32%,37.9%{opacity:1} 38%,100%{opacity:0}}
+@keyframes shPoint{0%,42.9%{opacity:0} 43%,51.5%{opacity:1} 51.6%,100%{opacity:0}}
+@keyframes curMove{
+  0%,4.5%{opacity:0;left:var(--p1cx,10%);top:var(--p1cy,40%)}
+  5.9%{opacity:1;left:var(--p1cx,10%);top:var(--p1cy,40%)}
+  10.5%{left:var(--p1cx,10%);top:var(--p1cy,40%)}
+  16.5%{left:var(--p2x,40%);top:var(--p2y,50%)}
+  21%{left:var(--p2x,40%);top:var(--p2y,50%)}
+  23.7%{left:var(--p3x,26%);top:var(--p3y,32%)}
+  24%{left:var(--p3x,26%);top:var(--p3y,32%)}
+  31%{left:var(--p4x,45%);top:var(--p4y,62%)}
+  32%{left:var(--p5x,62%);top:var(--p5y,62%)}
+  38%{left:var(--p6x,76%);top:var(--p6y,32%)}
+  39.5%{left:var(--p6x,76%);top:var(--p6y,32%)}
+  44%{left:var(--p7x,88%);top:var(--p7y,76%)}
+  48.5%{left:var(--p7x,88%);top:var(--p7y,76%);opacity:1}
+  51.5%,100%{opacity:0;left:var(--p7x,88%);top:var(--p7y,76%)}}
+.ghost{width:62px;height:44px;z-index:8;pointer-events:none;opacity:0;left:var(--p1cx,10%);top:var(--p1cy,40%);
+  border-radius:9px;background:linear-gradient(135deg,#0fb39a,#1f7ad0);border:1px solid rgba(255,255,255,.25);
+  box-shadow:6px 6px 0 -1px #12307a,12px 12px 0 -2px #33122b;transform:translate(8px,10px) rotate(-4deg);
+  animation:ghostMove var(--T) var(--ease) infinite}
+@keyframes ghostMove{
+  0%,10.5%{opacity:0;left:var(--p1cx,10%);top:var(--p1cy,40%)}
+  11.1%{opacity:.95}
+  16.5%{opacity:.95;left:var(--p2x,40%);top:var(--p2y,50%)}
+  17.1%,100%{opacity:0;left:var(--p2x,40%);top:var(--p2y,50%)}}
+.doneov{inset:0;z-index:5;background:rgba(6,7,11,.45);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;animation:dov var(--T) var(--ease) infinite}
+@keyframes dov{0%,62%{opacity:0} 65%,74.5%{opacity:1} 79.5%,100%{opacity:0}}
+.done{background:var(--surface2);border:1px solid var(--stroke2);border-radius:16px;padding:26px 44px;text-align:center;
+  box-shadow:0 24px 70px rgba(0,0,0,.55);backdrop-filter:blur(20px);animation:dpop var(--T) var(--ease) infinite}
+@keyframes dpop{0%,62%{transform:scale(.88)} 66%{transform:scale(1.02)} 68%,100%{transform:scale(1)}}
+.done .big{width:38px;height:38px;margin:0 auto 10px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 18px -4px rgba(var(--accRGB),.6)}   /* 라임 체크 배지 */
+.done .big svg{width:19px;height:19px;color:#0a0b0f}
+.done b{font-size:15px} .done p{margin:5px 0 0;color:var(--mut);font-size:12px}
+.steps{display:flex;gap:26px;width:min(1680px,97vw);justify-content:center}
+.stp{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--dim)}
+.stp i{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--stroke2);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:11px;font-weight:700}
+.s1{animation:s1 var(--T) steps(1) infinite}.s2{animation:s2 var(--T) steps(1) infinite}.s3{animation:s3 var(--T) steps(1) infinite}
+@keyframes s1{0%,5%{color:var(--dim)} 5.5%,20.9%{color:var(--acc)} 21%,100%{color:var(--dim)}}
+@keyframes s2{0%,20.9%{color:var(--dim)} 21%,42.4%{color:var(--acc)} 42.5%,100%{color:var(--dim)}}
+@keyframes s3{0%,42.4%{color:var(--dim)} 42.5%,86%{color:var(--acc)} 86.5%,100%{color:var(--dim)}}
+
+/* 임베드(가이드 iframe): 크롬 제거 → .stage(2.9) 비율이 iframe과 정확히 일치 */
+html.embed body{padding:0;gap:0;min-height:0}
+html.embed .hd,html.embed .steps{display:none}
+html.embed .stage{width:100vw;border:0;border-radius:0;box-shadow:none}
+/* 일시정지(화면 밖·클릭·prefers-reduced-motion) */
+html.paused *{animation-play-state:paused!important}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style></head><body>
+<script>try{if(location.search.indexOf('embed=1')>-1)document.documentElement.classList.add('embed');}catch(e){}</script>
+<div class="hd"><div class="logo"><svg viewBox="0 0 512 512"><rect width="512" height="512" rx="118" style="fill:var(--acc)"/><g transform="translate(128.09 128.00) scale(4.6529)" fill="#0a0b0f"><path d="M49.67,11.02c-.06,0-.12,0-.18,0-3.04,0-5.5-2.46-5.5-5.5h0s0-.02,0-.04c0-3.04-2.46-5.5-5.5-5.5-.21,0-.42.01-.62.04h-9.76c-.2-.02-.41-.04-.62-.04s-.42.01-.62.04h-9.76c-.2-.02-.41-.04-.62-.04-3.04,0-5.5,2.46-5.5,5.5,0,.01,0,.02,0,.04h0c0,3.04-2.46,5.5-5.5,5.5S0,13.49,0,16.53c0,0,0,0,0,0v10.98s0,0,0,0,0,0,0,0v10.98s0,0,0,0,0,0,0,0v10.98s0,0,0,0c0,3.04,2.46,5.5,5.5,5.5h32.99c3.04,0,5.5-2.46,5.5-5.5s2.46-5.5,5.5-5.5,5.5-2.46,5.5-5.5-2.46-5.5-5.5-5.5-5.5-2.46-5.5-5.5,2.46-5.5,5.5-5.5v-.02c3.04,0,5.5-2.46,5.5-5.5s-2.36-5.39-5.31-5.49ZM38.49,44.02h-21.99c-3.04,0-5.5-2.46-5.5-5.5s2.46-5.5,5.5-5.5h21.99c3.04,0,5.5,2.46,5.5,5.5s-2.46,5.5-5.5,5.5ZM38.49,22.03c-.12,0-.25-.01-.37-.02h-10.26c-.12,0-.24.02-.37.02s-.25-.01-.37-.02h-10.26c-.12,0-.24.02-.37.02-3.04,0-5.5-2.46-5.5-5.5s2.46-5.5,5.5-5.5h21.99c3.04,0,5.5,2.46,5.5,5.5s-2.46,5.5-5.5,5.5Z"/></g></svg></div><b>BannerNode</b><span>— 배너 결합하는 가장 빠른 방법. 연결하면, 끝.</span></div>
+<div class="stage">
+  <div class="canvas">
+    <div class="zoomw">
+      <svg class="wires">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#a2ff00"/><stop offset="1" stop-color="#006eff"/></linearGradient>
+          <linearGradient id="g2" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#006eff"/><stop offset="1" stop-color="#ff4d9d"/></linearGradient>
+        </defs>
+        <path class="e1" d=""/><path class="e2" d=""/>
+        <path class="t1" d=""/><path class="t2" d=""/>
+      </svg>
+      <div class="node nv"><div class="nhd"><span class="pdot"></span>영상1</div><div class="body"><div class="fr"></div></div><span class="port po"></span></div>
+      <div class="node nb"><div class="nhd"><span class="pdot"></span>배너1</div><div class="body"><div class="fr"></div></div><span class="port pi"></span><span class="port po"></span></div>
+      <div class="node na"><div class="nhd"><span class="pdot"></span>음원1<span class="audmode">교체</span></div><div class="body"><div class="audbody"><svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3h10v3H12v11.5a3.5 3.5 0 1 1-2-3.16V3zm0 14.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z"/></svg><div class="audmeta"><div class="audnm">배경음악.mp3</div><div class="audseg">전체 구간</div></div></div></div><span class="port pi"></span></div>
+    </div>
+  </div>
+  <div class="pal">
+    <div class="phead"><span class="hicon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M4 3.5h16a1.5 1.5 0 0 1 1.5 1.5v14a1.5 1.5 0 0 1-1.5 1.5H4a1.5 1.5 0 0 1-1.5-1.5V5A1.5 1.5 0 0 1 4 3.5zM6.5 8.4a2 2 0 1 0 4 0 2 2 0 1 0-4 0zM4.7 18.5h14.6v-2L15 12l-3.3 3.3-2.2-2.2-4.8 4.8z"/></svg></span><b>Media Library</b><span class="hcnt">3</span></div>
+    <h4 class="g1">영상 (1)</h4>
+    <div class="card c1"><div class="th thv"></div><div><div class="nm">영상_소스.mp4</div><div class="mt">1080×1920 · 15s</div></div></div>
+    <h4 class="g2">배너 (1)</h4>
+    <div class="card c2"><div class="th thb"></div><div><div class="nm">배너.png</div><div class="mt">1080×1080</div></div></div>
+    <h4 class="g3">음원 (1)</h4>
+    <div class="card c3"><div class="th tha"><svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3h10v3H12v11.5a3.5 3.5 0 1 1-2-3.16V3zm0 14.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z"/></svg></div><div><div class="nm">배경음악.mp3</div><div class="mt">2:04 · 192kbps</div></div></div>
+  </div>
+  <div class="rq">
+    <div class="phead"><span class="hicon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.55 2.2a1 1 0 0 1 .9 0l8.4 4.2a1 1 0 0 1 0 1.8l-8.4 4.2a1 1 0 0 1-.9 0L3.15 8.2a1 1 0 0 1 0-1.8z"/><path d="M3.6 11.75 12 15.95l8.4-4.2a1 1 0 0 1 .9 1.8l-8.85 4.42a1 1 0 0 1-.9 0L2.7 13.55a1 1 0 0 1 .9-1.8z"/></svg></span><b>Render Queue</b><span class="hcnt">1</span></div>
+    <div class="job">
+      <div class="jthumb"><div class="jt-wrap"><i class="jt-v"></i><i class="jt-b"></i></div></div>
+      <div class="jbody">
+        <div class="jtop"><span class="jfn">배너__영상_소스.mp4</span><span class="jbgm"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 3h10v3H12v11.5a3.5 3.5 0 1 1-2-3.16V3zm0 14.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z"/></svg></span><span class="jstat"></span></div>
+        <div class="jbar"><div class="jbarfill"></div></div>
+        <div class="jsrc">배너.png ← 영상_소스.mp4</div>
+      </div>
+    </div>
+    <div class="rqft">
+      <div class="progtxt"><span class="ppct"></span><span></span></div>
+      <div class="bar"><i></i></div>
+      <button class="rbtn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></svg>렌더</button>
+    </div>
+  </div>
+  <div class="ghost"></div>
+  <div class="cur">
+    <svg class="sh-arrow" viewBox="0 0 24 24"><path fill="#fff" stroke="#0a0b0f" stroke-width="1.5" d="M5 3l14 8-6.5 1.5L16 19l-3 1.5-3.5-6.5L5 18z"/></svg>
+    <svg class="sh-grab" viewBox="0 0 24 24"><path fill="#fff" stroke="#0a0b0f" stroke-width="1.3" stroke-linejoin="round" d="M7.2 9.6c0-.9.7-1.6 1.5-1.6.4 0 .8.2 1.1.5.2-.7.8-1.2 1.5-1.2.6 0 1.2.4 1.4 1 .3-.4.7-.6 1.2-.6.9 0 1.6.7 1.6 1.6v.3c.2-.1.5-.2.8-.2.9 0 1.6.7 1.6 1.6V15c0 3.3-2.7 6-6 6h-.8c-1.9 0-3.7-.9-4.8-2.4l-1.6-2.1c-.5-.7-.4-1.7.3-2.2.6-.5 1.5-.4 2 .2l.2.2V9.6z"/></svg>
+    <svg class="sh-point" viewBox="0 0 24 24"><path fill="#fff" stroke="#0a0b0f" stroke-width="1.3" d="M9.2 12.6V5.4a1.5 1.5 0 0 1 3 0v5.5l4.6 1c1 .2 1.7 1.1 1.7 2.1V17a4.4 4.4 0 0 1-4.4 4.4h-2.4a4.4 4.4 0 0 1-3.5-1.7l-3-3.9a1.6 1.6 0 0 1 2.4-2.1l1.6 1.5z"/></svg>
+  </div>
+  <div class="doneov"><div class="done"><div class="big"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5 10-11"/></svg></div><b>렌더 완료!</b><p>배너__영상_소스.mp4 · 출력 폴더에 저장됨</p></div></div>
+</div>
+<div class="steps">
+  <div class="stp s1"><i>1</i>드래그로 소스를 넣고</div>
+  <div class="stp s2"><i>2</i>노드를 연결하면</div>
+  <div class="stp s3"><i>3</i>렌더 끝 — 여러 작업도 한 번에</div>
+</div>
+<script>
+(function(){
+  const stage=document.querySelector('.stage'), cv=document.querySelector('.canvas'), q=s=>document.querySelector(s);
+  const chain=(el,root)=>{ let x=0,y=0,e=el; while(e&&e!==root){ x+=e.offsetLeft; y+=e.offsetTop; e=e.offsetParent; } return {x,y}; };
+  const center=(el,root)=>{ const p=chain(el,root); return {x:p.x+el.offsetWidth/2, y:p.y+el.offsetHeight/2}; };
+  const bez=(a,b)=>{ const dx=Math.max(40,Math.abs(b.x-a.x)*0.5); return `M${a.x},${a.y} C${a.x+dx},${a.y} ${b.x-dx},${b.y} ${b.x},${b.y}`; };
+  const lerp=(a,b,k)=>({x:a.x+(b.x-a.x)*k, y:a.y+(b.y-a.y)*k});
+  const ease=(t)=>{ const x1=.32,y1=.72,x2=0,y2=1; let lo=0,hi=1,u=t;
+    for(let i=0;i<24;i++){ u=(lo+hi)/2; const iu=1-u;
+      const bx=3*iu*iu*u*x1+3*iu*u*u*x2+u*u*u;
+      if(bx<t) lo=u; else hi=u; }
+    const iu=1-u; return 3*iu*iu*u*y1+3*iu*u*u*y2+u*u*u; };
+  const S=1.55;   // 확대 배율(CSS zoomK와 일치, 확대 유지)
+  let P={};
+  function layout(){ if(stage.offsetWidth<10) return;
+    const SW=stage.offsetWidth, SH=stage.offsetHeight;
+    const cvo=chain(cv,stage);
+    const portC=el=>center(el,cv);   // 포트 중심(±8px 오프셋 + 14px 원 → 중심 = offset+7)
+    P={ p3r:portC(q('.nv .po')), p4r:portC(q('.nb .pi')), p5r:portC(q('.nb .po')), p6r:portC(q('.na .pi')) };
+    const nbC=center(q('.nb'),cv);
+    stage.style.setProperty('--zox',(nbC.x/cv.offsetWidth*100)+'%'); stage.style.setProperty('--zoy',(nbC.y/cv.offsetHeight*100)+'%');
+    const O={x:cvo.x+nbC.x, y:cvo.y+nbC.y};
+    const zoomed=p=>({x:O.x+(p.x+cvo.x-O.x)*S, y:O.y+(p.y+cvo.y-O.y)*S-10});   // -10 = zoomK translateY(-10px)와 동기
+    const pts={ p1c:center(q('.c2'),stage),
+      p2:{x:cvo.x+cv.offsetWidth*0.44, y:cvo.y+cv.offsetHeight*0.55},
+      p3:zoomed(P.p3r), p4:zoomed(P.p4r), p5:zoomed(P.p5r), p6:zoomed(P.p6r),
+      p7:center(q('.rbtn'),stage) };
+    for(const k in pts){ stage.style.setProperty('--'+k+'x',(pts[k].x/SW*100)+'%'); stage.style.setProperty('--'+k+'y',(pts[k].y/SH*100)+'%'); }
+    q('.wires').setAttribute('viewBox',`0 0 ${cv.offsetWidth} ${cv.offsetHeight}`);
+    q('.e1').setAttribute('d', bez(P.p3r,P.p4r));
+    q('.e2').setAttribute('d', bez(P.p5r,P.p6r)); }
+  const Tms=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--T'))*1000||14000;
+  let t0=performance.now();
+  const drv=document.createElement('div'); drv.style.cssText='position:absolute;width:0;height:0;animation:drv '+(Tms/1000)+'s linear infinite';
+  const st=document.createElement('style'); st.textContent='@keyframes drv{from{opacity:1}to{opacity:1}}'; document.head.appendChild(st);
+  stage.appendChild(drv);
+  drv.addEventListener('animationstart',()=>{ t0=performance.now(); });
+  drv.addEventListener('animationiteration',()=>{ t0=performance.now(); });
+  function tick(){ const t=((performance.now()-t0)/Tms)%1;
+    const t1=q('.t1'), t2=q('.t2');
+    if(P.p3r&&t>=0.24&&t<0.31){ const k=ease((t-0.24)/(0.31-0.24));   // 연결 1 (0.98s)
+      t1.setAttribute('d', bez(P.p3r, lerp(P.p3r,P.p4r,k))); t1.style.opacity=.9; } else t1.style.opacity=0;
+    if(P.p5r&&t>=0.32&&t<0.38){ const k=ease((t-0.32)/(0.38-0.32));   // 연결 2 (0.84s)
+      t2.setAttribute('d', bez(P.p5r, lerp(P.p5r,P.p6r,k))); t2.style.opacity=.9; } else t2.style.opacity=0;
+    rafId=requestAnimationFrame(tick); }
+  // 일시정지: 화면 밖 자동 정지(IO는 same-origin iframe에서도 최상위 뷰포트 기준) + 클릭 토글 + prefers-reduced-motion
+  let rafId=null, pausedAt=0;
+  const PRM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function setPaused(p){ const on=document.documentElement.classList.contains('paused'); if(p===on) return;
+    if(p){ document.documentElement.classList.add('paused'); pausedAt=performance.now(); if(rafId){ cancelAnimationFrame(rafId); rafId=null; } }
+    else { document.documentElement.classList.remove('paused'); t0+=performance.now()-pausedAt; if(!rafId) rafId=requestAnimationFrame(tick); } }
+  try{ new IntersectionObserver(es=>{ if(!PRM) setPaused(!es[0].isIntersecting); },{threshold:0.05}).observe(stage); }catch(e){}
+  stage.addEventListener('click',()=>setPaused(!document.documentElement.classList.contains('paused')));
+  stage.style.cursor='pointer'; stage.setAttribute('title','클릭: 일시정지/재생');
+  addEventListener('resize',layout); addEventListener('load',layout);
+  layout(); setTimeout(layout,300); setTimeout(layout,900);
+  if(PRM){ document.documentElement.classList.add('paused'); pausedAt=performance.now(); }
+  else rafId=requestAnimationFrame(tick);
+})();
+</script>
+</body></html>

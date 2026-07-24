@@ -25,10 +25,10 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
   background:radial-gradient(circle at 1px 1px,rgba(255,255,255,.05) 1px,transparent 0) 0 0/28px 28px,#090a0e;
   border:1px solid var(--stroke);border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)}
 .stage>*{position:absolute}
-.phead{display:flex;align-items:center;gap:8px;margin:2px 2px 11px}
-.phead .hicon{display:inline-flex;color:var(--acc)} .phead .hicon svg{width:15px;height:15px}
-.phead b{font-size:12px;font-weight:700;letter-spacing:-.01em}
-.hcnt{margin-left:auto;font-size:10px;font-weight:700;background:var(--chip);color:var(--dim);border-radius:20px;padding:2px 8px}
+.phead{display:flex;align-items:center;gap:10px;margin:2px 2px 12px}
+.phead .hicon{display:inline-flex;color:var(--acc)} .phead .hicon svg{width:20px;height:20px}
+.phead b{font-size:16px;font-weight:700;letter-spacing:-.01em}
+.hcnt{margin-left:auto;font-size:13px;font-weight:700;background:var(--chip);color:var(--dim);border-radius:20px;padding:3px 10px}
 /* ── 캔버스: 풀폭 아래층 — 확대 시 노드가 유리 패널 밑으로 ── */
 .canvas{left:1.8%;right:1.8%;top:8%;bottom:8%;z-index:1}
 .zoomw{position:absolute;inset:0;transform-origin:var(--zox,50%) var(--zoy,55%);animation:zoomK var(--T) var(--ease) infinite}
@@ -77,34 +77,34 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 @keyframes nodeB{0%,17.9%{opacity:0;transform:scale(.85)} 19.4%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}
 @keyframes nodeA{0%,19.3%{opacity:0;transform:scale(.85)} 20.8%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}
 .wires{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.wires path{fill:none;stroke-width:1.8}
+.wires path{fill:none;stroke-width:2.2}
 .e1{stroke:url(#g1);opacity:0;animation:edge1 var(--T) var(--ease) infinite}
 .e2{stroke:url(#g2);opacity:0;animation:edge2 var(--T) var(--ease) infinite}
 @keyframes edge1{0%,30.9%{opacity:0} 31.3%,86%{opacity:.9} 89.5%,100%{opacity:0}}
 @keyframes edge2{0%,37.9%{opacity:0} 38.3%,86%{opacity:.9} 89.5%,100%{opacity:0}}
-.t1,.t2{stroke-width:1.8;fill:none;opacity:0;stroke-dasharray:6 5;animation:march .5s linear infinite}
+.t1,.t2{stroke-width:2.2;fill:none;opacity:0;stroke-dasharray:6 5;animation:march .5s linear infinite}
 .t1{stroke:url(#g1)} .t2{stroke:url(#g2)}
 @keyframes march{from{stroke-dashoffset:11}to{stroke-dashoffset:0}}
 /* ── 유리 패널: 실물 스펙(r22, surface .60, blur22 sat1.3) — backdrop-filter는 자식 없는 ::before 레이어로 분리
      (진행바 스트라이프 transform 애니메이션이 조상 backdrop 합성을 깨는 문제 회피, 양 패널 동일 경로) ── */
-.pal,.rq{z-index:3;border:1px solid var(--stroke);border-radius:22px;padding:14px;box-shadow:var(--shadow)}
+.pal,.rq{z-index:3;border:1px solid var(--stroke);border-radius:22px;padding:14px;box-shadow:var(--shadow);overflow:hidden}   /* overflow:hidden — 어떤 애니메이션 국면에서도 카드(음원 등)가 패널 라운드 경계 밖으로 비어져 보이지 않게 클립(고스트·커서는 stage 직계라 무관) */
 .pal::before,.rq::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--surface);
   backdrop-filter:blur(22px) saturate(1.3);-webkit-backdrop-filter:blur(22px) saturate(1.3)}
-.pal{left:1.8%;top:8%;bottom:8%;width:16.5%}
-.rq{right:1.8%;top:8%;bottom:8%;width:19.5%;display:flex;flex-direction:column}
+.pal{left:1.8%;top:8%;bottom:8%;width:18%}
+.rq{right:1.8%;top:8%;bottom:8%;width:21%;display:flex;flex-direction:column}
 /* 라이브러리 카드 = 실물(--inset, r14, gap11, 썸네일 62×44 r9 체커) */
-.card{display:flex;gap:11px;align-items:center;background:var(--inset);border:1px solid var(--stroke);border-radius:14px;padding:9px;margin-bottom:9px;opacity:0}
-.card .th{position:relative;width:62px;height:44px;border-radius:9px;overflow:hidden;flex:none;background:var(--chkbg) 50%/10px 10px}
+.card{display:flex;gap:14px;align-items:center;background:var(--inset);border:1px solid var(--stroke);border-radius:16px;padding:12px;margin-bottom:12px;opacity:0}
+.card .th{position:relative;width:84px;height:60px;border-radius:11px;overflow:hidden;flex:none;background:var(--chkbg) 50%/12px 12px}
 .card>div:last-child{flex:1;min-width:0}   /* 텍스트가 카드 밖으로 못 나가게 */
-.card .nm{font-size:12px;line-height:1.3;white-space:nowrap;overflow:hidden;
+.card .nm{font-size:16px;line-height:1.3;white-space:nowrap;overflow:hidden;
   -webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}   /* 실물: 페이드, ellipsis 없음 */
-.card .mt{line-height:1.4;font-size:10.5px;color:var(--mut);margin-top:2px}
+.card .mt{line-height:1.4;font-size:13.5px;color:var(--mut);margin-top:3px}
 .card .th.thv{background:linear-gradient(135deg,#0fb39a,#1f7ad0)}
-.thb::after{content:"";position:absolute;inset:0;border:7px solid;border-image:var(--bangrad) 1}   /* 중앙 구멍 = 체커 노출 */
+.thb::after{content:"";position:absolute;inset:0;border:9px solid;border-image:var(--bangrad) 1}   /* 중앙 구멍 = 체커 노출 */
 .card .th.tha{display:flex;align-items:center;justify-content:center;background:var(--inset);color:var(--bgm)}   /* 실물 .card .th.aud */
-.tha .ico{width:30px;height:30px}
+.tha .ico{width:40px;height:40px}
 /* 분류 헤더 = 실물 .plist h4 (영상/배너/음원 (n)) — 각 카드와 같은 타이밍으로 등장/소멸 */
-.pal h4{margin:10px 4px 8px;color:var(--dim);font-size:10.5px;text-transform:uppercase;letter-spacing:1.4px;font-weight:700;opacity:0}
+.pal h4{margin:12px 4px 9px;color:var(--dim);font-size:13.5px;text-transform:uppercase;letter-spacing:1.4px;font-weight:700;opacity:0}
 /* 실물 검증: dedupAdd→renderPalette 1회 — 새 카드 전원이 .justadded(listin .32s, 7px↑)를 동시에 받음. 스태거 없음 */
 .g1,.g2,.g3{animation:cardIn var(--T) var(--ease) infinite}
 .c1,.c2{animation:cardIn var(--T) var(--ease) infinite,cselS var(--T) steps(1) infinite}
@@ -113,44 +113,44 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 @keyframes cselS{0%,8.9%{border-color:var(--stroke);box-shadow:none} 9%,16.4%{border-color:transparent;box-shadow:var(--glowS)} 16.5%,100%{border-color:var(--stroke);box-shadow:none}}
 @keyframes cselG{0%,8.9%{border-color:var(--stroke);box-shadow:none} 9%,16.4%{border-color:transparent;box-shadow:var(--glowG)} 16.5%,100%{border-color:var(--stroke);box-shadow:none}}
 /* 렌더 큐 — 잡 행 = 실물(.job flex + .jthumb 50×38 미니 합성 프리뷰 + .jbody), 상태 테두리(run=라임/done=그린) */
-.job{background:var(--inset);border:1px solid var(--stroke);border-radius:12px;padding:9px;display:flex;gap:10px;align-items:center;opacity:0;
+.job{background:var(--inset);border:1px solid var(--stroke);border-radius:14px;padding:12px;display:flex;gap:13px;align-items:center;opacity:0;
   animation:jobIn var(--T) var(--ease) infinite,jbord var(--T) steps(1) infinite}
 @keyframes jobIn{0%,38%{opacity:0;transform:translateX(14px)} 39.3%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}
 @keyframes jbord{0%,45.9%{border-color:var(--stroke)} 46%,61.9%{border-color:var(--acc)} 62%,100%{border-color:var(--ok)}}
-.jthumb{width:50px;height:38px;flex:none;border-radius:7px;overflow:hidden;background:var(--frame);display:flex;align-items:center;justify-content:center;position:relative}
-.jt-wrap{position:relative;width:50px;height:50px;flex:none}   /* 1:1 배너 cover 크롭(실물 산식) */
+.jthumb{width:66px;height:50px;flex:none;border-radius:9px;overflow:hidden;background:var(--frame);display:flex;align-items:center;justify-content:center;position:relative}
+.jt-wrap{position:relative;width:66px;height:66px;flex:none}   /* 1:1 배너 cover 크롭(실물 산식) */
 .jt-v{position:absolute;left:30%;top:30%;width:40%;height:40%;background:linear-gradient(135deg,#0fb39a,#1f7ad0)}   /* 구멍 위치의 영상 */
-.jt-b{position:absolute;inset:0;border:15px solid;border-image:var(--bangrad) 1}   /* 배너 프레임(중앙 투명 구멍) */
+.jt-b{position:absolute;inset:0;border:20px solid;border-image:var(--bangrad) 1}   /* 배너 프레임(중앙 투명 구멍) */
 .jbody{flex:1;min-width:0}
 .jtop{display:flex;align-items:center;gap:8px}
-.jfn{flex:1;min-width:0;font-size:11.5px;font-weight:500;overflow:hidden;white-space:nowrap;
+.jfn{flex:1;min-width:0;font-size:15px;font-weight:500;overflow:hidden;white-space:nowrap;
   -webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}
-.jbgm{display:inline-flex;color:var(--bgm);flex:none} .jbgm svg{width:12px;height:12px}
-.jstat{font-size:9.5px;font-weight:700;padding:2px 8px;border-radius:20px;line-height:1.4;flex:none;background:var(--chip);color:var(--dim);animation:jchip var(--T) steps(1) infinite}
+.jbgm{display:inline-flex;color:var(--bgm);flex:none} .jbgm svg{width:16px;height:16px}
+.jstat{font-size:12.5px;font-weight:700;padding:3px 10px;border-radius:20px;line-height:1.4;flex:none;background:var(--chip);color:var(--dim);animation:jchip var(--T) steps(1) infinite}
 .jstat::after{content:"대기";animation:jtxt var(--T) steps(1) infinite}
 @keyframes jchip{0%,45.9%{background:var(--chip);color:var(--dim)} 46%,61.9%{background:rgba(var(--accRGB),.15);color:var(--acc)} 62%,100%{background:rgba(59,185,133,.16);color:var(--ok)}}
 @keyframes jtxt{0%,45.9%{content:"대기"} 46%{content:"6%"} 48%{content:"19%"} 50%{content:"33%"} 52%{content:"47%"} 54%{content:"60%"} 56%{content:"74%"} 58%{content:"87%"} 60%{content:"96%"} 62%,100%{content:"완료"}}
-.jbar{position:relative;height:4px;background:rgba(140,140,150,.22);border-radius:3px;overflow:hidden;margin:7px 0 6px}
+.jbar{position:relative;height:6px;background:rgba(140,140,150,.22);border-radius:3px;overflow:hidden;margin:9px 0 8px}
 .jbarfill{position:absolute;left:0;top:0;height:100%;width:0;background:var(--acc);border-radius:3px;overflow:hidden;animation:jfill var(--T) linear infinite}
 .jbarfill::after{content:"";position:absolute;top:0;bottom:0;left:-26px;right:-26px;background-image:linear-gradient(135deg,#7ec943 25%,transparent 25%,transparent 50%,#7ec943 50%,#7ec943 75%,transparent 75%,transparent);background-size:22px 22px;opacity:0;animation:stripeOn var(--T) steps(1) infinite,barflow .6s linear infinite}
 @keyframes jfill{0%,45.5%{width:0;background:var(--acc)} 62%{width:100%;background:var(--acc)} 62.2%,86%{width:100%;background:var(--ok)} 89.5%,100%{width:100%;opacity:0}}
 @keyframes stripeOn{0%,45.9%{opacity:0} 46%,61.9%{opacity:1} 62%,100%{opacity:0}}
 @keyframes barflow{from{transform:translateX(0)}to{transform:translateX(22px)}}
-.jsrc{font-size:10.5px;color:var(--mut);white-space:nowrap;overflow:hidden;
+.jsrc{font-size:13.5px;color:var(--mut);white-space:nowrap;overflow:hidden;
   -webkit-mask-image:linear-gradient(90deg,#000 82%,transparent);mask-image:linear-gradient(90deg,#000 82%,transparent)}   /* 페이드로 통일(렌더 중에도 소스줄 고정) */
-.rqft{margin-top:auto;display:flex;flex-direction:column;gap:8px}
-.progtxt{display:flex;justify-content:space-between;font-size:11px;color:var(--mut)}
+.rqft{margin-top:auto;display:flex;flex-direction:column;gap:11px}
+.progtxt{display:flex;justify-content:space-between;font-size:14px;color:var(--mut)}
 .ppct::after{content:"준비됨";animation:ptxt var(--T) steps(1) infinite}
 @keyframes ptxt{0%,45.9%{content:"준비됨"} 46%{content:"6% (0/1)"} 48%{content:"19% (0/1)"} 50%{content:"33% (0/1)"} 52%{content:"47% (0/1)"} 54%{content:"60% (0/1)"} 56%{content:"74% (0/1)"} 58%{content:"87% (0/1)"} 60%{content:"96% (0/1)"} 62%,68.5%{content:"100% (1/1)"} 69.5%,100%{content:"준비됨"}}
-.bar{height:6px;background:var(--field);border-radius:4px;overflow:hidden}
+.bar{height:9px;background:var(--field);border-radius:5px;overflow:hidden}
 .bar>i{display:block;height:100%;width:0;border-radius:4px;background:rgb(var(--accRGB));position:relative;overflow:hidden;animation:mfill var(--T) linear infinite}
 .bar>i::after{content:"";position:absolute;top:0;bottom:0;left:-26px;right:-26px;background-image:linear-gradient(135deg,#7ec943 25%,transparent 25%,transparent 50%,#7ec943 50%,#7ec943 75%,transparent 75%,transparent);background-size:22px 22px;opacity:0;animation:stripeOn var(--T) steps(1) infinite,barflow .6s linear infinite}
 @keyframes mfill{0%,45.5%{width:0} 62%{width:100%} 68.5%{width:100%} 69.5%,100%{width:0}}
-.rbtn{height:36px;border-radius:9px;border:none;background:var(--acc);color:#0a0b0f;font:inherit;font-weight:800;font-size:12.5px;display:flex;align-items:center;justify-content:center;gap:7px;animation:rbtn var(--T) var(--ease) infinite}
-.rbtn svg{width:13px;height:13px}
+.rbtn{height:48px;border-radius:12px;border:none;background:var(--acc);color:#0a0b0f;font:inherit;font-weight:800;font-size:17px;display:flex;align-items:center;justify-content:center;gap:9px;animation:rbtn var(--T) var(--ease) infinite}
+.rbtn svg{width:17px;height:17px}
 @keyframes rbtn{0%,43%{transform:none;filter:none} 44.5%{transform:scale(.93);filter:brightness(1.15)} 46.5%,100%{transform:none}}
 /* 커서: 화살표(등장·선택) → 집게(드래그·연결) → 손가락(버튼) */
-.cur{width:20px;height:20px;z-index:9;pointer-events:none;opacity:0;left:var(--p1cx,10%);top:var(--p1cy,40%);animation:curMove var(--T) var(--ease) infinite}
+.cur{width:29px;height:29px;z-index:9;pointer-events:none;opacity:0;left:var(--p1cx,10%);top:var(--p1cy,40%);animation:curMove var(--T) var(--ease) infinite}
 .cur svg{position:absolute;inset:0;width:100%;height:100%;filter:drop-shadow(0 2px 5px rgba(0,0,0,.6));opacity:0}
 .sh-arrow{animation:shArrow var(--T) steps(1) infinite}
 .sh-grab{animation:shGrab var(--T) steps(1) infinite}
@@ -174,9 +174,9 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
   44%{left:var(--p7x,88%);top:var(--p7y,76%)}
   48.5%{left:var(--p7x,88%);top:var(--p7y,76%);opacity:1}
   51.5%,100%{opacity:0;left:var(--p7x,88%);top:var(--p7y,76%)}}
-.ghost{width:62px;height:44px;z-index:8;pointer-events:none;opacity:0;left:var(--p1cx,10%);top:var(--p1cy,40%);
-  border-radius:9px;background:linear-gradient(135deg,#0fb39a,#1f7ad0);border:1px solid rgba(255,255,255,.25);
-  box-shadow:6px 6px 0 -1px #12307a,12px 12px 0 -2px #33122b;transform:translate(8px,10px) rotate(-4deg);
+.ghost{width:84px;height:60px;z-index:8;pointer-events:none;opacity:0;left:var(--p1cx,10%);top:var(--p1cy,40%);
+  border-radius:11px;background:linear-gradient(135deg,#0fb39a,#1f7ad0);border:1px solid rgba(255,255,255,.25);
+  box-shadow:8px 8px 0 -1px #12307a,16px 16px 0 -2px #33122b;transform:translate(10px,13px) rotate(-4deg);
   animation:ghostMove var(--T) var(--ease) infinite}
 @keyframes ghostMove{
   0%,10.5%{opacity:0;left:var(--p1cx,10%);top:var(--p1cy,40%)}
@@ -185,13 +185,13 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
   17.1%,100%{opacity:0;left:var(--p2x,40%);top:var(--p2y,50%)}}
 .doneov{inset:0;z-index:5;background:rgba(6,7,11,.45);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;animation:dov var(--T) var(--ease) infinite}
 @keyframes dov{0%,62%{opacity:0} 65%,74.5%{opacity:1} 79.5%,100%{opacity:0}}
-.done{background:var(--surface2);border:1px solid var(--stroke2);border-radius:16px;padding:26px 44px;text-align:center;
+.done{background:var(--surface2);border:1px solid var(--stroke2);border-radius:20px;padding:36px 60px;text-align:center;
   box-shadow:0 24px 70px rgba(0,0,0,.55);backdrop-filter:blur(20px);animation:dpop var(--T) var(--ease) infinite}
 @keyframes dpop{0%,62%{transform:scale(.88)} 66%{transform:scale(1.02)} 68%,100%{transform:scale(1)}}
-.done .big{width:38px;height:38px;margin:0 auto 10px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;
-  box-shadow:0 0 18px -4px rgba(var(--accRGB),.6)}   /* 라임 체크 배지 */
-.done .big svg{width:19px;height:19px;color:#0a0b0f}
-.done b{font-size:15px} .done p{margin:5px 0 0;color:var(--mut);font-size:12px}
+.done .big{width:54px;height:54px;margin:0 auto 14px;border-radius:50%;background:var(--acc);display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 24px -5px rgba(var(--accRGB),.6)}   /* 라임 체크 배지 */
+.done .big svg{width:27px;height:27px;color:#0a0b0f}
+.done b{font-size:21px} .done p{margin:7px 0 0;color:var(--mut);font-size:15.5px}
 .steps{display:flex;gap:26px;width:min(1680px,97vw);justify-content:center}
 .stp{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--dim)}
 .stp i{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--stroke2);display:flex;align-items:center;justify-content:center;font-style:normal;font-size:11px;font-weight:700}

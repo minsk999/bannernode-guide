@@ -468,9 +468,9 @@
 
     <nav class="toc">
 
-      <a href="#start">시작하기</a>
 
       <a href="#render">노드 연결 · 렌더</a>
+      <a href="#start">다운로드 · 설치</a>
 
       <a href="#layout">화면 구성</a>
 
@@ -522,9 +522,43 @@
 
       <!-- 1. 시작하기 -->
 
+      <section id="render">
+
+        <div class="sec-head"><span class="sec-num">01</span><h2>노드 연결 · 렌더</h2></div>
+
+        <p class="lead">BannerNode의 핵심. 영상 노드에서 배너 노드로 선을 이으면 그 조합이 렌더 잡이 됩니다.</p>
+
+        <div class="card demo-embed">
+
+          <iframe src="workflow-demo.html?embed=1" aria-label="BannerNode 워크플로 데모 — 소스 담기부터 렌더 완료까지 자동 재생" loading="lazy" scrolling="no"></iframe>
+
+        </div>
+
+        <div class="card">
+
+          <ol class="steps">
+
+            <li><span class="t"><b>노드 배치</b> — 영상·배너 카드를 캔버스로 드래그해 노드로 만들어요.</span></li>
+
+            <li><span class="t"><b>선 연결</b> — 영상 노드의 출력점에서 배너 노드로 드래그해 연결. 연결 1개 = 렌더 잡 1개.</span></li>
+
+            <li><span class="t"><b>포맷 · 옵션</b> — 오른쪽 렌더큐에서 잡별로 <b>mp4 · mov · gif · png</b> 포맷과 옵션을 정합니다.</span></li>
+
+            <li><span class="t"><span class="fic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span> <b>렌더 실행</b> <small>·</small> <span class="kbd">Enter</span> — 로컬에서 ffmpeg가 돌고 진행률이 실시간으로 차올라요.</span></li>
+
+            <li><span class="t"><span class="fic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6a1 1 0 0 1 1-1h4l2 2h8v2H9.2a1.5 1.5 0 0 0-1.4 1l-2 5.7V6z"/><path d="M6.6 10H22l-2.3 7.6a1 1 0 0 1-1 .7H3.2a1 1 0 0 1-1-1.3l2.1-6.1A1.5 1.5 0 0 1 6.6 10z"/></svg></span> <b>출력 폴더 열기</b> <small>·</small> <span class="kbd">M</span> — 완성된 파일이 담긴 폴더를 바로 엽니다.</span></li>
+
+          </ol>
+
+          <div class="note"><span class="ic">i</span><span>음원 노드를 함께 연결하면 <b>영상 + 배너 + BGM</b>이 한 번에 합성돼요. 여러 잡을 걸어 두면 순서대로 렌더됩니다.</span></div>
+
+        </div>
+
+      </section>
+
       <section id="start">
 
-        <div class="sec-head"><span class="sec-num">01</span><h2>시작하기</h2></div>
+        <div class="sec-head"><span class="sec-num">02</span><h2>다운로드 · 설치</h2></div>
 
         <p class="lead">설치 없이 압축만 풀면 됩니다. 처음 한 번만 아래를 확인하면 돼요.</p>
 
@@ -572,39 +606,6 @@
 
       <!-- 2. 화면 구성 -->
 
-      <section id="render">
-
-        <div class="sec-head"><span class="sec-num">02</span><h2>노드 연결 · 렌더</h2></div>
-
-        <p class="lead">BannerNode의 핵심. 영상 노드에서 배너 노드로 선을 이으면 그 조합이 렌더 잡이 됩니다.</p>
-
-        <div class="card demo-embed">
-
-          <iframe src="workflow-demo.html?embed=1" aria-label="BannerNode 워크플로 데모 — 소스 담기부터 렌더 완료까지 자동 재생" loading="lazy" scrolling="no"></iframe>
-
-        </div>
-
-        <div class="card">
-
-          <ol class="steps">
-
-            <li><span class="t"><b>노드 배치</b> — 영상·배너 카드를 캔버스로 드래그해 노드로 만들어요.</span></li>
-
-            <li><span class="t"><b>선 연결</b> — 영상 노드의 출력점에서 배너 노드로 드래그해 연결. 연결 1개 = 렌더 잡 1개.</span></li>
-
-            <li><span class="t"><b>포맷 · 옵션</b> — 오른쪽 렌더큐에서 잡별로 <b>mp4 · mov · gif · png</b> 포맷과 옵션을 정합니다.</span></li>
-
-            <li><span class="t"><span class="fic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span> <b>렌더 실행</b> <small>·</small> <span class="kbd">Enter</span> — 로컬에서 ffmpeg가 돌고 진행률이 실시간으로 차올라요.</span></li>
-
-            <li><span class="t"><span class="fic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 6a1 1 0 0 1 1-1h4l2 2h8v2H9.2a1.5 1.5 0 0 0-1.4 1l-2 5.7V6z"/><path d="M6.6 10H22l-2.3 7.6a1 1 0 0 1-1 .7H3.2a1 1 0 0 1-1-1.3l2.1-6.1A1.5 1.5 0 0 1 6.6 10z"/></svg></span> <b>출력 폴더 열기</b> <small>·</small> <span class="kbd">M</span> — 완성된 파일이 담긴 폴더를 바로 엽니다.</span></li>
-
-          </ol>
-
-          <div class="note"><span class="ic">i</span><span>음원 노드를 함께 연결하면 <b>영상 + 배너 + BGM</b>이 한 번에 합성돼요. 여러 잡을 걸어 두면 순서대로 렌더됩니다.</span></div>
-
-        </div>
-
-      </section>
 
       <!-- (이동됨: 데모를 먼저) -->
       <section id="layout">

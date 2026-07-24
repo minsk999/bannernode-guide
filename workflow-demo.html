@@ -84,7 +84,10 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 @keyframes edge1{0%,30.9%{opacity:0} 31.3%,86%{opacity:.9} 89.5%,100%{opacity:0}}
 @keyframes edge2{0%,37.9%{opacity:0} 38.3%,86%{opacity:.9} 89.5%,100%{opacity:0}}
 .t1,.t2{stroke-width:2.2;fill:none;opacity:0;stroke-dasharray:6 5;animation:march .5s linear infinite}
-.t1{stroke:url(#g1)} .t2{stroke:url(#g2)}
+.t1{stroke:url(#g1);animation:march .5s linear infinite,t1vis var(--T) steps(1) infinite}
+.t2{stroke:url(#g2);animation:march .5s linear infinite,t2vis var(--T) steps(1) infinite}
+@keyframes t1vis{0%,23.9%{opacity:0} 24%,30.9%{opacity:.9} 31%,100%{opacity:0}}   /* 표시/숨김을 CSS 시계로 — JS 클럭이 뒤처져도 실선과 절대 안 겹침 */
+@keyframes t2vis{0%,31.9%{opacity:0} 32%,37.9%{opacity:.9} 38%,100%{opacity:0}}
 @keyframes march{from{stroke-dashoffset:11}to{stroke-dashoffset:0}}
 /* ── 유리 패널: 실물 스펙(r22, surface .60, blur22 sat1.3) — backdrop-filter는 자식 없는 ::before 레이어로 분리
      (진행바 스트라이프 transform 애니메이션이 조상 backdrop 합성을 깨는 문제 회피, 양 패널 동일 경로) ── */
@@ -311,14 +314,14 @@ html.paused *{animation-play-state:paused!important}
   const drv=document.createElement('div'); drv.style.cssText='position:absolute;width:0;height:0;animation:drv '+(Tms/1000)+'s linear infinite';
   const st=document.createElement('style'); st.textContent='@keyframes drv{from{opacity:1}to{opacity:1}}'; document.head.appendChild(st);
   stage.appendChild(drv);
-  drv.addEventListener('animationstart',()=>{ t0=performance.now(); });
-  drv.addEventListener('animationiteration',()=>{ t0=performance.now(); });
+  drv.addEventListener('animationstart',e=>{ t0=(e&&e.timeStamp)||performance.now(); });   // 이벤트 전달 지연 보정
+  drv.addEventListener('animationiteration',e=>{ t0=(e&&e.timeStamp)||performance.now(); });
   function tick(){ const t=((performance.now()-t0)/Tms)%1;
     const t1=q('.t1'), t2=q('.t2');
-    if(P.p3r&&t>=0.24&&t<0.31){ const k=ease((t-0.24)/(0.31-0.24));   // 연결 1 (0.98s)
-      t1.setAttribute('d', bez(P.p3r, lerp(P.p3r,P.p4r,k))); t1.style.opacity=.9; } else t1.style.opacity=0;
-    if(P.p5r&&t>=0.32&&t<0.38){ const k=ease((t-0.32)/(0.38-0.32));   // 연결 2 (0.84s)
-      t2.setAttribute('d', bez(P.p5r, lerp(P.p5r,P.p6r,k))); t2.style.opacity=.9; } else t2.style.opacity=0;
+    if(P.p3r&&t>=0.235&&t<0.315){ const k=ease(Math.max(0,Math.min(1,(t-0.24)/(0.31-0.24))));   // 연결 1 (0.98s) — 표시/숨김은 CSS(t1vis), JS는 좌표만
+      t1.setAttribute('d', bez(P.p3r, lerp(P.p3r,P.p4r,k))); }
+    if(P.p5r&&t>=0.315&&t<0.385){ const k=ease(Math.max(0,Math.min(1,(t-0.32)/(0.38-0.32))));   // 연결 2 (0.84s)
+      t2.setAttribute('d', bez(P.p5r, lerp(P.p5r,P.p6r,k))); }
     rafId=requestAnimationFrame(tick); }
   // 일시정지: 화면 밖 자동 정지(IO는 same-origin iframe에서도 최상위 뷰포트 기준) + 클릭 토글 + prefers-reduced-motion
   let rafId=null, pausedAt=0;
@@ -333,6 +336,7 @@ html.paused *{animation-play-state:paused!important}
       if(!rafId) rafId=requestAnimationFrame(tick); } }
   try{ new IntersectionObserver(es=>{ if(!PRM) setPaused(!es[0].isIntersecting, true); },{threshold:0.05}).observe(stage); }catch(e){}
   stage.addEventListener('click',()=>setPaused(!document.documentElement.classList.contains('paused')));
+  window.__bnDemoRestart=function(){ try{ document.documentElement.classList.remove('paused'); }catch(_){} restartLoop(); if(!rafId) rafId=requestAnimationFrame(tick); };   // 부모(설명서)가 로그인 게이트 해제 순간 호출 — 보는 시점에 1국면부터
   stage.style.cursor='pointer'; stage.setAttribute('data-tip','클릭: 일시정지/재생');
   const EMBED=document.documentElement.classList.contains('embed');
   function fitEmbed(){ if(EMBED) stage.style.transform='scale('+(innerWidth/1680)+')'; }

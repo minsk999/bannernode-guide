@@ -74,9 +74,9 @@ body{margin:0;background:var(--bg);color:var(--txt);font:13px/1.5 'Pretendard Va
 @keyframes bordV{0%,23.9%{border-color:var(--stroke)} 24%,44.4%{border-color:transparent} 44.5%,100%{border-color:var(--stroke)}}
 @keyframes bordB{0%,30.9%{border-color:var(--stroke)} 31%,44.4%{border-color:transparent} 44.5%,100%{border-color:var(--stroke)}}
 @keyframes bordA{0%,37.9%{border-color:var(--stroke)} 38%,44.4%{border-color:transparent} 44.5%,100%{border-color:var(--stroke)}}
-@keyframes nodeV{0%,16.5%{opacity:0;transform:scale(.45)} 18%{opacity:1;transform:scale(1.04)} 18.9%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}
-@keyframes nodeB{0%,16.5%{opacity:0;transform:scale(.45)} 18%{opacity:1;transform:scale(1.04)} 18.9%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}   /* 동시 임포트 · 실물 nodein 커브 */
-@keyframes nodeA{0%,16.5%{opacity:0;transform:scale(.45)} 18%{opacity:1;transform:scale(1.04)} 18.9%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}   /* 동시 임포트 · 실물 nodein 커브 */
+@keyframes nodeV{0%,16.5%{opacity:0;transform:scale(.88);animation-timing-function:cubic-bezier(.16,1,.3,1)} 18.9%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}
+@keyframes nodeB{0%,16.5%{opacity:0;transform:scale(.88);animation-timing-function:cubic-bezier(.16,1,.3,1)} 18.9%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}   /* 동시 임포트 · 실물 nodein 커브(세틀) */
+@keyframes nodeA{0%,16.5%{opacity:0;transform:scale(.88);animation-timing-function:cubic-bezier(.16,1,.3,1)} 18.9%,86%{opacity:1;transform:none} 89.5%,100%{opacity:0}}   /* 동시 임포트 · 실물 nodein 커브(세틀) */
 .wires{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .wires path{fill:none;stroke-width:2.2}
 .e1{stroke:url(#g1);opacity:0;animation:edge1 var(--T) var(--ease) infinite}

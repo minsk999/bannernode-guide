@@ -347,7 +347,14 @@
 
   .note b{color:var(--ink); font-weight:700;}
 
-  .note.warn{background:var(--surface-2); border-color:var(--line);}   /* 갈색 틴트 제거 — 경고는 주황 아이콘만으로(절제) */
+  .note.warn{background:var(--surface-2); border-color:var(--line);}
+.ostabs{display:flex; gap:5px; padding:4px; margin:0 0 20px; width:fit-content; background:var(--bg); border:1px solid var(--line); border-radius:13px;}
+.ostab{display:inline-flex; align-items:center; gap:8px; padding:9px 17px; border:0; border-radius:10px; background:transparent; color:var(--ink-2); font:inherit; font-size:13.5px; font-weight:600; cursor:pointer; transition:background .16s, color .16s;}
+.ostab svg{width:15px; height:15px; fill:currentColor;}
+.ostab:hover{color:var(--ink);}
+.ostab.on{background:var(--acc); color:#0a0b0f;}
+.ospane.off{display:none;}
+@media (max-width:520px){ .ostabs{width:100%;} .ostab{flex:1; justify-content:center;} }   /* 갈색 틴트 제거 — 경고는 주황 아이콘만으로(절제) */
 
   .note.warn .ic{background:var(--orange); color:#fff;}
 
@@ -448,7 +455,7 @@
 
     </div>
 
-    <span class="ver">v1.0.160</span>
+    <span class="ver">v1.0.161</span>
 
     <span class="spacer"></span>
 
@@ -568,7 +575,7 @@
 
           <div class="dl-head">
 
-            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.160</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
+            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.161</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
 
             <div class="dl-detect" id="dlDetect" role="status">접속 기기 확인 중…</div>
 
@@ -597,26 +604,54 @@
 
         <div class="card">
 
-          <ol class="steps">
+          <div class="ostabs" role="tablist" aria-label="운영체제 선택">
+            <button class="ostab on" id="osTabWin" type="button" role="tab" aria-selected="true" aria-controls="osPaneWin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.3l7.7-1.1v7.3H3zM12.2 4l8.8-1.3v8.8h-8.8zM3 13h7.7v7.3L3 19.2zM12.2 13H21v8.8L12.2 20.5z"/></svg>Windows</button>
+            <button class="ostab" id="osTabMac" type="button" role="tab" aria-selected="false" aria-controls="osPaneMac"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.36 12.76c0-2.28 1.86-3.38 1.95-3.43-1.06-1.55-2.72-1.77-3.31-1.79-1.4-.15-2.75.83-3.46.83-.72 0-1.82-.81-3-.79-1.54.02-2.96.9-3.75 2.28-1.6 2.78-.41 6.89 1.15 9.15.76 1.11 1.67 2.35 2.86 2.3 1.15-.05 1.58-.74 2.97-.74s1.78.74 3 .72c1.24-.02 2.02-1.12 2.78-2.24.87-1.28 1.23-2.52 1.25-2.59-.03-.01-2.4-.92-2.44-3.7zM14.1 5.86c.63-.77 1.06-1.83.94-2.9-.91.04-2.02.61-2.67 1.37-.59.68-1.1 1.77-.96 2.81 1.02.08 2.05-.52 2.69-1.28z"/></svg>macOS</button>
+          </div>
 
-            <li id="stepInstallWin"><span class="t"><b>압축 풀고 실행</b> — 받은 zip을 풀고 폴더 안의 <code>BannerNode.exe</code>를 더블클릭하면 앱 창이 뜹니다. 별도 설치 과정은 없어요.</span></li>
+          <div class="ospane" id="osPaneWin" role="tabpanel" aria-labelledby="osTabWin">
 
-            <li id="stepInstallMac" hidden><span class="t"><b>압축 풀고 앱 옮기기</b> — 받은 zip을 더블클릭하면 <b>BannerNode</b> 앱이 나옵니다. 이걸 <b>응용 프로그램</b> 폴더로 드래그한 뒤 더블클릭하세요. 처음 열 땐 아래 <b>주의</b> 항목의 Gatekeeper 절차를 한 번 거쳐야 합니다.</span></li>
+            <ol class="steps">
 
-            <li><span class="t"><b>ADEF 구글 로그인</b> — 처음 한 번 브라우저가 열리며 구글 로그인을 해요. <b>@adef.co.kr</b> 계정만 사용할 수 있고, 이후 180일간 유지됩니다.</span></li>
+              <li><span class="t"><b>압축 풀고 실행</b> — 받은 zip을 풀고 폴더 안의 <code>BannerNode.exe</code>를 더블클릭하면 앱 창이 뜹니다. 별도 설치 과정은 없어요.</span></li>
 
-            <li><span class="t"><b>NAS 자동 로그인</b> — 처음 한 번 사내 NAS 계정으로 로그인하면 다음부터는 자동으로 연결됩니다.</span></li>
+              <li><span class="t"><b>ADEF 구글 로그인</b> — 처음 한 번 브라우저가 열리며 구글 로그인을 해요. <b>@adef.co.kr</b> 계정만 사용할 수 있고, 이후 180일간 유지됩니다.</span></li>
 
-            <li><span class="t"><b>바로 사용</b> — 켜면 <b>시작 화면</b>에서 새 프로젝트를 만들거나 최근 프로젝트를 이어서 열어요. 왼쪽에 영상·배너를 불러오고, 캔버스에서 노드를 이어 렌더하면 됩니다.</span></li>
+              <li><span class="t"><b>NAS 자동 로그인</b> — 처음 한 번 사내 NAS 계정으로 로그인하면 다음부터는 자동으로 연결됩니다.</span></li>
 
-          </ol>
+              <li><span class="t"><b>바로 사용</b> — 켜면 <b>시작 화면</b>에서 새 프로젝트를 만들거나 최근 프로젝트를 이어서 열어요. 왼쪽에 영상·배너를 불러오고, 캔버스에서 노드를 이어 렌더하면 됩니다.</span></li>
 
-          <div class="note warn" id="warnWin"><span class="ic">!</span><span>처음 실행 시 Windows <b>스마트 앱 컨트롤 / SmartScreen</b>이 앱을 막을 수 있어요. 사내 배포용 앱이니 <b>추가 정보 → 실행</b>으로 열면 됩니다. 빌드 직후 첫 실행은 검사 때문에 뜨는 데 몇 초 걸릴 수 있어요(두 번째부터 빠름).</span></div>
+            </ol>
 
-          <div class="note warn" id="warnMac" hidden><span class="ic">!</span><span>처음 열면 <b>“확인되지 않은 개발자”</b> 경고가 뜹니다(사내 앱이라 애플 인증서가 없어서 정상이에요). <b>시스템 설정 ▸ 개인정보 보호 및 보안</b>을 열고 아래로 스크롤해 <b>“그래도 열기”</b>를 누르면 됩니다 — 한 번만 하면 이후엔 바로 열려요.<br>
-            <b>macOS 15(Sequoia)</b>부터는 <b>우클릭 ▸ 열기</b> 우회가 막혔으니 위 시스템 설정 경로로 진행하세요.<br>
-            <b>“손상되었기 때문에 열 수 없습니다”</b>가 뜬다면 파일이 깨진 게 아니라 인터넷 다운로드 격리 표시 때문이에요. <b>앱을 지우지 말고</b> 터미널에 아래 한 줄을 붙여넣고 엔터한 뒤 다시 열면 됩니다.<br>
-            <code>xattr -dr com.apple.quarantine /Applications/BannerNode.app</code></span></div>
+            <div class="note warn"><span class="ic">!</span><span>처음 실행 시 Windows <b>스마트 앱 컨트롤 / SmartScreen</b>이 앱을 막을 수 있어요. 사내 배포용 앱이니 <b>추가 정보 → 실행</b>으로 열면 됩니다. 빌드 직후 첫 실행은 검사 때문에 뜨는 데 몇 초 걸릴 수 있어요(두 번째부터 빠름).</span></div>
+
+          </div>
+
+          <div class="ospane off" id="osPaneMac" role="tabpanel" aria-labelledby="osTabMac">
+
+            <div class="note"><span class="ic">i</span><span><b>Apple 실리콘과 Intel은 받는 파일만 다르고, 설치·실행 방법은 완전히 같아요.</b> 위 다운로드에서 칩에 맞는 파일만 고르면 됩니다 — Apple 메뉴 ▸ 이 Mac에 관하여 ▸ <b>칩</b>이 <b>Apple M1~M4</b>면 Apple 실리콘, <b>Intel Core</b>면 Intel. <b>macOS 14.0(Sonoma) 이상</b>이 필요합니다.</span></div>
+
+            <ol class="steps">
+
+              <li><span class="t"><b>압축 풀고 앱 옮기기</b> — 받은 zip을 더블클릭하면 <b>BannerNode</b> 앱이 나옵니다. 이걸 <b>응용 프로그램</b> 폴더로 드래그한 뒤 더블클릭하세요.</span></li>
+
+              <li><span class="t"><b>ADEF 구글 로그인</b> — 처음 한 번 브라우저가 열리며 구글 로그인을 해요. <b>@adef.co.kr</b> 계정만 사용할 수 있고, 이후 180일간 유지됩니다.</span></li>
+
+              <li><span class="t"><b>NAS 자동 로그인</b> — 처음 한 번 사내 NAS 계정으로 로그인하면 다음부터는 자동으로 연결됩니다.</span></li>
+
+              <li><span class="t"><b>바로 사용</b> — 켜면 <b>시작 화면</b>에서 새 프로젝트를 만들거나 최근 프로젝트를 이어서 열어요. 왼쪽에 영상·배너를 불러오고, 캔버스에서 노드를 이어 렌더하면 됩니다.</span></li>
+
+            </ol>
+
+            <div class="note warn"><span class="ic">!</span><span><b>처음 열 때 “확인되지 않은 개발자” 경고가 뜹니다</b> — 사내 앱이라 애플 인증서가 없어서 나오는 정상 안내예요. <b>시스템 설정 ▸ 개인정보 보호 및 보안</b>을 열고 아래로 스크롤해 <b>“그래도 열기”</b>를 누르면 됩니다. 한 번만 하면 이후엔 바로 열려요.<br>
+              <b>macOS 15(Sequoia)</b>부터는 <b>우클릭 ▸ 열기</b> 우회가 막혔으니 반드시 위 시스템 설정 경로로 진행하세요.</span></div>
+
+            <div class="note warn"><span class="ic">!</span><span><b>“손상되었기 때문에 열 수 없습니다”가 뜬다면</b> — 파일이 깨진 게 아니라 인터넷 다운로드 격리 표시 때문이에요. <b>앱을 지우지 말고</b> <b>터미널</b>(Spotlight에서 “터미널” 검색)에 아래 한 줄을 붙여넣고 엔터한 뒤 다시 열면 됩니다.<br>
+              <code>xattr -dr com.apple.quarantine /Applications/BannerNode.app</code></span></div>
+
+            <div class="note"><span class="ic">i</span><span>앱이 아예 안 열리면 <b>터미널</b>에 <code>/Applications/BannerNode.app/Contents/MacOS/BannerNode</code>를 붙여넣고 실행해, 나오는 글자를 영상팀에 전달해 주세요. 앱이 오류 창을 띄우지 않게 만들어져 있어 터미널로 켜야 원인이 보입니다.</span></div>
+
+          </div>
 
         </div>
 
@@ -1015,7 +1050,21 @@
 
           <details class="cl-entry current" open>
 
-            <summary class="cl-head"><span class="cl-ver">v1.0.160</span><span class="cl-badge">최신</span><span class="cl-date">2026-07-28</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+            <summary class="cl-head"><span class="cl-ver">v1.0.161</span><span class="cl-badge">최신</span><span class="cl-date">2026-07-28</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+
+            <div class="cl-body"><div class="cl-body-inner"><ul>
+
+              <li><b>맥 로그인 화면 글자 깨짐 완전 해결</b> — 앱에 글꼴을 직접 넣어, 쓰는 컴퓨터에 어떤 글꼴이 깔려 있든 항상 같게 보여요</li>
+
+              <li><b>설명서 설치 안내를 Windows · macOS 탭으로 분리</b> — 쓰는 기기에 맞는 안내가 자동으로 열리고, 주의 사항도 각각 따로 보여줘요</li>
+
+            </ul></div></div>
+
+          </details>
+
+          <details class="cl-entry">
+
+            <summary class="cl-head"><span class="cl-ver">v1.0.160</span><span class="cl-date">2026-07-28</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
 
             <div class="cl-body"><div class="cl-body-inner"><ul>
 
@@ -1197,7 +1246,7 @@
 
 
 
-<footer>BannerNode v1.0.160 · 영상팀 내부용 · ADEF</footer>
+<footer>BannerNode v1.0.161 · 영상팀 내부용 · ADEF</footer>
 
 
 
@@ -1226,15 +1275,28 @@
     if(isMac && btns){
       macs.slice().reverse().forEach(function(p){ if(p[0]) btns.prepend(p[0]); });
       const note = document.getElementById('dlMacNote'); if(note) note.hidden = false;
-      // 설치 절차·주의 박스도 맥용으로 교체 — 맥 zip에는 BannerNode.exe 가 없다(앱 번들 1개뿐).
-      const _sw = document.getElementById('stepInstallWin'), _sm = document.getElementById('stepInstallMac');
-      if(_sw) _sw.hidden = true; if(_sm) _sm.hidden = false;
-      const _ww = document.getElementById('warnWin'), _wm = document.getElementById('warnMac');
-      if(_ww) _ww.hidden = true; if(_wm) _wm.hidden = false;
       const _so = document.getElementById('dlSubOs');
       if(_so) _so.innerHTML = '맥은 <b>응용 프로그램</b> 폴더로 드래그 후 실행';
       if(!MAC_READY && win) win.classList.add('primary');   // 준비 전엔 실 다운로드=Windows가 주 버튼
     } else if(win){ win.classList.add('primary'); }
+  })();
+
+  // 설치 안내 OS 탭 — 접속 기기로 자동 선택하되, 언제든 눌러 바꿔 볼 수 있게 한다
+  // (윈도우 쓰는 사람이 맥 쓰는 동료에게 안내할 때도 그대로 보여줄 수 있어야 하므로).
+  // ⚠️ 예전엔 hidden 속성으로 감췄는데 .steps li{display:flex}·.note{display:flex}가
+  //    UA 기본 [hidden]{display:none}을 덮어써서 두 OS 안내가 동시에 보였다 → .off 클래스로 전환.
+  (function(){
+    const tw = document.getElementById('osTabWin'), tm = document.getElementById('osTabMac');
+    const pw = document.getElementById('osPaneWin'), pm = document.getElementById('osPaneMac');
+    if(!tw || !tm || !pw || !pm) return;
+    function pick(mac){
+      tw.classList.toggle('on', !mac); tm.classList.toggle('on', mac);
+      tw.setAttribute('aria-selected', String(!mac)); tm.setAttribute('aria-selected', String(mac));
+      pw.classList.toggle('off', mac);  pm.classList.toggle('off', !mac);
+    }
+    tw.addEventListener('click', function(){ pick(false); });
+    tm.addEventListener('click', function(){ pick(true); });
+    pick(/Mac|iPhone|iPad/.test(navigator.platform || '') || /Macintosh/.test(navigator.userAgent || ''));
   })();
 
 

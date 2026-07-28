@@ -352,8 +352,9 @@
 .ostab{display:inline-flex; align-items:center; gap:8px; padding:9px 17px; border:0; border-radius:10px; background:transparent; color:var(--ink-2); font:inherit; font-size:13.5px; font-weight:600; cursor:pointer; transition:background .16s, color .16s;}
 .ostab svg{width:15px; height:15px; fill:currentColor;}
 .ostab:hover{color:var(--ink);}
-.ostab.on{background:var(--acc); color:#0a0b0f;}
+.ostab.on{background:var(--lime); color:var(--lime-ink);}
 .ospane.off{display:none;}
+.ospane > .note + .steps{margin-top:18px;}
 @media (max-width:520px){ .ostabs{width:100%;} .ostab{flex:1; justify-content:center;} }   /* 갈색 틴트 제거 — 경고는 주황 아이콘만으로(절제) */
 
   .note.warn .ic{background:var(--orange); color:#fff;}

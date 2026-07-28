@@ -492,6 +492,8 @@
 
       <a href="#cut">컷 편집</a>
 
+      <a href="#guides">지면 가이드</a>
+
       <a href="#nas">NAS 브라우저</a>
 
       <a href="#shortcuts">단축키</a>
@@ -554,7 +556,11 @@
 
             <li><span class="t"><b>선 연결</b> — 영상 노드의 출력점에서 배너 노드로 드래그해 연결. 연결 1개 = 렌더 잡 1개.</span></li>
 
-            <li><span class="t"><b>포맷 · 옵션</b> — 오른쪽 렌더큐에서 잡별로 <b>mp4 · mov · gif · png</b> 포맷과 옵션을 정합니다.</span></li>
+            <li><span class="t"><b>구도 잡기</b> <small>· 선택</small> — 렌더큐 카드의 <b>썸네일을 클릭</b>하면 합성 미리보기가 열려요. 배너 구멍 안의 영상을 <b>드래그해 위치</b>를 옮기고 <b>휠로 확대</b>할 수 있습니다. 기본은 구멍을 가득 채우는 가운데 맞춤이에요. 여기서 잡은 구도는 렌더 결과에 그대로 반영됩니다.</span></li>
+
+            <li><span class="t"><b>파일명 · 포맷</b> — 렌더큐 카드를 <b>더블클릭</b>하거나 <b>우클릭</b>하면(카드를 하나만 골랐다면 <span class="kbd">F2</span>로도) 출력 설정이 열려요. 여기서 <b>파일명</b>과 <b>mp4 · mov · gif · png</b> 포맷을 잡마다 따로 정합니다. <small>해상도·용량·비트레이트·fps는 렌더큐 아래 ‘용량·화질 설정’에서 모든 잡에 일괄 적용돼요.</small></span></li>
+
+            <li><span class="t"><b>출력 위치 정하기</b> — 렌더 버튼 바로 위 <b>출력</b> 칸에서 저장할 곳을 먼저 정해요. 왼쪽 폴더 버튼으로 <b>로컬 폴더</b> · <b>NAS 폴더</b> 중에 고르거나, 칸에 경로를 직접 붙여넣어도 됩니다. <b>정하지 않으면 렌더가 시작되지 않아요.</b></span></li>
 
             <li><span class="t"><span class="fic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span> <b>렌더 실행</b> <small>·</small> <span class="kbd">Enter</span> — 로컬에서 ffmpeg가 돌고 진행률이 실시간으로 차올라요.</span></li>
 
@@ -562,7 +568,29 @@
 
           </ol>
 
-          <div class="note"><span class="ic">i</span><span>음원 노드를 함께 연결하면 <b>영상 + 배너 + BGM</b>이 한 번에 합성돼요. 여러 잡을 걸어 두면 순서대로 렌더됩니다. 영상 노드를 우클릭하면 <b>렌더큐로 바로 보내기</b>로 배너 없이 영상만 출력 잡으로 넣을 수도 있어요.</span></div>
+          <div class="note"><span class="ic">i</span><span>음원 노드를 함께 연결하면 <b>영상 + 배너 + BGM</b>이 한 번에 합성돼요. 음원 노드를 더블클릭하면 파형 편집기가 열려 <b>쓸 구간</b>과 <b>원본 교체 / 원본과 믹스</b>, <b>볼륨</b>을 정할 수 있습니다. 영상 노드를 우클릭하면 <b>렌더큐로 바로 보내기</b>로 배너 없이 영상만 출력 잡으로 넣을 수도 있어요.</span></div>
+
+          <div class="note"><span class="ic">i</span><span>여러 잡을 걸어 두면 기본은 <b>한 번에 하나씩 순서대로</b> 렌더돼요. 설정에서 <b>동시 렌더 수</b>를 올릴 수도 있지만, 렌더 하나가 이미 CPU 코어를 여러 개 쓰기 때문에 보통은 빨라지지 않아요 — 기본값을 권합니다.</span></div>
+
+        </div>
+
+        <div class="card">
+
+          <h3>출력 포맷</h3>
+
+          <ul class="bul">
+
+            <li><b>mp4</b> <small>· 기본값</small> — H.264 영상 + AAC 소리. 어디서든 잘 열려요.</li>
+
+            <li><b>mov</b> — 화질·코덱 설정은 mp4와 <b>완전히 같고</b> 컨테이너만 QuickTime이에요. <small>알파(투명)나 ProRes로는 나오지 않습니다.</small></li>
+
+            <li><b>gif</b> — 팔레트를 두 번 계산해 뽑는 고품질 움짤. <b>소리는 들어가지 않아요.</b></li>
+
+            <li><b>png</b> — 파일 하나가 아니라 <b>PNG 시퀀스</b>예요. 출력 이름으로 폴더가 하나 생기고 그 안에 <code>이름_0001.png</code>부터 연번으로 쌓입니다. <small>소리는 없고, 같은 이름의 폴더가 있으면 뒤에 번호가 붙어요.</small></li>
+
+          </ul>
+
+          <div class="note warn"><span class="ic">!</span><span>gif · png는 소리가 담기지 않는 포맷이라 <b>음원을 연결해 두어도 무시</b>돼요. <b>목표 용량 · 비트레이트</b>도 mp4 · mov에만 적용되니, gif · png는 <b>fps</b>로 용량을 조절해 주세요.</span></div>
 
         </div>
 
@@ -680,7 +708,7 @@
 
             <ul class="bul">
 
-              <li><b>영상 · 배너 라이브러리</b> — 불러온 소스가 카드로 쌓여요. 미리보기도 가능합니다.</li>
+              <li><b>영상 · 배너 · 음원 라이브러리</b> — 불러온 소스가 종류별로 쌓여요. 카드에 <b>마우스를 올리면</b> 그 자리에서 미리보기가 재생되고, 카드를 고르고 <span class="kbd">Space</span>를 누르면 크게 볼 수 있어요.</li>
 
               <li>카드를 <b>캔버스로 드래그</b>하면 노드가 만들어져요.</li>
 
@@ -696,7 +724,7 @@
 
               <li><b>영상 노드 → 배너 노드</b>로 선을 연결. 연결 하나가 렌더 잡 하나예요.</li>
 
-              <li>휠로 확대·축소, 빈 곳 드래그로 이동. <span class="kbd">S</span>로 화면 맞춤.</li>
+              <li>휠로 확대·축소. <b>가운데 버튼</b>이나 <span class="kbd">Space</span>를 누른 채 끌면 화면이 이동하고, 그냥 <b>빈 곳을 끌면 범위 선택</b>이에요. <span class="kbd">S</span>로 화면 맞춤, <span class="kbd">W</span>로 100% 보기.</li>
 
             </ul>
 
@@ -710,7 +738,7 @@
 
               <li>연결한 잡이 카드로 쌓이고, <b>진행률</b>이 실시간으로 표시돼요.</li>
 
-              <li>출력 포맷(mp4 · mov · gif · png)과 옵션을 잡별로 정합니다.</li>
+              <li>카드를 <b>더블클릭</b>하거나 <b>우클릭</b>하면 출력 설정이 열려요 — <b>파일명</b>과 <b>포맷</b>(mp4 · mov · gif · png)은 잡마다 따로 정합니다. <small>자세한 포맷 차이는 01 참고</small></li>
 
             </ul>
 
@@ -742,7 +770,7 @@
 
         <div class="sec-head"><span class="sec-num">04</span><h2>소스 불러오기</h2></div>
 
-        <p class="lead">영상과 배너를 왼쪽 라이브러리에 담는 네 가지 방법.</p>
+        <p class="lead">영상과 배너, 음원(BGM)을 왼쪽 라이브러리에 담는 네 가지 방법.</p>
 
         <div class="card">
 
@@ -750,15 +778,17 @@
 
             <li><span class="fic" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M5.6 2.6h7.2L17.9 7.7V12.4a5 5 0 0 0-5.5 8.2H5.6A1.4 1.4 0 0 1 4.2 19.2V4A1.4 1.4 0 0 1 5.6 2.6zM12.2 4.4V8.4h4z"/><path d="M16.6 13.2a4.4 4.4 0 1 0 0 8.8 4.4 4.4 0 0 0 0-8.8zm.9 2.2v1.5h1.5v1.4h-1.5v1.5h-1.4v-1.5h-1.5v-1.4h1.5v-1.5z"/></svg></span> <b>파일 추가</b> <small>· <span class="kbd">D</span></small> — 파일 선택창에서 영상·배너를 골라 추가.</li>
 
-            <li><span class="fic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/></svg></span> <b>폴더 스캔</b> <small>· <span class="kbd">A</span></small> — 폴더를 통째로 훑어 영상·배너를 한 번에 담기.</li>
+            <li><span class="fic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/></svg></span> <b>폴더 스캔</b> <small>· <span class="kbd">A</span></small> — 폴더 안의 영상·배너를 한 번에 담기. <small>하위 폴더까지는 들어가지 않고, 음원은 담기지 않아요 — 음원은 파일 추가나 드래그로 넣어 주세요.</small></li>
 
-            <li><b>드래그 앤 드롭</b> — 탐색기에서 파일을 앱 위로 끌어다 놓기. 놓는 즉시 카드가 생기고 썸네일이 바로 채워져요.</li>
+            <li><b>드래그 앤 드롭</b> — 탐색기에서 파일을 앱 위로 끌어다 놓기. Windows에서는 원본을 복사하지 않고 그대로 참조해 <b>용량과 상관없이 빠르고</b>, 다 읽어 들인 뒤 카드가 <b>한 번에</b> 나타나요. <b>캔버스에 놓으면</b> 그 자리에 노드까지 함께 만들어집니다.</li>
 
             <li><span class="fic" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M3.5 5h17a1.4 1.4 0 0 1 1.4 1.4v3.2a1.4 1.4 0 0 1-1.4 1.4h-17A1.4 1.4 0 0 1 2.1 9.6V6.4A1.4 1.4 0 0 1 3.5 5zm1.6 1.9v2.2h2.2V6.9z"/><path fill-rule="evenodd" d="M3.5 13h17a1.4 1.4 0 0 1 1.4 1.4v3.2a1.4 1.4 0 0 1-1.4 1.4h-17A1.4 1.4 0 0 1 2.1 17.6v-3.2A1.4 1.4 0 0 1 3.5 13zm1.6 1.9v2.2h2.2v-2.2z"/></svg></span> <b>NAS에서 가져오기</b> — NAS 브라우저에서 파일을 골라 라이브러리로. <small>영상은 스트리밍으로 미리보기까지 돼요.</small></li>
 
           </ul>
 
           <div class="note"><span class="ic">i</span><span>배너는 <b>구멍이 투명하게(알파) 뚫린 PNG</b>를 써야 그 자리에 영상이 비쳐요. 배너가 위, 영상이 아래에 깔립니다.</span></div>
+
+          <div class="note warn"><span class="ic">!</span><span><b>원본 파일을 옮기거나 지우면 카드가 흐려지고 ‘연결 끊김’이 떠요.</b> 불러온 소스는 사본을 만들지 않고 <b>원본을 그대로 참조</b>하거든요. 끊긴 카드가 있으면 렌더가 시작되지 않으니, 카드를 <b>우클릭 → 파일 다시 연결</b>로 되살려 주세요. 다시 연결해도 노드 연결과 음원 구간은 그대로 유지됩니다.</span></div>
 
         </div>
 
@@ -789,7 +819,11 @@
 
               <li>영상을 <b>잘리지 않게</b> 원하는 해상도로 리사이즈해요(맞춤 + 가운데 정렬).</li>
 
-              <li>남는 여백은 <b>레터박스</b>로 — 검정 · 지정 색 · 원본 블러 중 선택.</li>
+            <li>캔버스의 <b>영상 노드를 우클릭 → 크기·배경 변환</b>에서 켜요.</li>
+
+            <li><b>1:1 · 9:16 · 16:9 · 4:5</b> 프리셋과 직접 입력을 제공하고, <b>여러 크기를 한 번에 고르면 크기마다 렌더 잡이 하나씩</b> 만들어져요.</li>
+
+              <li>남는 여백은 <b>레터박스</b>로 — <b>검정 · 단색 · 블러(영상)</b> 중 선택. 블러를 고르면 <b>블러 강도 · 어둡게</b>를 슬라이더로 조절할 수 있어요.</li>
 
             </ul>
 
@@ -803,6 +837,8 @@
 
               <li>파일 <b>용량을 줄여요</b> — 해상도 · fps · 비트레이트로 조절.</li>
 
+            <li>렌더 버튼 아래 접이식 <b>용량·화질 설정</b> 패널에서 켜요.</li>
+
               <li><b>목표 MB</b>를 정하면 2-pass 인코딩으로 그 용량에 맞춰 뽑습니다.</li>
 
             </ul>
@@ -811,7 +847,7 @@
 
         </div>
 
-        <div class="note"><span class="ic">i</span><span>두 기능 모두 화면 하단의 <b>접이식 확장 패널</b>에서 켜요. 설정은 렌더큐의 모든 잡(합성 · 음원 · 리사이즈 · 컷)에 <b>일괄 적용</b>됩니다.</span></div>
+        <div class="note"><span class="ic">i</span><span>두 기능은 <b>여는 곳이 달라요</b> — <b>용량 베리</b>는 렌더 버튼 아래 접이식 <b>용량·화질 설정</b> 패널(해상도 · 목표 용량 · 비트레이트 · fps), <b>사이즈 베리</b>는 <b>영상 노드 우클릭 → 크기·배경 변환</b>입니다. 용량·화질 설정 값은 렌더큐의 모든 잡에 일괄 적용돼요. <small>다만 해상도는 사이즈 베리 잡에선 각 잡의 타겟 크기가 우선이고, 배너 합성을 gif · png로 뽑을 때는 배너 크기 그대로 나갑니다.</small></span></div>
 
       </section>
 
@@ -831,7 +867,9 @@
 
             <li><span class="fic st" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="6.5" cy="6.5" r="2.4"/><circle cx="6.5" cy="17.5" r="2.4"/><path d="M8.6 7.6L20 18M8.6 16.4L20 6"/></svg></span> <b>컷편집</b> — 영상을 우클릭 → <b>컷편집</b>으로 시작·끝 구간을 지정해요.</li>
 
-            <li><b>프레임 이동</b> — 영상 크게 보기에서 <span class="kbd">A</span> <span class="kbd">S</span> <span class="kbd">D</span> <span class="kbd">W</span>로 프레임을 한 칸씩 넘기며 정확한 지점을 잡습니다.</li>
+            <li><b>크게 보기</b> — 영상 카드를 하나 고르고 <span class="kbd">Space</span>를 누르면 큰 화면으로 열려요. 큰 화면에서 <span class="kbd">Space</span>는 재생/정지, <span class="kbd">Esc</span>는 닫기예요.</li>
+
+            <li><b>프레임 이동 · 구간 지정</b> — <span class="kbd">A</span> <span class="kbd">D</span>(또는 <span class="kbd">←</span> <span class="kbd">→</span>)로 한 프레임씩 이동하고, 원하는 지점에서 <span class="kbd">W</span>(<span class="kbd">↑</span>)로 <b>시작</b>, <span class="kbd">S</span>(<span class="kbd">↓</span>)로 <b>끝</b>을 찍어요. 컷편집 창 · 크게 보기 · 크기·배경 변환에서 모두 같습니다.</li>
 
             <li>지정한 구간은 그 영상에 <b>기억</b>돼서, 배너·음원과 함께 렌더할 때도 그대로 적용돼요.</li>
 
@@ -843,11 +881,43 @@
 
 
 
-      <!-- 7. NAS 브라우저 -->
+      <!-- 7. 지면 가이드 -->
+
+      <section id="guides">
+
+        <div class="sec-head"><span class="sec-num">07</span><h2>지면 가이드</h2></div>
+
+        <p class="lead">매체에 올렸을 때 UI에 가려지는 곳을, 렌더 전에 화면에서 미리 확인해요.</p>
+
+        <div class="card">
+
+          <ul class="bul">
+
+            <li>세로 <b>9:16</b> 화면에서만 나타나요. <b>크게 보기 · 컷 편집</b>을 열면 오른쪽 위에 <b>가이드 버튼</b>이 생기고, <b>크기·배경 변환</b>에서는 바꿀 타겟 크기가 9:16일 때 나타납니다.</li>
+
+            <li>버튼을 누르면 <b>Instagram · YouTube · TikTok</b> 광고 지면과 <b>오가닉</b> 지면 목록이 나와요. 고르면 그 매체의 UI 레이아웃이 영상 위에 겹쳐 보입니다.</li>
+
+            <li><span class="kbd">G</span>는 마지막에 쓴 가이드를 켜고 꺼요. <span class="kbd">I</span> <span class="kbd">Y</span> <span class="kbd">T</span>는 각각 Instagram · YouTube · TikTok 기본 가이드를 바로 불러오고, 같은 가이드가 켜져 있을 때 다시 누르면 꺼집니다.</li>
+
+            <li>메뉴의 <b>위험영역 강조</b>를 켜면 매체 UI에 완전히 가려지는 곳이 <b>빨강</b>, 대비가 떨어져 잘 안 보이는 곳이 <b>노랑</b>으로 칠해져요.</li>
+
+            <li>매체별 기본 가이드는 <b>설정 → 지면 가이드</b>에서 바꿀 수 있어요. 목록의 ★가 초기 기본값입니다.</li>
+
+          </ul>
+
+          <div class="note"><span class="ic">i</span><span><b>가이드는 화면에서만 보여요.</b> 렌더 결과물에는 절대 들어가지 않습니다 — 안심하고 켜 두고 작업하세요.</span></div>
+
+        </div>
+
+      </section>
+
+
+
+      <!-- 8. NAS 브라우저 -->
 
       <section id="nas">
 
-        <div class="sec-head"><span class="sec-num">07</span><h2>NAS 브라우저</h2></div>
+        <div class="sec-head"><span class="sec-num">08</span><h2>NAS 브라우저</h2></div>
 
         <p class="lead">사내 NAS를 앱 안에서 바로 탐색·미리보기·다운로드. <span class="kbd">Tab</span>으로 렌더큐와 전환해요.</p>
 
@@ -903,17 +973,33 @@
 
         </div>
 
+        <div class="card">
+
+          <h3>NAS로 바로 출력</h3>
+
+          <ul class="bul">
+
+            <li>렌더 버튼 위 <b>출력</b> 칸의 폴더 버튼을 눌러 <b>NAS 폴더 출력</b>을 고르면 경로가 NAS 쪽으로 바뀌어요. <small>먼저 NAS 브라우저에서 로그인돼 있어야 합니다.</small></li>
+
+            <li>렌더는 <b>내 PC에서</b> 돌고, 완성된 파일만 NAS로 자동 업로드돼요. 진행 중에는 잡 카드에 <b>업로드</b>로 표시됩니다.</li>
+
+            <li>끝나면 NAS 브라우저가 그 폴더로 열리고 방금 만든 파일이 선택돼 있어요.</li>
+
+          </ul>
+
+        </div>
+
       </section>
 
 
 
-      <!-- 8. 단축키 -->
+      <!-- 9. 단축키 -->
 
       <section id="shortcuts">
 
-        <div class="sec-head"><span class="sec-num">08</span><h2>단축키</h2></div>
+        <div class="sec-head"><span class="sec-num">09</span><h2>단축키</h2></div>
 
-        <p class="lead">대부분의 조작은 키 하나로. 아래 키는 전부 설정 → 단축키에서 원하는 키로 바꿀 수 있어요.</p>
+        <p class="lead">대부분의 조작은 키 하나로. 아래 <b>첫 번째 표</b>의 키는 설정 → 단축키에서 원하는 키로 바꿀 수 있어요. <b>F2</b>와 두 번째 표의 <b>고정 키</b>는 바꿀 수 없습니다.</p>
 
         <div class="card">
 
@@ -933,6 +1019,12 @@
 
             <div class="key-row"><div class="label">렌더 실행</div><div class="keys"><span class="key-cap">Enter</span></div></div>
 
+            <div class="key-row"><div class="label">노드 연결 <small>2개 이상 고르면 고른 것끼리 · 아무것도 안 고르면 캔버스 전체</small></div><div class="keys"><span class="key-cap">C</span></div></div>
+
+            <div class="key-row"><div class="label">연결 끊기 <small>고른 노드에 이어진 연결만 · 아무것도 안 고르면 전체 해제</small></div><div class="keys"><span class="key-cap">X</span></div></div>
+
+            <div class="key-row"><div class="label">지면 가이드 <small>G=마지막 가이드 토글 · I/Y/T=Instagram·YouTube·TikTok 기본</small></div><div class="keys"><span class="key-cap">G</span><span class="key-cap">I</span><span class="key-cap">Y</span><span class="key-cap">T</span></div></div>
+
             <div class="key-row"><div class="label">렌더큐 · NAS 전환</div><div class="keys"><span class="key-cap">Tab</span></div></div>
 
             <div class="key-row"><div class="label">이름 바꾸기 / 출력 설정 <small>NAS 항목 / 렌더큐 카드</small></div><div class="keys"><span class="key-cap">F2</span></div></div>
@@ -941,11 +1033,33 @@
 
             <div class="key-row"><div class="label">새로고침 <small>일반: 앱 전체 · NAS 브라우저: 폴더 새로고침</small></div><div class="keys"><span class="key-cap">F5</span></div></div>
 
-            <div class="key-row"><div class="label">창 모드 순환 <small>일반 → 최대화 → 전체화면</small></div><div class="keys"><span class="key-cap">F</span></div></div>
+            <div class="key-row"><div class="label">창 모드 순환 <small>일반 → 최대화 → 전체화면 · Windows 전용</small></div><div class="keys"><span class="key-cap">F</span></div></div>
 
-            <div class="key-row"><div class="label">창 스왑 <small>일반 ↔ 최대화</small></div><div class="keys"><span class="key-cap">F11</span></div></div>
+            <div class="key-row"><div class="label">창 스왑 <small>일반 ↔ 최대화 · Windows 전용</small></div><div class="keys"><span class="key-cap">F11</span></div></div>
 
             <div class="key-row"><div class="label">설정 열기 <small>다시 누르면 닫혀요</small></div><div class="keys"><span class="key-cap">O</span></div></div>
+
+            <div class="key-row"><div class="label">NAS 캐시 비우기</div><div class="keys"><span class="key-cap">Ctrl</span><span class="key-cap">Alt</span><span class="key-cap">/</span></div></div>
+
+            <div class="key-row"><div class="label">로컬 캐시 비우기</div><div class="keys"><span class="key-cap">Ctrl</span><span class="key-cap">Alt</span><span class="key-cap">*</span></div></div>
+
+          </div>
+
+          <h3 style="margin:24px 0 0">바꿀 수 없는 고정 키</h3>
+
+          <div class="key-table">
+
+            <div class="key-row"><div class="label">크게 보기 · 재생/정지 · 화면 이동 <small>소스 카드를 하나 골랐을 때 크게 보기 · 큰 화면에서는 재생/정지 · 아무것도 안 골랐을 때는 누른 채 캔버스를 끌어 화면 이동</small></div><div class="keys"><span class="key-cap">Space</span></div></div>
+
+            <div class="key-row"><div class="label">닫기 <small>큰 화면 · 컷 편집 · 크기 변환 · 설정 · 각종 팝업</small></div><div class="keys"><span class="key-cap">Esc</span></div></div>
+
+            <div class="key-row"><div class="label">새 프로젝트 · 열기 · 저장 · 다른 이름으로 저장</div><div class="keys"><span class="key-cap">Ctrl+N</span><span class="key-cap">Ctrl+O</span><span class="key-cap">Ctrl+S</span><span class="key-cap">Ctrl+⇧+S</span></div></div>
+
+            <div class="key-row"><div class="label">실행 취소 · 다시 실행</div><div class="keys"><span class="key-cap">Ctrl+Z</span><span class="key-cap">Ctrl+Y</span></div></div>
+
+            <div class="key-row"><div class="label">복사 · 잘라내기 · 붙여넣기 <small>캔버스에서는 노드 · NAS 브라우저에서는 NAS 파일</small></div><div class="keys"><span class="key-cap">Ctrl+C</span><span class="key-cap">Ctrl+X</span><span class="key-cap">Ctrl+V</span></div></div>
+
+            <div class="key-row"><div class="label">복제 · 전체 선택 · 삭제 <small>마지막으로 클릭한 영역 기준이에요</small></div><div class="keys"><span class="key-cap">Ctrl+D</span><span class="key-cap">Ctrl+A</span><span class="key-cap">Delete</span></div></div>
 
           </div>
 
@@ -959,7 +1073,7 @@
 
       <section id="window">
 
-        <div class="sec-head"><span class="sec-num">09</span><h2>창 · 새로고침</h2></div>
+        <div class="sec-head"><span class="sec-num">10</span><h2>창 · 새로고침</h2></div>
 
         <div class="grid2">
 
@@ -969,9 +1083,11 @@
 
             <ul class="bul">
 
-              <li><span class="kbd">F</span> — 일반 → 최대화 → 전체화면을 순서대로 돌아요.</li>
+              <li><span class="kbd">F</span> — 일반 → 최대화 → 전체화면을 순서대로 돌아요. <small>Windows 전용</small></li>
 
-              <li><span class="kbd">F11</span> — 일반 ↔ 최대화 빠른 전환.</li>
+              <li><span class="kbd">F11</span> — 일반 ↔ 최대화 빠른 전환. <small>Windows 전용</small></li>
+
+            <li>맥에서는 이 두 키가 동작하지 않아요. 왼쪽 위 <b>신호등 버튼</b>을 쓰고, 전체화면은 <b>⌃⌘F</b>로 전환하시면 됩니다.</li>
 
             </ul>
 
@@ -1003,7 +1119,7 @@
 
       <section id="faq">
 
-        <div class="sec-head"><span class="sec-num">10</span><h2>자주 묻는 질문</h2></div>
+        <div class="sec-head"><span class="sec-num">11</span><h2>자주 묻는 질문</h2></div>
 
         <div class="card">
 
@@ -1045,7 +1161,7 @@
 
       <section id="changelog">
 
-        <div class="sec-head"><span class="sec-num">11</span><h2>변경 내역</h2></div>
+        <div class="sec-head"><span class="sec-num">12</span><h2>변경 내역</h2></div>
 
         <p class="lead">최근 업데이트 요약이에요.</p>
 

@@ -568,7 +568,7 @@
 
           <div class="dl-head">
 
-            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.159</span></h3><p class="dl-sub">무설치 — 압축을 풀고 <code>BannerNode.exe</code>를 실행하면 끝.</p></div>
+            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.159</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
 
             <div class="dl-detect" id="dlDetect" role="status">접속 기기 확인 중…</div>
 
@@ -585,6 +585,7 @@
           </div>
 
           <p class="dl-macnote" id="dlMacNote" hidden>
+            <b>macOS 14.0(Sonoma) 이상이 필요해요.</b> Apple 메뉴 ▸ 이 Mac에 관하여에서 확인하세요 — 그보다 낮으면 앱이 열리다 그냥 꺼집니다.<br>
             <b>macOS 버전은 지금 구동 테스트 중이에요.</b> 이상한 점이 있으면 영상팀에 알려주세요 — Windows 버전은 정식입니다.<br>
             <b>어느 걸 받아야 하나요?</b> 화면 왼쪽 위 <b>Apple 메뉴 ▸ 이 Mac에 관하여</b>에서 <b>칩</b>을 확인하세요 —
             <b>Apple M1/M2/M3/M4</b>면 <b>Apple 실리콘</b>, <b>Intel Core</b>면 <b>Intel</b>입니다.<br>
@@ -598,7 +599,9 @@
 
           <ol class="steps">
 
-            <li><span class="t"><b>압축 풀고 실행</b> — 받은 zip을 풀고 폴더 안의 <code>BannerNode.exe</code>를 더블클릭하면 앱 창이 뜹니다. 별도 설치 과정은 없어요.</span></li>
+            <li id="stepInstallWin"><span class="t"><b>압축 풀고 실행</b> — 받은 zip을 풀고 폴더 안의 <code>BannerNode.exe</code>를 더블클릭하면 앱 창이 뜹니다. 별도 설치 과정은 없어요.</span></li>
+
+            <li id="stepInstallMac" hidden><span class="t"><b>압축 풀고 앱 옮기기</b> — 받은 zip을 더블클릭하면 <b>BannerNode</b> 앱이 나옵니다. 이걸 <b>응용 프로그램</b> 폴더로 드래그한 뒤 더블클릭하세요. 처음 열 땐 아래 <b>주의</b> 항목의 Gatekeeper 절차를 한 번 거쳐야 합니다.</span></li>
 
             <li><span class="t"><b>ADEF 구글 로그인</b> — 처음 한 번 브라우저가 열리며 구글 로그인을 해요. <b>@adef.co.kr</b> 계정만 사용할 수 있고, 이후 180일간 유지됩니다.</span></li>
 
@@ -608,7 +611,12 @@
 
           </ol>
 
-          <div class="note warn"><span class="ic">!</span><span>처음 실행 시 Windows <b>스마트 앱 컨트롤 / SmartScreen</b>이 앱을 막을 수 있어요. 사내 배포용 앱이니 <b>추가 정보 → 실행</b>으로 열면 됩니다. 빌드 직후 첫 실행은 검사 때문에 뜨는 데 몇 초 걸릴 수 있어요(두 번째부터 빠름).</span></div>
+          <div class="note warn" id="warnWin"><span class="ic">!</span><span>처음 실행 시 Windows <b>스마트 앱 컨트롤 / SmartScreen</b>이 앱을 막을 수 있어요. 사내 배포용 앱이니 <b>추가 정보 → 실행</b>으로 열면 됩니다. 빌드 직후 첫 실행은 검사 때문에 뜨는 데 몇 초 걸릴 수 있어요(두 번째부터 빠름).</span></div>
+
+          <div class="note warn" id="warnMac" hidden><span class="ic">!</span><span>처음 열면 <b>“확인되지 않은 개발자”</b> 경고가 뜹니다(사내 앱이라 애플 인증서가 없어서 정상이에요). <b>시스템 설정 ▸ 개인정보 보호 및 보안</b>을 열고 아래로 스크롤해 <b>“그래도 열기”</b>를 누르면 됩니다 — 한 번만 하면 이후엔 바로 열려요.<br>
+            <b>macOS 15(Sequoia)</b>부터는 <b>우클릭 ▸ 열기</b> 우회가 막혔으니 위 시스템 설정 경로로 진행하세요.<br>
+            <b>“손상되었기 때문에 열 수 없습니다”</b>가 뜬다면 파일이 깨진 게 아니라 인터넷 다운로드 격리 표시 때문이에요. <b>앱을 지우지 말고</b> 터미널에 아래 한 줄을 붙여넣고 엔터한 뒤 다시 열면 됩니다.<br>
+            <code>xattr -dr com.apple.quarantine /Applications/BannerNode.app</code></span></div>
 
         </div>
 
@@ -1194,7 +1202,7 @@
       macs.forEach(function(p){ const el = p[0]; if(!el) return;
         el.classList.remove('soon'); el.setAttribute('href', p[1]);
         el.removeAttribute('aria-disabled'); el.removeAttribute('tabindex');
-        const _s = el.querySelector('small'); if(_s) _s.textContent = '.zip';
+        const _s = el.querySelector('small'); if(_s) _s.textContent = '.zip · macOS 14+';
       });
     }
     // ⚠️ Apple 실리콘도 navigator.platform/UA가 'Intel Mac OS X'로 나온다 → 아키텍처 자동 선택 금지.
@@ -1202,6 +1210,13 @@
     if(isMac && btns){
       macs.slice().reverse().forEach(function(p){ if(p[0]) btns.prepend(p[0]); });
       const note = document.getElementById('dlMacNote'); if(note) note.hidden = false;
+      // 설치 절차·주의 박스도 맥용으로 교체 — 맥 zip에는 BannerNode.exe 가 없다(앱 번들 1개뿐).
+      const _sw = document.getElementById('stepInstallWin'), _sm = document.getElementById('stepInstallMac');
+      if(_sw) _sw.hidden = true; if(_sm) _sm.hidden = false;
+      const _ww = document.getElementById('warnWin'), _wm = document.getElementById('warnMac');
+      if(_ww) _ww.hidden = true; if(_wm) _wm.hidden = false;
+      const _so = document.getElementById('dlSubOs');
+      if(_so) _so.innerHTML = '맥은 <b>응용 프로그램</b> 폴더로 드래그 후 실행';
       if(!MAC_READY && win) win.classList.add('primary');   // 준비 전엔 실 다운로드=Windows가 주 버튼
     } else if(win){ win.classList.add('primary'); }
   })();

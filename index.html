@@ -458,7 +458,7 @@
 
     </div>
 
-    <span class="ver">v1.0.168</span>
+    <span class="ver">v1.0.174</span>
 
     <span class="spacer"></span>
 
@@ -606,7 +606,7 @@
 
           <div class="dl-head">
 
-            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.168</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
+            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.174</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
 
             <div class="dl-detect" id="dlDetect" role="status">접속 기기 확인 중…</div>
 
@@ -1179,7 +1179,31 @@
 
           <details class="cl-entry current" open>
 
-            <summary class="cl-head"><span class="cl-ver">v1.0.168</span><span class="cl-badge">최신</span><span class="cl-date">2026-07-29</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+            <summary class="cl-head"><span class="cl-ver">v1.0.174</span><span class="cl-badge">최신</span><span class="cl-date">2026-07-31</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+
+            <div class="cl-body"><div class="cl-body-inner"><ul>
+
+              <li><b>컷편집한 영상의 첫 프레임이 검게 나오던 문제 해결</b> — 컷을 잡아 배너와 합성하면 맨 앞에 검은 화면이 한 장 끼어 있었어요. 배경색을 흰색으로 두면 흰 장면이 번쩍이던 것도 같은 원인입니다.</li>
+
+              <li><b>컷편집 미리보기가 0초부터 재생되던 문제 해결</b> — 컷 시작점이 아니라 영상 맨 앞이 0.3초쯤 재생된 뒤에야 넘어갔어요. 이제 <b>구간 밖은 앞뒤 모두 새지 않습니다.</b> <small>20 · 23.976 · 24 · 25 · 29.97 · 30 · 60fps 등 어떤 프레임레이트에서도 동일하게 동작해요.</small></li>
+
+              <li><b>컷 구간 초기화 단축키</b> — <span class="kbd">Alt</span>+<span class="kbd">X</span> (또는 <span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">X</span>). 초기화한 뒤 <b>적용</b>을 누르면 걸어둔 구간이 해제돼요.</li>
+
+              <li><b>컷편집 중 화면이 사라지지 않아요</b> — 키보드로 프레임을 넘기는 동안 재생바와 시작·끝 표시가 3초 뒤 사라지던 것을 고쳤어요.</li>
+
+              <li><b>이미 렌더한 항목은 다시 렌더되지 않아요</b> — 렌더 버튼을 다시 눌러도 완료된 것은 건너뜁니다. 설정이나 소재를 바꾸면 자동으로 다시 렌더 대상이 되고, 강제로 다시 돌리려면 카드를 우클릭해 <b>다시 렌더</b>를 누르면 돼요.</li>
+
+              <li><b>렌더큐 카드 썸네일이 실제 결과와 같아졌어요</b> — 영상의 위치·크기를 조정하거나 컷을 잡으면 썸네일도 그대로 따라옵니다. 컷을 잡은 경우 <b>컷 시작 지점의 장면</b>이 보여요.</li>
+
+              <li><b>NAS 2열 보기에서 미리보기가 옆 카드를 가리지 않아요</b> — 오른쪽 줄 카드의 미리보기도 NAS 브라우저 바깥에 열립니다.</li>
+
+            </ul></div></div>
+
+          </details>
+
+          <details class="cl-entry">
+
+            <summary class="cl-head"><span class="cl-ver">v1.0.168</span><span class="cl-date">2026-07-29</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
 
             <div class="cl-body"><div class="cl-body-inner"><ul>
 
@@ -1409,7 +1433,7 @@
 
 
 
-<footer>BannerNode v1.0.168 · 영상팀 내부용 · ADEF</footer>
+<footer>BannerNode v1.0.174 · 영상팀 내부용 · ADEF</footer>
 
 
 

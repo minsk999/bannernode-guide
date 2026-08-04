@@ -458,7 +458,7 @@
 
     </div>
 
-    <span class="ver">v1.0.174</span>
+    <span class="ver">v1.0.175</span>
 
     <span class="spacer"></span>
 
@@ -606,7 +606,7 @@
 
           <div class="dl-head">
 
-            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.174</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
+            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.175</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
 
             <div class="dl-detect" id="dlDetect" role="status">접속 기기 확인 중…</div>
 
@@ -653,6 +653,11 @@
               <li><span class="t"><b>바로 사용</b> — 켜면 <b>시작 화면</b>에서 새 프로젝트를 만들거나 최근 프로젝트를 이어서 열어요. 왼쪽에 영상·배너를 불러오고, 캔버스에서 노드를 이어 렌더하면 됩니다.</span></li>
 
             </ol>
+
+            <div class="note warn"><span class="ic">!</span><span><b>“Unhandled exception in script” 창이 뜨며 실행이 안 된다면</b> — 앱이 고장난 게 아니라, 인터넷에서 받은 zip을 <b>탐색기로 압축 해제</b>하면 안의 모든 파일에 “차단됨” 표시가 붙기 때문이에요. <b>v1.0.175부터는 앱이 시작할 때 스스로 풀어주므로 그냥 실행하시면 됩니다.</b><br>
+              그 이전 버전에서 이 증상이 났다면, <b>PowerShell</b>(시작 메뉴에서 “PowerShell” 검색)에 아래 한 줄을 붙여넣고 엔터한 뒤 다시 실행하세요.<br>
+              <code>Get-ChildItem -Recurse "$env:USERPROFILE\Downloads\BannerNode-Windows" | Unblock-File</code><br>
+              <b>미리 막으려면</b> — 압축을 풀기 <b>전에</b> zip 파일을 <b>우클릭 ▸ 속성</b>에서 아래쪽 <b>“차단 해제”</b>에 체크하고 확인을 누르세요.</span></div>
 
             <div class="note warn"><span class="ic">!</span><span>처음 실행 시 Windows <b>스마트 앱 컨트롤 / SmartScreen</b>이 앱을 막을 수 있어요. 사내 배포용 앱이니 <b>추가 정보 → 실행</b>으로 열면 됩니다. 빌드 직후 첫 실행은 검사 때문에 뜨는 데 몇 초 걸릴 수 있어요(두 번째부터 빠름).</span></div>
 
@@ -1179,7 +1184,29 @@
 
           <details class="cl-entry current" open>
 
-            <summary class="cl-head"><span class="cl-ver">v1.0.174</span><span class="cl-badge">최신</span><span class="cl-date">2026-07-31</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+            <summary class="cl-head"><span class="cl-ver">v1.0.175</span><span class="cl-badge">최신</span><span class="cl-date">2026-08-04</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+
+            <div class="cl-body"><div class="cl-body-inner"><ul>
+
+              <li><b>실행이 안 되던 문제 수정 (Windows)</b> — 압축을 푼 뒤 <b>“Unhandled exception in script”</b> 창이 뜨며 앱이 열리지 않던 문제예요. 앱이 아니라 <b>압축 해제 방식</b>이 원인이었습니다. 인터넷에서 받은 zip을 탐색기로 풀면 안의 <b>모든 파일에 “차단됨” 표시</b>가 붙는데, 그러면 Windows가 앱 구성 파일 로드를 거부해요. 이제 <b>앱이 켜질 때 스스로 이 표시를 지우므로</b> 그냥 실행하시면 됩니다.</li>
+
+              <li><b>프로젝트를 열면 노드에 변경이 반영되지 않던 문제 수정</b> — 저장한 프로젝트를 다시 열면 <b>미디어 라이브러리와 노드 캔버스가 서로 다른 사본</b>을 보고 있었어요. 그래서 프로젝트를 연 뒤에는 소재 <b>연결이 끊겨도 노드에는 표시되지 않고</b>(라이브러리 카드에만 떴어요), 음원 구간 편집·다시 연결·썸네일 갱신도 노드에 반영되지 않았습니다. 두 곳이 같은 소재를 보도록 고쳤어요.</li>
+
+              <li><b>연결이 끊긴 소재가 있으면 렌더가 차단돼요</b> — 위 수정에 따라오는 변화입니다. 지금까지는 프로젝트를 연 경우 끊긴 소재가 있어도 렌더가 그대로 시작됐어요.</li>
+
+              <li><b>진행 원의 퍼센트가 사라지던 것 수정</b> — 다운로드 진행 표시에 마우스를 올리면 숫자가 안 보이던 문제예요.</li>
+
+              <li><b>앱 안에서 새 버전 받기</b> — 시작 화면의 <b>업데이트 받기</b>를 누르면 앱이 직접 내려받아 검사까지 해요. 브라우저로 받지 않으므로 위의 “차단됨” 문제가 생기지 않습니다. <small>교체·재시작 자동화는 다음 버전에 들어갑니다.</small></li>
+
+              <li><small><b>macOS는 이번 버전에 포함되지 않았어요</b> — 맥은 v1.0.174를 계속 사용해 주세요.</small></li>
+
+            </ul></div></div>
+
+          </details>
+
+          <details class="cl-entry">
+
+            <summary class="cl-head"><span class="cl-ver">v1.0.174</span><span class="cl-date">2026-07-31</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
 
             <div class="cl-body"><div class="cl-body-inner"><ul>
 
@@ -1433,7 +1460,7 @@
 
 
 
-<footer>BannerNode v1.0.174 · 영상팀 내부용 · ADEF</footer>
+<footer>BannerNode v1.0.175 · 영상팀 내부용 · ADEF</footer>
 
 
 

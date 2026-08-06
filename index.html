@@ -623,6 +623,7 @@
           </div>
 
           <p class="dl-macnote" id="dlMacNote" hidden>
+            <b>맥은 현재 v1.0.174예요.</b> Windows만 v1.0.175로 올라갔습니다(Windows 전용 실행 오류 수정) — 맥에는 해당되지 않는 문제라 맥 빌드는 그대로입니다. 앱에서 새 버전 알림이 떠도 맥은 아직 받을 게 없어요.<br>
             <b>macOS 14.0(Sonoma) 이상이 필요해요.</b> Apple 메뉴 ▸ 이 Mac에 관하여에서 확인하세요 — 그보다 낮으면 앱이 열리다 그냥 꺼집니다.<br>
             <b>macOS 버전은 지금 구동 테스트 중이에요.</b> 이상한 점이 있으면 영상팀에 알려주세요 — Windows 버전은 정식입니다.<br>
             <b>어느 걸 받아야 하나요?</b> 화면 왼쪽 위 <b>Apple 메뉴 ▸ 이 Mac에 관하여</b>에서 <b>칩</b>을 확인하세요 —
@@ -1470,8 +1471,15 @@
   (function(){
     const MAC_READY = true;    // v1.0.159 릴리즈에 arm64·x86_64 zip 업로드 완료(2026-07-28)
     const BASE = 'https://github.com/minsk999/bannernode-guide/releases/latest/download/';
-    const MAC_URL_ARM = BASE + 'BannerNode-macOS-arm64.zip';
-    const MAC_URL_X64 = BASE + 'BannerNode-macOS-x86_64.zip';
+    // ★★ 맥은 'latest' 를 쓰면 안 된다 ★★
+    //   Windows 만 올라간 릴리즈(v1.0.175)가 latest 가 되는 순간
+    //   latest/download/BannerNode-macOS-*.zip 이 404 가 된다(실측 확인, 2026-08-04 사용자 제보).
+    //   그래서 **맥 자산이 실제로 존재하는 태그**를 고정한다.
+    //   ⚠️ 맥 빌드를 새로 올리면 MAC_TAG 를 그 태그로 바꿀 것(안 바꾸면 옛 버전이 계속 배포된다).
+    const MAC_TAG = 'v1.0.174';
+    const MAC_BASE = 'https://github.com/minsk999/bannernode-guide/releases/download/' + MAC_TAG + '/';
+    const MAC_URL_ARM = MAC_BASE + 'BannerNode-macOS-arm64.zip';
+    const MAC_URL_X64 = MAC_BASE + 'BannerNode-macOS-x86_64.zip';
     const isMac = /Mac|iPhone|iPad/.test(navigator.platform || '') || /Macintosh/.test(navigator.userAgent || '');
     const det = document.getElementById('dlDetect'), btns = document.getElementById('dlBtns');
     const win = document.getElementById('dlWin');
@@ -1481,7 +1489,7 @@
       macs.forEach(function(p){ const el = p[0]; if(!el) return;
         el.classList.remove('soon'); el.setAttribute('href', p[1]);
         el.removeAttribute('aria-disabled'); el.removeAttribute('tabindex');
-        const _s = el.querySelector('small'); if(_s) _s.textContent = '.zip · macOS 14+';
+        const _s = el.querySelector('small'); if(_s) _s.textContent = '.zip · ' + MAC_TAG;   // 맥은 윈도우와 버전이 다를 수 있어 명시
       });
     }
     // ⚠️ Apple 실리콘도 navigator.platform/UA가 'Intel Mac OS X'로 나온다 → 아키텍처 자동 선택 금지.

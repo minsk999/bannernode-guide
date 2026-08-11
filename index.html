@@ -458,7 +458,7 @@
 
     </div>
 
-    <span class="ver">v1.0.175</span>
+    <span class="ver">v1.0.181</span>
 
     <span class="spacer"></span>
 
@@ -488,7 +488,7 @@
 
       <a href="#import">소스 불러오기</a>
 
-      <a href="#vary">사이즈 · 용량 베리</a>
+      <a href="#vary">사이즈 · 용량 · 반복</a>
 
       <a href="#cut">컷 편집</a>
 
@@ -544,7 +544,7 @@
 
         <div class="card demo-embed">
 
-          <iframe src="workflow-demo.html?embed=1&v=159" aria-label="BannerNode 워크플로 데모 — 소스 담기부터 렌더 완료까지 자동 재생" loading="lazy" scrolling="no"></iframe>
+          <iframe src="workflow-demo.html?embed=1&v=181" aria-label="BannerNode 워크플로 데모 — 소스 담기부터 렌더 완료까지 자동 재생" loading="lazy" scrolling="no"></iframe>
 
         </div>
 
@@ -556,9 +556,9 @@
 
             <li><span class="t"><b>선 연결</b> — 영상 노드의 출력점에서 배너 노드로 드래그해 연결. 연결 1개 = 렌더 잡 1개.</span></li>
 
-            <li><span class="t"><b>구도 잡기</b> <small>· 선택</small> — 렌더큐 카드의 <b>썸네일을 클릭</b>하면 합성 미리보기가 열려요. 배너 구멍 안의 영상을 <b>드래그해 위치</b>를 옮기고 <b>휠로 확대</b>할 수 있습니다. 기본은 구멍을 가득 채우는 가운데 맞춤이에요. 여기서 잡은 구도는 렌더 결과에 그대로 반영됩니다.</span></li>
+            <li><span class="t"><b>구도 잡기</b> <small>· 선택</small> — 렌더큐 <b>대기 카드</b>의 <b>썸네일을 클릭</b>하면 합성 미리보기가 열려요. 배너 구멍 안의 영상을 <b>드래그해 위치</b>를 옮기고 <b>휠로 확대</b>할 수 있습니다. 기본은 구멍을 가득 채우는 가운데 맞춤이에요. 여기서 잡은 구도는 렌더 결과에 그대로 반영됩니다.</span></li>
 
-            <li><span class="t"><b>파일명 · 포맷</b> — 렌더큐 카드를 <b>더블클릭</b>하거나 <b>우클릭</b>하면(카드를 하나만 골랐다면 <span class="kbd">F2</span>로도) 출력 설정이 열려요. 여기서 <b>파일명</b>과 <b>mp4 · mov · gif · png</b> 포맷을 잡마다 따로 정합니다. <small>해상도·용량·비트레이트·fps는 렌더큐 아래 ‘용량·화질 설정’에서 모든 잡에 일괄 적용돼요.</small></span></li>
+            <li><span class="t"><b>파일명 · 포맷</b> — 렌더큐의 <b>대기 카드</b>를 <b>더블클릭</b>하거나 <b>우클릭</b>하면(카드를 하나만 골랐다면 <span class="kbd">F2</span>로도) 출력 설정이 열려요. 여기서 <b>파일명</b>과 <b>mp4 · mov · gif · png</b> 포맷을 잡마다 따로 정합니다. <small>해상도·용량·비트레이트·fps는 렌더큐 아래 ‘용량·화질 설정’에서 모든 잡에 일괄 적용돼요.</small></span></li>
 
             <li><span class="t"><b>출력 위치 정하기</b> — 렌더 버튼 바로 위 <b>출력</b> 칸에서 저장할 곳을 먼저 정해요. 왼쪽 폴더 버튼으로 <b>로컬 폴더</b> · <b>NAS 폴더</b> 중에 고르거나, 칸에 경로를 직접 붙여넣어도 됩니다. <b>정하지 않으면 렌더가 시작되지 않아요.</b></span></li>
 
@@ -571,6 +571,32 @@
           <div class="note"><span class="ic">i</span><span>음원 노드를 함께 연결하면 <b>영상 + 배너 + BGM</b>이 한 번에 합성돼요. 음원 노드를 더블클릭하면 파형 편집기가 열려 <b>쓸 구간</b>과 <b>원본 교체 / 원본과 믹스</b>, <b>볼륨</b>을 정할 수 있습니다. 영상 노드를 우클릭하면 <b>렌더큐로 바로 보내기</b>로 배너 없이 영상만 출력 잡으로 넣을 수도 있어요.</span></div>
 
           <div class="note"><span class="ic">i</span><span>여러 잡을 걸어 두면 기본은 <b>한 번에 하나씩 순서대로</b> 렌더돼요. 설정에서 <b>동시 렌더 수</b>를 올릴 수도 있지만, 렌더 하나가 이미 CPU 코어를 여러 개 쓰기 때문에 보통은 빨라지지 않아요 — 기본값을 권합니다.</span></div>
+
+        </div>
+
+        <div class="card">
+
+          <h3>렌더큐 — 대기와 기록</h3>
+
+          <p class="lead" style="margin:0 0 20px">렌더큐는 두 칸이에요. 위는 <b>지금 렌더할 대기 카드</b>, 아래는 <b>완료 · 실패 기록</b>입니다.</p>
+
+          <ul class="bul">
+
+            <li><b>대기 카드</b> — 노드 연결에서 그때그때 만들어져요. 렌더가 끝나면 이 카드는 위에서 사라지고 아래 <b>기록</b>으로 내려갑니다.</li>
+
+            <li><b>기록 카드</b> — <b>렌더한 그 순간의 설정</b>을 그대로 담고 있어요. 나중에 반복 횟수·구도·컷을 바꿔도 이미 끝난 카드는 바뀌지 않습니다. 파일 이름 · 걸린 시간 · 만든 시각이 그대로 남아요.</li>
+
+            <li><b>결과물 바로 열기</b> — 기록 카드를 <b>더블클릭</b>하거나 <b>썸네일을 클릭</b>하면 만들어진 파일이 열려요. 로컬은 <b>기본 플레이어로 재생</b>, NAS로 뽑았으면 <b>NAS 브라우저</b>가 그 파일을 골라 줍니다.</li>
+
+            <li><b>기록 카드 우클릭</b> — <b>재생 · 출력 폴더 열기</b>(NAS면 <b>NAS 브라우저에서 열기 · 다운로드</b>) · <b>다시 렌더</b> · <b>기록에서 지우기</b>가 나와요. PNG 시퀀스는 파일이 아니라 폴더라 <b>시퀀스 폴더 열기</b>로 바뀝니다. <small>기록 카드에는 출력 설정이 없어요 — 이미 만들어진 파일의 이름은 큐에서 바꿔도 아무 일이 일어나지 않으니까요.</small></li>
+
+            <li><b>한 번 렌더한 작업은 다시 돌지 않아요</b> — 렌더 버튼을 다시 눌러도 건너뜁니다. 설정을 바꿔도 자동으로 되살아나지 않으니, 다시 뽑고 싶으면 기록 카드를 <b>우클릭 → 다시 렌더</b>로 새 대기 카드를 만들어 주세요.</li>
+
+            <li><b>기록은 프로젝트에 저장돼요</b> — 저장했다 다시 열면 완료 기록이 그대로 돌아옵니다. 구획 제목의 <b>기록 비우기</b>로 지워도 <b>만들어진 파일은 그대로</b>예요.</li>
+
+          </ul>
+
+          <div class="note"><span class="ic">i</span><span>대기 카드가 화면에서 사라지면(카드 삭제 · 큐 비우기 · 연결 해제 · 컷 해제 등) 그 카드에 지어 둔 <b>파일 이름도 함께 버려져요</b> — 같은 작업을 다시 큐에 보내면 이름이 새로 지어집니다. 다만 <b>포맷(mov · gif · png)은 남아</b> 다음에도 그대로 적용돼요.</span></div>
 
         </div>
 
@@ -606,7 +632,7 @@
 
           <div class="dl-head">
 
-            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.175</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
+            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.181</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
 
             <div class="dl-detect" id="dlDetect" role="status">접속 기기 확인 중…</div>
 
@@ -623,7 +649,7 @@
           </div>
 
           <p class="dl-macnote" id="dlMacNote" hidden>
-            <b>맥은 현재 v1.0.174예요.</b> Windows만 v1.0.175로 올라갔습니다(Windows 전용 실행 오류 수정) — 맥에는 해당되지 않는 문제라 맥 빌드는 그대로입니다. 앱에서 새 버전 알림이 떠도 맥은 아직 받을 게 없어요.<br>
+            <b>맥은 현재 v1.0.174예요.</b> Windows는 v1.0.181까지 올라갔습니다 — 맥 빌드는 아직 v1.0.174 그대로라 그 뒤에 들어간 기능(영상 반복 · 렌더큐 기록 등)은 맥에 없어요. 앱에서 새 버전 알림이 떠도 맥은 아직 받을 게 없습니다.<br>
             <b>macOS 14.0(Sonoma) 이상이 필요해요.</b> Apple 메뉴 ▸ 이 Mac에 관하여에서 확인하세요 — 그보다 낮으면 앱이 열리다 그냥 꺼집니다.<br>
             <b>macOS 버전은 지금 구동 테스트 중이에요.</b> 이상한 점이 있으면 영상팀에 알려주세요 — Windows 버전은 정식입니다.<br>
             <b>어느 걸 받아야 하나요?</b> 화면 왼쪽 위 <b>Apple 메뉴 ▸ 이 Mac에 관하여</b>에서 <b>칩</b>을 확인하세요 —
@@ -742,9 +768,9 @@
 
             <ul class="bul">
 
-              <li>연결한 잡이 카드로 쌓이고, <b>진행률</b>이 실시간으로 표시돼요.</li>
+              <li>위쪽 <b>대기 카드</b>에 연결한 잡이 쌓이고, <b>진행률</b>이 실시간으로 표시돼요. 대기 카드를 <b>더블클릭</b>하거나 <b>우클릭</b>하면 출력 설정이 열려 <b>파일명</b>과 <b>포맷</b>(mp4 · mov · gif · png)을 잡마다 따로 정합니다. <small>자세한 포맷 차이는 01 참고</small></li>
 
-              <li>카드를 <b>더블클릭</b>하거나 <b>우클릭</b>하면 출력 설정이 열려요 — <b>파일명</b>과 <b>포맷</b>(mp4 · mov · gif · png)은 잡마다 따로 정합니다. <small>자세한 포맷 차이는 01 참고</small></li>
+              <li>렌더가 끝나면 아래 <b>완료 · 실패 기록</b>으로 내려가요. 기록 카드는 <b>더블클릭 = 결과물 열기</b>, <b>우클릭 = 재생 · 폴더 열기 · 다시 렌더</b>입니다. <small>자세한 내용은 01 참고</small></li>
 
             </ul>
 
@@ -784,7 +810,7 @@
 
             <li><span class="fic" aria-hidden="true"><svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M5.6 2.6h7.2L17.9 7.7V12.4a5 5 0 0 0-5.5 8.2H5.6A1.4 1.4 0 0 1 4.2 19.2V4A1.4 1.4 0 0 1 5.6 2.6zM12.2 4.4V8.4h4z"/><path d="M16.6 13.2a4.4 4.4 0 1 0 0 8.8 4.4 4.4 0 0 0 0-8.8zm.9 2.2v1.5h1.5v1.4h-1.5v1.5h-1.4v-1.5h-1.5v-1.4h1.5v-1.5z"/></svg></span> <b>파일 추가</b> <small>· <span class="kbd">D</span></small> — 파일 선택창에서 영상·배너를 골라 추가.</li>
 
-            <li><span class="fic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/></svg></span> <b>폴더 스캔</b> <small>· <span class="kbd">A</span></small> — 폴더 안의 영상·배너를 한 번에 담기. <small>하위 폴더까지는 들어가지 않고, 음원은 담기지 않아요 — 음원은 파일 추가나 드래그로 넣어 주세요.</small></li>
+            <li><span class="fic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/></svg></span> <b>폴더 스캔</b> <small>· <span class="kbd">A</span></small> — 폴더 안의 영상·배너를 한 번에 담기. 창이 뜨면 가져올 폴더로 <b>들어간 다음</b>, <b>아무것도 고르지 말고 [열기]</b>를 누르세요. <small>파일을 골라서 열면 그 파일만 담깁니다. 하위 폴더까지는 들어가지 않고, 음원은 담기지 않아요 — 음원은 파일 추가나 드래그로 넣어 주세요.</small></li>
 
             <li><b>드래그 앤 드롭</b> — 탐색기에서 파일을 앱 위로 끌어다 놓기. Windows에서는 원본을 복사하지 않고 그대로 참조해 <b>용량과 상관없이 빠르고</b>, 다 읽어 들인 뒤 카드가 <b>한 번에</b> 나타나요. <b>캔버스에 놓으면</b> 그 자리에 노드까지 함께 만들어집니다.</li>
 
@@ -819,9 +845,9 @@
 
       <section id="vary">
 
-        <div class="sec-head"><span class="sec-num">05</span><h2>사이즈 · 용량 베리</h2></div>
+        <div class="sec-head"><span class="sec-num">05</span><h2>사이즈 · 용량 · 반복</h2></div>
 
-        <p class="lead">같은 소스를 여러 규격·용량으로 뽑아내는 두 가지 변형 기능.</p>
+        <p class="lead">같은 소스를 여러 규격·용량으로 뽑아내고, 러닝타임까지 맞추는 변형 기능.</p>
 
         <div class="grid2">
 
@@ -862,6 +888,26 @@
         </div>
 
         <div class="note"><span class="ic">i</span><span>두 기능은 <b>여는 곳이 달라요</b> — <b>용량 베리</b>는 렌더 버튼 아래 접이식 <b>용량·화질 설정</b> 패널(해상도 · 목표 용량 · 비트레이트 · fps), <b>사이즈 베리</b>는 <b>영상 노드 우클릭 → 크기·배경 변환</b>입니다. 용량·화질 설정 값은 렌더큐의 모든 잡에 일괄 적용돼요. <small>다만 해상도는 사이즈 베리 잡에선 각 잡의 타겟 크기가 우선이고, 배너 합성을 gif · png로 뽑을 때는 배너 크기 그대로 나갑니다.</small></span></div>
+
+        <div class="card" style="margin-top:14px">
+
+          <h3>영상 반복</h3>
+
+          <ul class="bul">
+
+            <li>짧은 영상을 <b>여러 번 이어 붙여</b> 러닝타임을 늘려요. 매체가 요구하는 최소 초수를 맞출 때 씁니다. <small>3.2초 영상 × 4회 = 12.8초</small></li>
+
+            <li>캔버스의 <b>영상 노드를 우클릭 → 반복</b>에서 켜요. 이미 반복이 걸린 노드는 오른쪽 위 <b>반복 칩</b>을 눌러도 같은 창이 열립니다. <b>2~30회</b> 중에 고르고, 고르는 즉시 적용돼요.</li>
+
+            <li>값은 <b>소재마다</b> 기억되고, 컷 구간이 잡혀 있으면 <b>그 구간만</b> 반복해요. 함께 연결한 <b>음원도 끝까지 이어집니다</b>.</li>
+
+            <li>렌더큐 카드에 <b>반복 배지</b>가 떠서 렌더 전에 확인할 수 있어요.</li>
+
+          </ul>
+
+          <div class="note warn"><span class="ic">!</span><span><b>gif · png로 뽑는 작업에는 반복이 적용되지 않아요.</b> 값은 그대로 두니, 포맷을 mp4 · mov로 되돌리면 다시 적용됩니다.</span></div>
+
+        </div>
 
       </section>
 
@@ -1043,7 +1089,7 @@
 
             <div class="key-row"><div class="label">렌더큐 · NAS 전환</div><div class="keys"><span class="key-cap">Tab</span></div></div>
 
-            <div class="key-row"><div class="label">이름 바꾸기 / 출력 설정 <small>NAS 항목 / 렌더큐 카드</small></div><div class="keys"><span class="key-cap">F2</span></div></div>
+            <div class="key-row"><div class="label">이름 바꾸기 / 출력 설정 <small>NAS 항목 / 렌더큐 대기 카드</small></div><div class="keys"><span class="key-cap">F2</span></div></div>
 
             <div class="key-row"><div class="label">사용 설명서 열기 <small>이 페이지</small></div><div class="keys"><span class="key-cap">F1</span></div></div>
 
@@ -1169,6 +1215,14 @@
 
         </div>
 
+        <div class="card">
+
+          <h3>미리보기 파일이 디스크를 얼마나 먹나요?</h3>
+
+          <p class="lead" style="margin-bottom:0">썸네일·미리보기처럼 <b>다시 만들 수 있는 파일</b>은 <b>미디어 캐시</b>로 모이고, 설정 → <b>NAS · 저장소</b>의 <b>최대 미디어 캐시 크기</b>(기본 5 GB)를 넘으면 오래 안 쓴 것부터 자동으로 지워요. 반면 <b>가져온 사본</b>은 실제 소재라 <b>자동으로 지우지 않습니다</b> — 직접 <b>비우기</b>를 눌러야 지워지고, 지우면 그 사본을 쓰는 소재의 연결이 끊겨요.</p>
+
+        </div>
+
       </section>
 
 
@@ -1185,7 +1239,37 @@
 
           <details class="cl-entry current" open>
 
-            <summary class="cl-head"><span class="cl-ver">v1.0.175</span><span class="cl-badge">최신</span><span class="cl-date">2026-08-04</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+            <summary class="cl-head"><span class="cl-ver">v1.0.181</span><span class="cl-badge">최신</span><span class="cl-date">2026-08-12</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+
+            <div class="cl-body"><div class="cl-body-inner"><ul>
+
+              <li><b>렌더큐가 대기와 기록으로 나뉘었어요</b> — 렌더가 끝난 카드는 아래 <b>완료 · 실패 기록</b> 구획으로 내려갑니다. 기록 카드는 <b>렌더한 순간의 설정</b>을 그대로 담고 있어서, 나중에 반복 횟수·구도·컷을 바꿔도 이미 끝난 카드는 바뀌지 않아요. <b>프로젝트를 저장했다 열면 기록도 그대로 돌아옵니다.</b></li>
+
+              <li><b>완료된 카드에서 결과물 바로 열기</b> — 기록 카드를 <b>더블클릭</b>하면 만들어진 파일이 열려요(로컬은 기본 플레이어, NAS로 뽑았으면 NAS 브라우저가 그 파일을 골라 줍니다). <b>우클릭</b>하면 재생 · 출력 폴더 열기 · 다시 렌더 · 기록에서 지우기가 나옵니다.</li>
+
+              <li><b>한 번 렌더한 작업은 다시 돌지 않아요</b> — 렌더 버튼을 다시 눌러도 건너뜁니다. <b>설정을 바꿔도 자동으로 되살아나지 않으니</b> 기록 카드를 <b>우클릭 → 다시 렌더</b>로 새 작업을 만들어 주세요. <small>예전에는 설정을 바꾸면 자동으로 다시 렌더 대상이 됐어요.</small></li>
+
+              <li><b>지운 카드의 파일 이름은 함께 버려져요</b> — 대기 카드가 화면에서 사라지면 그 카드에 지어 둔 이름도 버립니다. 예전에는 같은 작업을 다시 큐에 보냈을 때 <b>지운 이름이 되살아났어요</b>. <b>포맷(mov · gif · png)은 그대로 남습니다.</b></li>
+
+              <li><b>폴더 스캔이 쉬워졌어요</b> — 이제 <b>파일을 고르지 않아도 됩니다</b>. 가져올 폴더로 <b>들어간 다음 그냥 [열기]</b>를 누르면 그 폴더의 영상·배너가 통째로 들어와요. 예전처럼 파일을 골라서 열면 <b>그 파일만</b> 들어오는 것도 그대로입니다. <small>하위 폴더까지 내려가지는 않아요.</small></li>
+
+              <li><b>단축키가 겹치면 서로 바꿔 줘요</b> — 설정에서 이미 쓰고 있는 키를 누르면, <b>그 키를 쓰던 항목</b>이 빨갛게 표시되면서 바꿀지 물어봅니다. <b>교체</b>를 누르면 두 단축키가 <b>서로 자리를 맞바꿔요</b>. 예전에는 그냥 「중복」이라고 막기만 해서, 직접 하나씩 비워 가며 옮겨야 했습니다.</li>
+
+              <li><b>첫 실행 안내 투어가 제대로 떠요</b> — 시작 화면에서 <span class="kbd">Esc</span>를 누르면 안내 투어가 <b>뜨지도 못한 채 사라져</b> 다시는 안 나오던 문제를 고쳤어요. 이제 시작 화면을 닫은 뒤에 투어가 시작됩니다. <small>투어는 <b>새 프로젝트</b>로 시작할 때만 떠요 — 기존 프로젝트를 열었을 때는 작업물 위에 예시 소재가 얹히지 않도록 띄우지 않습니다.</small></li>
+
+              <li><b>영상 반복</b> — 짧은 영상을 여러 번 이어 붙여 러닝타임을 늘려요(매체 최소 초수 맞추기). 캔버스의 영상 노드를 <b>우클릭 → 반복</b>, 또는 노드 오른쪽 위 <b>반복 칩</b>을 눌러 2~30회로 정합니다. 컷 구간이 있으면 <b>그 구간만</b> 반복하고 <b>음원도 끝까지 이어져요</b>. <small>gif · png 시퀀스로 뽑는 작업에서는 적용되지 않습니다.</small></li>
+
+              <li><b>미디어 캐시 크기 제한</b> — 설정 → NAS · 저장소에 <b>최대 미디어 캐시 크기</b>가 생겼어요(기본 5 GB). 썸네일·미리보기처럼 다시 만들 수 있는 파일만 대상이고, 넘으면 오래 안 쓴 것부터 자동으로 지웁니다. <b>가져온 사본</b>은 자동으로 지우지 않아요.</li>
+
+              <li><small><b>macOS는 이번 버전에 포함되지 않았어요</b> — 맥은 v1.0.174를 계속 사용해 주세요.</small></li>
+
+            </ul></div></div>
+
+          </details>
+
+          <details class="cl-entry">
+
+            <summary class="cl-head"><span class="cl-ver">v1.0.175</span><span class="cl-date">2026-08-04</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
 
             <div class="cl-body"><div class="cl-body-inner"><ul>
 
@@ -1461,7 +1545,7 @@
 
 
 
-<footer>BannerNode v1.0.175 · 영상팀 내부용 · ADEF</footer>
+<footer>BannerNode v1.0.181 · 영상팀 내부용 · ADEF</footer>
 
 
 

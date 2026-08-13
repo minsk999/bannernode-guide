@@ -458,7 +458,7 @@
 
     </div>
 
-    <span class="ver">v1.0.188</span>
+    <span class="ver">v1.0.189</span>
 
     <span class="spacer"></span>
 
@@ -632,7 +632,7 @@
 
           <div class="dl-head">
 
-            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.188</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
+            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.189</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
 
             <div class="dl-detect" id="dlDetect" role="status">접속 기기 확인 중…</div>
 
@@ -1241,7 +1241,35 @@
 
           <details class="cl-entry current" open>
 
-            <summary class="cl-head"><span class="cl-ver">v1.0.188</span><span class="cl-badge">최신</span><span class="cl-date">2026-08-12</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+            <summary class="cl-head"><span class="cl-ver">v1.0.189</span><span class="cl-badge">최신</span><span class="cl-date">2026-08-13</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+
+            <div class="cl-body"><div class="cl-body-inner"><ul>
+
+              <li><b>프로젝트 저장이 안전해졌어요</b> — 저장 도중 문제가 생기면(디스크가 꽉 차거나, 네트워크 드라이브가 끊기거나, 앱이 강제 종료되면) <b>직전에 저장해 둔 것까지 함께 사라졌습니다.</b> 이제는 저장이 완전히 끝난 뒤에만 파일이 바뀌어서, 실패해도 직전 저장본이 그대로 남아요.</li>
+
+              <li><b>GIF · PNG 로 뽑을 때도 해상도 설정이 적용돼요</b> — 배너 합성 작업에서 아래 확장 패널의 해상도가 MP4 에만 적용되고 <b>GIF · PNG 에서는 조용히 무시</b>되고 있었습니다.</li>
+
+              <li><b>끊긴 소재를 다시 연결할 때 다른 영상이 섞이지 않아요</b> — 서로 다른 폴더에 <b>이름이 같은 파일</b>이 있으면 나중 것이 먼저 것을 덮어써서, 옛 카드가 조용히 다른 영상을 재생하는 일이 있었습니다.</li>
+
+              <li><b>소재를 노드 위로 끌어다 놓은 것이 「변경」으로 기록돼요</b> — 이 동작만 기록이 안 돼서 되돌리기가 그 전 작업까지 되돌리고, 창을 닫아도 저장 확인창이 안 떴습니다.</li>
+
+              <li><b>실수로 두 번 실행되던 것들</b> — 렌더 버튼 연타로 같은 작업이 두 번 렌더되던 것, 저장 연타·<span class="kbd">Ctrl</span>+<span class="kbd">S</span> 꾹 누르기, 「파일 추가」 창이 두 개 뜨던 것.</li>
+
+              <li><b>확인창이 필요한 곳에 생겼어요</b> — 렌더 목록에서 드래그로 여러 장 선택 후 <span class="kbd">Delete</span> 를 누르면 완료 기록이 확인 없이 지워졌고 되돌릴 수도 없었습니다. 반복 설정 창을 열어 둔 채 앱을 닫아도 이제 확인창이 떠요.</li>
+
+              <li><b>렌더 중에는 NAS 캐시를 비울 수 없어요</b> — 비우면 아직 시작 안 한 작업들의 소재가 사라져 줄줄이 실패했습니다.</li>
+
+              <li><b>안전</b> — 외부 웹페이지가 앱을 통해 PC 파일에 접근할 수 있던 경로를 막았고, 팀 사이를 오가는 프로젝트 파일도 열 때 한 번 더 검사합니다. 평소 사용에는 변화가 없어요.</li>
+
+              <li><small><b>macOS 는 이번 버전에 포함되지 않았어요</b> — 맥은 v1.0.174 를 계속 사용해 주세요.</small></li>
+
+            </ul></div></div>
+
+          </details>
+
+          <details class="cl-entry">
+
+            <summary class="cl-head"><span class="cl-ver">v1.0.188</span><span class="cl-date">2026-08-12</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
 
             <div class="cl-body"><div class="cl-body-inner"><ul>
 
@@ -1635,7 +1663,7 @@
 
 
 
-<footer>BannerNode v1.0.188 · 영상팀 내부용 · ADEF</footer>
+<footer>BannerNode v1.0.189 · 영상팀 내부용 · ADEF</footer>
 
 
 

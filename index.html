@@ -458,7 +458,7 @@
 
     </div>
 
-    <span class="ver">v1.0.189</span>
+    <span class="ver">v1.0.192</span>
 
     <span class="spacer"></span>
 
@@ -556,11 +556,11 @@
 
             <li><span class="t"><b>선 연결</b> — 영상 노드의 출력점에서 배너 노드로 드래그해 연결. 연결 1개 = 렌더 잡 1개.</span></li>
 
-            <li><span class="t"><b>구도 잡기</b> <small>· 선택</small> — 렌더큐 <b>대기 카드</b>의 <b>썸네일을 클릭</b>하면 합성 미리보기가 열려요. 배너 구멍 안의 영상을 <b>드래그해 위치</b>를 옮기고 <b>휠로 확대</b>할 수 있습니다. 기본은 구멍을 가득 채우는 가운데 맞춤이에요. 여기서 잡은 구도는 렌더 결과에 그대로 반영됩니다.</span></li>
+            <li><span class="t"><b>구도 잡기</b> <small>· 선택</small> — 렌더큐 <b>대기 카드</b>의 <b>썸네일을 클릭</b>하면 합성 미리보기가 열려요. 배너 구멍 안의 <b>영상</b>을 드래그해 위치를 옮기고 <b>휠로 확대</b>할 수 있습니다. 기본은 구멍을 가득 채우는 가운데 맞춤이고, <b>휠(가운데) 클릭</b>이면 위치·확대가 한 번에 초기화돼요. 여기서 잡은 구도는 렌더 결과에 그대로 반영됩니다.</span></li>
 
             <li><span class="t"><b>파일명 · 포맷</b> — 렌더큐의 <b>대기 카드</b>를 <b>더블클릭</b>하거나 <b>우클릭</b>하면(카드를 하나만 골랐다면 <span class="kbd">F2</span>로도) 출력 설정이 열려요. 여기서 <b>파일명</b>과 <b>mp4 · mov · gif · png</b> 포맷을 잡마다 따로 정합니다. <small>해상도·용량·비트레이트·fps는 렌더큐 아래 ‘용량·화질 설정’에서 모든 잡에 일괄 적용돼요.</small></span></li>
 
-            <li><span class="t"><b>출력 위치 정하기</b> — 렌더 버튼 바로 위 <b>출력</b> 칸에서 저장할 곳을 먼저 정해요. 왼쪽 폴더 버튼으로 <b>로컬 폴더</b> · <b>NAS 폴더</b> 중에 고르거나, 칸에 경로를 직접 붙여넣어도 됩니다. <b>정하지 않으면 렌더가 시작되지 않아요.</b></span></li>
+            <li><span class="t"><b>출력 위치 정하기</b> — 렌더 버튼 바로 위 <b>출력</b> 칸에서 저장할 곳을 먼저 정해요. 왼쪽 폴더 버튼으로 <b>로컬 폴더 출력</b> · <b>NAS 폴더 출력</b> 중에 고르거나, 칸에 경로를 직접 붙여넣어도 됩니다. <b>정하지 않으면 렌더가 시작되지 않아요.</b></span></li>
 
             <li><span class="t"><span class="fic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z"/></svg></span> <b>렌더 실행</b> <small>·</small> <span class="kbd">Enter</span> — 로컬에서 ffmpeg가 돌고 진행률이 실시간으로 차올라요.</span></li>
 
@@ -568,7 +568,7 @@
 
           </ol>
 
-          <div class="note"><span class="ic">i</span><span>음원 노드를 함께 연결하면 <b>영상 + 배너 + BGM</b>이 한 번에 합성돼요. 음원 노드를 더블클릭하면 파형 편집기가 열려 <b>쓸 구간</b>과 <b>원본 교체 / 원본과 믹스</b>, <b>볼륨</b>을 정할 수 있습니다. 영상 노드를 우클릭하면 <b>렌더큐로 바로 보내기</b>로 배너 없이 영상만 출력 잡으로 넣을 수도 있어요.</span></div>
+          <div class="note"><span class="ic">i</span><span>음원 노드를 함께 연결하면 <b>영상 + 배너 + BGM</b>이 한 번에 합성돼요. 음원 노드를 더블클릭하면 파형 편집기가 열려 <b>구간</b>과 <b>원본 교체 / 원본과 믹스</b>, <b>음원 볼륨 · 원본 볼륨</b>을 정할 수 있습니다(원본 볼륨은 「원본과 믹스」를 골랐을 때 펼쳐져요). <small>편집기 안에서는 <span class="kbd">Space</span>=미리듣기, <span class="kbd">[</span>=시작 · <span class="kbd">]</span>=끝, <span class="kbd">Shift</span>+드래그=구간 새로 지정, <span class="kbd">Ctrl</span>+휠=파형 확대.</small> 영상 노드를 우클릭하면 <b>렌더큐로 바로 보내기</b>로 배너 없이 영상만 출력 잡으로 넣을 수도 있어요.</span></div>
 
           <div class="note"><span class="ic">i</span><span>여러 잡을 걸어 두면 기본은 <b>한 번에 하나씩 순서대로</b> 렌더돼요. 설정에서 <b>동시 렌더 수</b>를 올릴 수도 있지만, 렌더 하나가 이미 CPU 코어를 여러 개 쓰기 때문에 보통은 빨라지지 않아요 — 기본값을 권합니다.</span></div>
 
@@ -632,7 +632,7 @@
 
           <div class="dl-head">
 
-            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.189</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
+            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.192</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
 
             <div class="dl-detect" id="dlDetect" role="status">접속 기기 확인 중…</div>
 
@@ -649,9 +649,9 @@
           </div>
 
           <p class="dl-macnote" id="dlMacNote" hidden>
-            <b>맥은 현재 v1.0.174예요.</b> Windows는 v1.0.188까지 올라갔습니다 — 맥 빌드는 아직 v1.0.174 그대로라 그 뒤에 들어간 기능(영상 반복 · 렌더큐 기록 등)은 맥에 없어요. 앱에서 새 버전 알림이 떠도 맥은 아직 받을 게 없습니다.<br>
+            <b>맥도 이제 Windows와 같은 버전이에요.</b> 오랫동안 맥만 v1.0.174 에 머물러 있었는데, 이번 버전부터 두 운영체제가 같은 세대로 함께 올라갑니다 — 그동안 맥에 없던 기능(영상 반복 · 렌더큐 기록 · 크기·배경 변환 등)이 한꺼번에 들어왔어요.<br>
             <b>macOS 14.0(Sonoma) 이상이 필요해요.</b> Apple 메뉴 ▸ 이 Mac에 관하여에서 확인하세요 — 그보다 낮으면 앱이 열리다 그냥 꺼집니다.<br>
-            <b>macOS 버전은 지금 구동 테스트 중이에요.</b> 이상한 점이 있으면 영상팀에 알려주세요 — Windows 버전은 정식입니다.<br>
+            <b>macOS 버전은 아직 구동 테스트 중이에요.</b> 이상한 점이 있으면 영상팀에 알려주세요 — Windows 버전은 정식입니다.<br>
             <b>어느 걸 받아야 하나요?</b> 화면 왼쪽 위 <b>Apple 메뉴 ▸ 이 Mac에 관하여</b>에서 <b>칩</b>을 확인하세요 —
             <b>Apple M1/M2/M3/M4</b>면 <b>Apple 실리콘</b>, <b>Intel Core</b>면 <b>Intel</b>입니다.<br>
             <b>처음 열 때</b> “확인되지 않은 개발자” 경고가 뜨면 — <b>시스템 설정 ▸ 개인정보 보호 및 보안</b>에서 맨 아래
@@ -688,7 +688,7 @@
 
             <div class="note"><span class="ic">i</span><span><b>시스템 요구사항 — Windows 10/11 · Microsoft Edge WebView2 런타임</b>. 대부분의 PC에는 이미 들어 있어서 따로 하실 일이 없어요. 다만 <b>새로 받은 노트북</b>처럼 초기 설정에 따라 빠져 있는 경우가 있는데, 그때는 앱이 켜지자마자 <b>설치 링크를 안내</b>해 드립니다(검은 화면만 남지 않아요). 새 PC를 받으시면 IT에 <b>WebView2 런타임 포함</b>을 요청해 두시면 가장 편합니다.</span></div>
 
-            <div class="note warn"><span class="ic">!</span><span>처음 실행 시 Windows <b>스마트 앱 컨트롤 / SmartScreen</b>이 앱을 막을 수 있어요. 사내 배포용 앱이니 <b>추가 정보 → 실행</b>으로 열면 됩니다. 빌드 직후 첫 실행은 검사 때문에 뜨는 데 몇 초 걸릴 수 있어요(두 번째부터 빠름).</span></div>
+            <div class="note warn"><span class="ic">!</span><span>처음 실행 시 Windows 보안이 앱을 막을 수 있어요 — <b>둘은 대응이 다릅니다.</b><br><b>① SmartScreen</b>(“Windows의 PC를 보호했습니다” 창) — <b>추가 정보 → 실행</b>으로 열면 됩니다.<br><b>② 스마트 앱 컨트롤(SAC)</b>이 켜진 Windows 11 — 이 경우엔 <b>「추가 정보」 버튼 자체가 없고</b> 실행이 그냥 차단돼요. <b>Windows 보안 ▸ 앱 및 브라우저 컨트롤 ▸ 스마트 앱 컨트롤 ▸ 끔</b>으로 바꾼 뒤 실행하세요. <b>나중에 언제든 다시 켤 수 있습니다</b>(재부팅도 필요 없어요).<br>사내 배포용이라 코드 서명이 없어서 뜨는 안내예요. 빌드 직후 첫 실행은 검사 때문에 뜨는 데 몇 초 걸릴 수 있어요(두 번째부터 빠름).</span></div>
 
           </div>
 
@@ -738,11 +738,11 @@
 
           <div class="card">
 
-            <h3>왼쪽 · 소스 패널</h3>
+            <h3>왼쪽 · 미디어 라이브러리</h3>
 
             <ul class="bul">
 
-              <li><b>영상 · 배너 · 음원 라이브러리</b> — 불러온 소스가 종류별로 쌓여요. 카드에 <b>마우스를 올리면</b> 그 자리에서 미리보기가 재생되고, 카드를 고르고 <span class="kbd">Space</span>를 누르면 크게 볼 수 있어요.</li>
+              <li><b>미디어 라이브러리</b> — 불러온 영상 · 배너 · 음원이 종류별로 쌓여요. 카드에 <b>마우스를 올리면</b> 그 자리에서 미리보기가 재생되고, 카드를 고르고 <span class="kbd">Space</span>를 누르면 크게 볼 수 있어요.</li>
 
               <li>카드를 <b>캔버스로 드래그</b>하면 노드가 만들어져요.</li>
 
@@ -820,7 +820,7 @@
 
           </ul>
 
-          <div class="note"><span class="ic">i</span><span>배너는 <b>구멍이 투명하게(알파) 뚫린 PNG</b>를 써야 그 자리에 영상이 비쳐요. 배너가 위, 영상이 아래에 깔립니다.</span></div>
+          <div class="note"><span class="ic">i</span><span>배너는 <b>구멍이 투명하게(알파) 뚫린 PNG</b>를 써야 그 자리에 영상이 비쳐요. 배너가 위, 영상이 아래에 깔립니다.<br><b>구멍 대신 반투명 그라데이션이 깔린 배너</b>(하단 자막 바 같은)도 그대로 쓸 수 있어요 — 반투명 픽셀이 충분히 많으면 앱이 알아보고 <b>영상이 프레임 전체를 채우도록</b> 잡습니다. 다만 <b>완전히 투명한 부분이 전혀 없는 이미지</b>(알파가 아예 없거나 전 영역이 반투명)는 배너로 읽지 못해 <b>ㄴ자 표시가 나타나지 않아요</b> — 알파가 살아 있는 PNG 로 다시 내보내 주세요.</span></div>
 
           <ul class="bul">
 
@@ -865,7 +865,7 @@
 
             <li><b>1:1 · 9:16 · 16:9 · 4:5</b> 프리셋과 직접 입력을 제공하고, <b>여러 크기를 한 번에 고르면 크기마다 렌더 잡이 하나씩</b> 만들어져요.</li>
 
-              <li>남는 여백은 <b>레터박스</b>로 — <b>검정 · 단색 · 블러(영상)</b> 중 선택. 블러를 고르면 <b>블러 강도 · 어둡게</b>를 슬라이더로 조절할 수 있어요.</li>
+              <li>남는 여백은 <b>여백 배경</b>으로 채워요 — <b>비움 · 컬러 · 블러(영상)</b> 중 선택. 블러를 고르면 <b>블러 강도 · 어둡게</b>를 슬라이더로, <b>가장자리 반복</b>을 켬/끔(기본 켬)으로 조절할 수 있어요.</li>
 
             </ul>
 
@@ -879,9 +879,9 @@
 
               <li>파일 <b>용량을 줄여요</b> — 해상도 · fps · 비트레이트로 조절.</li>
 
-            <li>렌더 버튼 아래 접이식 <b>용량·화질 설정</b> 패널에서 켜요.</li>
+            <li>렌더큐 아래(렌더 버튼 <b>위</b>) 접이식 <b>용량·화질 설정</b> 패널에서 켜요 — 버튼을 누르면 위로 펼쳐집니다.</li>
 
-              <li><b>목표 MB</b>를 정하면 2-pass 인코딩으로 그 용량에 맞춰 뽑습니다.</li>
+              <li><b>목표 용량</b>(MB)을 정하면 2-pass 인코딩으로 그 용량에 맞춰 뽑습니다.</li>
 
             </ul>
 
@@ -889,7 +889,7 @@
 
         </div>
 
-        <div class="note"><span class="ic">i</span><span>두 기능은 <b>여는 곳이 달라요</b> — <b>용량 베리</b>는 렌더 버튼 아래 접이식 <b>용량·화질 설정</b> 패널(해상도 · 목표 용량 · 비트레이트 · fps), <b>사이즈 베리</b>는 <b>영상 노드 우클릭 → 크기·배경 변환</b>입니다. 용량·화질 설정 값은 렌더큐의 모든 잡에 일괄 적용돼요. <small>다만 해상도는 사이즈 베리 잡에선 각 잡의 타겟 크기가 우선이고, 배너 합성을 gif · png로 뽑을 때는 배너 크기 그대로 나갑니다.</small></span></div>
+        <div class="note"><span class="ic">i</span><span>두 기능은 <b>여는 곳이 달라요</b> — <b>용량 베리</b>는 렌더 버튼 <b>위</b>(렌더큐 아래) 접이식 <b>용량·화질 설정</b> 패널(해상도 · 목표 용량 · 비트레이트 · fps), <b>사이즈 베리</b>는 <b>영상 노드 우클릭 → 크기·배경 변환</b>입니다. 용량·화질 설정 값은 렌더큐의 모든 잡에 일괄 적용돼요. <small>다만 해상도는 사이즈 베리 잡에선 각 잡의 타겟 크기가 우선이고, 배너 합성을 gif · png로 뽑을 때는 배너 크기 그대로 나갑니다.</small></span></div>
 
         <div class="card" style="margin-top:14px">
 
@@ -932,6 +932,12 @@
             <li><b>크게 보기</b> — 영상 카드를 하나 고르고 <span class="kbd">Space</span>를 누르면 큰 화면으로 열려요. 큰 화면에서 <span class="kbd">Space</span>는 재생/정지, <span class="kbd">Esc</span>는 닫기예요.</li>
 
             <li><b>프레임 이동 · 구간 지정</b> — <span class="kbd">A</span> <span class="kbd">D</span>(또는 <span class="kbd">←</span> <span class="kbd">→</span>)로 한 프레임씩 이동하고, 원하는 지점에서 <span class="kbd">W</span>(<span class="kbd">↑</span>)로 <b>시작</b>, <span class="kbd">S</span>(<span class="kbd">↓</span>)로 <b>끝</b>을 찍어요. 컷편집 창 · 크게 보기 · 크기·배경 변환에서 모두 같습니다.</li>
+
+            <li><b>필름스트립</b> — 타임라인에 영상 프레임이 깔려 어디가 어느 장면인지 <b>보면서</b> 자를 수 있어요. 양 끝 손잡이를 끌어 구간을 정합니다.</li>
+
+            <li><b>호버 스크럽</b> — 타임라인 위에 마우스를 올리면 그 지점 프레임이 확대 미리보기로 떠요.</li>
+
+            <li><b>구간 해제</b> — <span class="kbd">Alt</span>+<span class="kbd">X</span>로 지정한 구간을 지웁니다. 구간을 안 정하고 [적용]을 누르면 잡이 생기지 않고 안내만 떠요.</li>
 
             <li>지정한 구간은 그 영상에 <b>기억</b>돼서, 배너·음원과 함께 렌더할 때도 그대로 적용돼요.</li>
 
@@ -997,7 +1003,7 @@
 
               <li><b>음원 미리듣기</b> <small>· v1.0.168</small> — mp3 · wav 같은 음원은 <b>썸네일을 한 번 클릭</b>하면 바로 들려요. 내려받기를 기다리지 않고 <b>즉시 재생</b>되고 파형은 뒤이어 채워집니다. 구간을 자르거나 <b>원본 교체 · 원본과 믹스</b>·볼륨까지 정한 다음 <b>라이브러리로 가져오기</b>를 누르면 그 설정이 그대로 붙어 들어와요.</li>
 
-              <li>파일을 골라 <b>라이브러리로 가져오기</b> — 바로 노드로 쓸 수 있어요.</li>
+              <li>파일을 골라 <b>미디어 라이브러리에 삽입</b>(또는 <b>노드 캔버스에 삽입</b>) — 바로 노드로 쓸 수 있어요.</li>
 
             </ul>
 
@@ -1029,7 +1035,7 @@
 
             <li><b>이름 바꾸기</b> <small>· <span class="kbd">F2</span></small> — 기본은 파일명만 선택돼요. 확장자(.mp4 등)는 건드리지 않고 이름만 바뀝니다. <small>확장자까지 바꾸려면 직접 드래그해 포함하세요.</small></li>
 
-            <li><b>이동 · 삭제 · 새 폴더</b> — 우클릭 메뉴에서 파일을 정리.</li>
+            <li><b>복사 · 잘라내기 · 붙여넣기 · 이름 바꾸기 · 삭제 · 폴더 생성</b> — 우클릭 메뉴에서 파일을 정리해요(옮기기 = 잘라내기 후 붙여넣기). <small>되돌리기(<span class="kbd">Ctrl</span>+<span class="kbd">Z</span>)는 <b>방금 만든 것을 지우는</b> 방식이라 폴더 생성 · 업로드 · 붙여넣기에만 통해요 — 삭제와 이름 바꾸기는 되돌릴 수 없습니다.</small></li>
 
           </ul>
 
@@ -1063,7 +1069,7 @@
 
         <div class="sec-head"><span class="sec-num">09</span><h2>단축키</h2></div>
 
-        <p class="lead">대부분의 조작은 키 하나로. 아래 <b>첫 번째 표</b>의 키는 설정 → 단축키에서 원하는 키로 바꿀 수 있어요. <b>F2</b>와 두 번째 표의 <b>고정 키</b>는 바꿀 수 없습니다.</p>
+        <p class="lead">대부분의 조작은 키 하나로. 아래 <b>첫 번째 표</b>에서 <b>고정</b> 표시가 없는 키는 설정 → 단축키에서 원하는 키로 바꿀 수 있어요 — <b>여기 적힌 값은 모두 기본값</b>입니다. <b>고정</b> 표시가 붙은 키와 두 번째 표의 <b>고정 키</b>는 바꿀 수 없습니다.<br><small>단축키가 이미 쓰이는 키와 겹치면 막지 않고 <b>서로 자리를 바꿔요</b>(교체) — 겹친 쪽이 원래 키를 잃지 않습니다.</small></p>
 
         <div class="card">
 
@@ -1083,15 +1089,15 @@
 
             <div class="key-row"><div class="label">렌더 실행</div><div class="keys"><span class="key-cap">Enter</span></div></div>
 
-            <div class="key-row"><div class="label">노드 연결 <small>2개 이상 고르면 고른 것끼리 · 아무것도 안 고르면 캔버스 전체</small></div><div class="keys"><span class="key-cap">C</span></div></div>
+            <div class="key-row"><div class="label">노드 연결 <small>고정 · 2개 이상 고르면 고른 것끼리 · 아무것도 안 고르면 캔버스 전체</small></div><div class="keys"><span class="key-cap">C</span></div></div>
 
-            <div class="key-row"><div class="label">연결 끊기 <small>고른 노드에 이어진 연결만 · 아무것도 안 고르면 전체 해제</small></div><div class="keys"><span class="key-cap">X</span></div></div>
+            <div class="key-row"><div class="label">연결 끊기 <small>고정 · 고른 노드에 이어진 연결만 · 아무것도 안 고르면 전체 해제</small></div><div class="keys"><span class="key-cap">X</span></div></div>
 
-            <div class="key-row"><div class="label">지면 가이드 <small>G=마지막 가이드 토글 · I/Y/T=Instagram·YouTube·TikTok 기본</small></div><div class="keys"><span class="key-cap">G</span><span class="key-cap">I</span><span class="key-cap">Y</span><span class="key-cap">T</span></div></div>
+            <div class="key-row"><div class="label">지면 가이드 <small>고정 · G=마지막 가이드 토글 · I/Y/T=Instagram·YouTube·TikTok 기본 · 9:16일 때만</small></div><div class="keys"><span class="key-cap">G</span><span class="key-cap">I</span><span class="key-cap">Y</span><span class="key-cap">T</span></div></div>
 
             <div class="key-row"><div class="label">렌더큐 · NAS 전환</div><div class="keys"><span class="key-cap">Tab</span></div></div>
 
-            <div class="key-row"><div class="label">이름 바꾸기 / 출력 설정 <small>NAS 항목 / 렌더큐 대기 카드</small></div><div class="keys"><span class="key-cap">F2</span></div></div>
+            <div class="key-row"><div class="label">이름 바꾸기 / 출력 설정 <small>고정 · NAS 항목 / 렌더큐 대기 카드</small></div><div class="keys"><span class="key-cap">F2</span></div></div>
 
             <div class="key-row"><div class="label">사용 설명서 열기 <small>이 페이지</small></div><div class="keys"><span class="key-cap">F1</span></div></div>
 
@@ -1105,7 +1111,7 @@
 
             <div class="key-row"><div class="label">NAS 캐시 비우기</div><div class="keys"><span class="key-cap">Ctrl</span><span class="key-cap">Alt</span><span class="key-cap">/</span></div></div>
 
-            <div class="key-row"><div class="label">로컬 캐시 비우기</div><div class="keys"><span class="key-cap">Ctrl</span><span class="key-cap">Alt</span><span class="key-cap">*</span></div></div>
+            <div class="key-row"><div class="label">캐시 모두 비우기 <small>미디어 캐시 + 가져온 사본 — 가져온 사본까지 지워져 소재 연결이 끊길 수 있어요</small></div><div class="keys"><span class="key-cap">Ctrl</span><span class="key-cap">Alt</span><span class="key-cap">*</span></div></div>
 
           </div>
 
@@ -1205,15 +1211,15 @@
 
           <h3>처음 켤 때 검은 화면이 잠깐 떠요.</h3>
 
-          <p class="lead" style="margin-bottom:0">새 버전을 처음 실행할 때 Windows 보안 검사 때문에 뜨는 데 몇 초 걸릴 수 있어요. 두 번째 실행부터는 빠르게 뜹니다.</p>
+          <p class="lead" style="margin-bottom:0">새 버전을 처음 실행할 때 Windows 보안 검사 때문에 뜨는 데 몇 초 걸릴 수 있어요. 두 번째 실행부터는 빠르게 뜹니다.<br>검은 화면이 <b>끝내 안 걷히면</b> 잠시 뒤 안내창이 뜹니다 — 창에 적힌 대로 <b>Microsoft Edge WebView2 런타임</b>을 설치(또는 복구)해 주세요. 그래도 같으면 <code>%USERPROFILE%\.bannernode\boot_debug.log</code> 를 영상팀에 보내 주시면 원인을 바로 볼 수 있어요.</p>
 
         </div>
 
         <div class="card">
 
-          <h3>앱이 처음에 클릭해야 반응해요 / SmartScreen이 막아요.</h3>
+          <h3>앱이 처음에 클릭해야 반응해요 / SmartScreen · 스마트 앱 컨트롤이 막아요.</h3>
 
-          <p class="lead" style="margin-bottom:0">최신 버전에서 첫 실행 포커스는 자동으로 잡히도록 개선됐어요. SmartScreen·스마트 앱 컨트롤이 막으면 <b>추가 정보 → 실행</b>으로 열면 됩니다(사내 배포용 앱).</p>
+          <p class="lead" style="margin-bottom:0">최신 버전에서 첫 실행 포커스는 자동으로 잡히도록 개선됐어요. <b>SmartScreen</b>이 막으면 <b>추가 정보 → 실행</b>. <b>스마트 앱 컨트롤(SAC)</b>이 켜져 있으면 그 버튼이 없으니 <b>Windows 보안 ▸ 앱 및 브라우저 컨트롤 ▸ 스마트 앱 컨트롤</b>을 끄고 실행하세요 — 나중에 다시 켤 수 있어요(사내 배포용 앱이라 코드 서명이 없습니다).</p>
 
         </div>
 
@@ -1241,7 +1247,31 @@
 
           <details class="cl-entry current" open>
 
-            <summary class="cl-head"><span class="cl-ver">v1.0.189</span><span class="cl-badge">최신</span><span class="cl-date">2026-08-13</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+            <summary class="cl-head"><span class="cl-ver">v1.0.192</span><span class="cl-badge">최신</span><span class="cl-date">2026-08-22</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+
+            <div class="cl-body"><div class="cl-body-inner"><ul>
+
+              <li><b>★맥 버전이 Windows와 같은 세대가 됐어요</b> — 그동안 맥은 <b>v1.0.174</b>에 멈춰 있어서 그 뒤에 들어간 기능(영상 반복 · 렌더큐 기록 · 크기·배경 변환 · 컷편집 필름스트립 등)을 쓸 수 없었습니다. 이번 버전부터 <b>Apple 실리콘 · Intel</b> 둘 다 같은 번호로 함께 올라가요. <small>macOS 14.0(Sonoma) 이상이 필요합니다.</small></li>
+
+              <li><b>렌더가 실패하면 이유가 보여요</b> — 예전에는 실패 카드에 알 수 없는 명령어 덤프가 떴습니다. 이제 <b>ffmpeg가 알려 준 실제 사유</b>가 그대로 뜨니, 그 문장을 영상팀에 그대로 전달하시면 돼요.</li>
+
+              <li><b>손상된 파일 하나가 큐 전체를 멈추지 않아요</b> — 깨진 파일이나 끊긴 네트워크 드라이브에서 소재 정보를 읽지 못하면 예전엔 그 작업이 <b>영원히 매달려</b> 렌더큐도 캐시 비우기도 안 되고 앱을 닫는 수밖에 없었습니다. 이제 그 작업만 실패로 떨어지고 나머지는 계속돼요. <small>렌더 자체에는 시간 제한이 없어서 긴 영상도 안전합니다.</small></li>
+
+              <li><b>PNG 시퀀스가 실패하면 만들다 만 폴더를 치워요</b> — 예전에는 잘린 프레임 폴더가 출력 폴더에 그대로 남았습니다.</li>
+
+              <li><b>설정 창을 열어 둔 채 <span class="kbd">Space</span>·<span class="kbd">Delete</span>를 눌러도 안전해요</b> — 설정에서 단축키를 고르다가 뒤 캔버스의 노드가 지워지던 문제를 막았습니다.</li>
+
+              <li><b>시작 화면에도 버전이 보여요</b> — 좌상단 BannerNode 이름 옆에 지금 쓰는 버전이 표시됩니다.</li>
+
+              <li><b>미리보기 · 컷편집 창이 화면 크기에 맞춰 늘어나요</b> — 작은 노트북에서 창이 잘리던 것을 고쳤습니다.</li>
+
+            </ul></div></div>
+
+          </details>
+
+          <details class="cl-entry">
+
+            <summary class="cl-head"><span class="cl-ver">v1.0.189</span><span class="cl-date">2026-08-13</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
 
             <div class="cl-body"><div class="cl-body-inner"><ul>
 
@@ -1631,7 +1661,7 @@
 
             <div class="cl-body"><div class="cl-body-inner"><ul>
 
-              <li><b>용량 베리</b> — 목표 MB에 맞춰 파일 용량 줄이기(2-pass)</li>
+              <li><b>용량 베리</b> — 목표 용량(MB)에 맞춰 파일 용량 줄이기(2-pass)</li>
 
               <li><b>사이즈 베리</b> · <b>컷 편집</b> 추가</li>
 
@@ -1663,7 +1693,7 @@
 
 
 
-<footer>BannerNode v1.0.189 · 영상팀 내부용 · ADEF</footer>
+<footer>BannerNode v1.0.192 · 영상팀 내부용 · ADEF</footer>
 
 
 
@@ -1671,14 +1701,14 @@
 
   // 다운로드: 접속 기기 자동 감지 → 맞는 버튼을 앞으로 + 주 버튼 강조
   (function(){
-    const MAC_READY = true;    // v1.0.159 릴리즈에 arm64·x86_64 zip 업로드 완료(2026-07-28)
+    const MAC_READY = true;    // v1.0.192 릴리즈에 arm64·x86_64 zip 업로드 완료(2026-08-22 · 이때부터 맥·윈도우 세대 동일)
     const BASE = 'https://github.com/minsk999/bannernode-guide/releases/latest/download/';
     // ★★ 맥은 'latest' 를 쓰면 안 된다 ★★
     //   Windows 만 올라간 릴리즈(v1.0.175)가 latest 가 되는 순간
     //   latest/download/BannerNode-macOS-*.zip 이 404 가 된다(실측 확인, 2026-08-04 사용자 제보).
     //   그래서 **맥 자산이 실제로 존재하는 태그**를 고정한다.
     //   ⚠️ 맥 빌드를 새로 올리면 MAC_TAG 를 그 태그로 바꿀 것(안 바꾸면 옛 버전이 계속 배포된다).
-    const MAC_TAG = 'v1.0.174';
+    const MAC_TAG = 'v1.0.192';
     const MAC_BASE = 'https://github.com/minsk999/bannernode-guide/releases/download/' + MAC_TAG + '/';
     const MAC_URL_ARM = MAC_BASE + 'BannerNode-macOS-arm64.zip';
     const MAC_URL_X64 = MAC_BASE + 'BannerNode-macOS-x86_64.zip';

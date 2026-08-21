@@ -25,7 +25,7 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 <style>
-  /* 회사 구글 로그인 게이트 (클라이언트측) */
+  /* ADEF 구글 로그인 게이트 (클라이언트측) */
   html.gate-locked, html.gate-locked body{ overflow:hidden !important; }
   #authgate{ position:fixed; inset:0; z-index:2147483000; display:flex; align-items:center; justify-content:center;
     background:radial-gradient(1100px 560px at 50% -8%, #10131b 0%, #0a0b0f 62%); color:#e7e9ef;
@@ -437,11 +437,11 @@
 <div id="authgate" role="dialog" aria-modal="true">
   <div class="ag-card">
     <svg class="ag-logo" aria-hidden="true" viewBox="0 0 512 512"><rect width="512" height="512" rx="118" fill="#a2ff00"/><g transform="translate(128.09 128) scale(4.6529)" fill="#0a0b0f"><path d="M49.67,11.02c-.06,0-.12,0-.18,0-3.04,0-5.5-2.46-5.5-5.5h0s0-.02,0-.04c0-3.04-2.46-5.5-5.5-5.5-.21,0-.42.01-.62.04h-9.76c-.2-.02-.41-.04-.62-.04s-.42.01-.62.04h-9.76c-.2-.02-.41-.04-.62-.04-3.04,0-5.5,2.46-5.5,5.5,0,.01,0,.02,0,.04h0c0,3.04-2.46,5.5-5.5,5.5S0,13.49,0,16.53c0,0,0,0,0,0v10.98s0,0,0,0,0,0,0,0v10.98s0,0,0,0,0,0,0,0v10.98s0,0,0,0c0,3.04,2.46,5.5,5.5,5.5h32.99c3.04,0,5.5-2.46,5.5-5.5s2.46-5.5,5.5-5.5,5.5-2.46,5.5-5.5-2.46-5.5-5.5-5.5-5.5-2.46-5.5-5.5,2.46-5.5,5.5-5.5v-.02c3.04,0,5.5-2.46,5.5-5.5s-2.36-5.39-5.31-5.49ZM38.49,44.02h-21.99c-3.04,0-5.5-2.46-5.5-5.5s2.46-5.5,5.5-5.5h21.99c3.04,0,5.5,2.46,5.5,5.5s-2.46,5.5-5.5,5.5ZM38.49,22.03c-.12,0-.25-.01-.37-.02h-10.26c-.12,0-.24.02-.37.02s-.25-.01-.37-.02h-10.26c-.12,0-.24.02-.37.02-3.04,0-5.5-2.46-5.5-5.5s2.46-5.5,5.5-5.5h21.99c3.04,0,5.5,2.46,5.5,5.5s-2.46,5.5-5.5,5.5Z"/></g></svg>
-    <div class="ag-title">회사 구글 계정 로그인</div>
-    <p class="ag-sub">이 설명서는 ADEF·와이즈버즈 구성원만 열람할 수 있어요.</p>
+    <div class="ag-title">ADEF 계정 로그인</div>
+    <p class="ag-sub">이 설명서는 ADEF 구성원만 열람할 수 있어요.</p>
     <button class="ag-btn" id="gaBtn"><svg class="gg" viewBox="0 0 48 48" fill="#a2ff00"><path d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"/><path d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>구글 계정으로 로그인</button>
     <p class="ag-err" id="gaErr" hidden></p>
-    <p class="ag-note">@adef.co.kr · @wisebirds.com 계정만 접근할 수 있습니다.</p>
+    <p class="ag-note">@adef.co.kr 계정만 접근할 수 있습니다.</p>
   </div>
 </div>
 <script>document.documentElement.classList.add('gate-locked');</script>
@@ -462,7 +462,7 @@
 
     <span class="spacer"></span>
 
-    <button class="theme-btn" id="logout" aria-label="구글 계정 로그아웃" data-tip="구글 계정 로그아웃">
+    <button class="theme-btn" id="logout" aria-label="ADEF 계정 로그아웃" data-tip="ADEF 계정 로그아웃">
 
       <svg viewBox="0 0 24 24"><path d="M6.6 3H12v2.9H7.9v12.2H12V21H6.6A1.6 1.6 0 0 1 5 19.4V4.6A1.6 1.6 0 0 1 6.6 3z"/><path d="M11.4 10.5h5.5V7.5L21.9 12l-5 4.5v-3h-5.5z"/></svg>
 
@@ -673,7 +673,7 @@
 
               <li><span class="t"><b>압축 풀고 실행</b> — 받은 zip을 풀고 폴더 안의 <code>BannerNode.exe</code>를 더블클릭하면 앱 창이 뜹니다. 별도 설치 과정은 없어요.</span></li>
 
-              <li><span class="t"><b>회사 구글 로그인</b> — 처음 한 번 브라우저가 열리며 구글 로그인을 해요. <b>@adef.co.kr</b>·<b>@wisebirds.com</b> 계정만 사용할 수 있고, 이후 180일간 유지됩니다.</span></li>
+              <li><span class="t"><b>ADEF 구글 로그인</b> — 처음 한 번 브라우저가 열리며 구글 로그인을 해요. <b>@adef.co.kr</b> 계정만 사용할 수 있고, 이후 180일간 유지됩니다.</span></li>
 
               <li><span class="t"><b>NAS 자동 로그인</b> — 처음 한 번 사내 NAS 계정으로 로그인하면 다음부터는 자동으로 연결됩니다.</span></li>
 
@@ -700,7 +700,7 @@
 
               <li><span class="t"><b>압축 풀고 앱 옮기기</b> — 받은 zip을 더블클릭하면 <b>BannerNode</b> 앱이 나옵니다. 이걸 <b>응용 프로그램</b> 폴더로 드래그한 뒤 더블클릭하세요.</span></li>
 
-              <li><span class="t"><b>회사 구글 로그인</b> — 처음 한 번 브라우저가 열리며 구글 로그인을 해요. <b>@adef.co.kr</b>·<b>@wisebirds.com</b> 계정만 사용할 수 있고, 이후 180일간 유지됩니다.</span></li>
+              <li><span class="t"><b>ADEF 구글 로그인</b> — 처음 한 번 브라우저가 열리며 구글 로그인을 해요. <b>@adef.co.kr</b> 계정만 사용할 수 있고, 이후 180일간 유지됩니다.</span></li>
 
               <li><span class="t"><b>NAS 자동 로그인</b> — 처음 한 번 사내 NAS 계정으로 로그인하면 다음부터는 자동으로 연결됩니다.</span></li>
 
@@ -1189,7 +1189,7 @@
 
           <h3>처음 켰더니 로그인하라고 떠요.</h3>
 
-          <p class="lead" style="margin-bottom:0">BannerNode는 ADEF·와이즈버즈 구성원 전용이라 처음 한 번 <b>회사 구글 계정(@adef.co.kr · @wisebirds.com)</b>으로 로그인해야 해요. 버튼을 누르면 브라우저가 열리고, 로그인하면 180일간 유지됩니다. 계정이 삭제·정지되면(퇴사 등) 다음 확인 때 자동으로 잠깁니다. 로그아웃은 앱 설정의 <b>구글 계정</b>에서.</p>
+          <p class="lead" style="margin-bottom:0">BannerNode는 ADEF 구성원 전용이라 처음 한 번 <b>ADEF 구글 계정(@adef.co.kr)</b>으로 로그인해야 해요. 버튼을 누르면 브라우저가 열리고, 로그인하면 180일간 유지됩니다. 계정이 삭제·정지되면(퇴사 등) 다음 확인 때 자동으로 잠깁니다. 로그아웃은 앱 설정의 <b>ADEF 계정</b>에서.</p>
 
         </div>
 
@@ -1776,11 +1776,13 @@
 </script>
 
 <script>
-/* 회사 구글 로그인 게이트 — 클라이언트측(GIS). 정적 사이트라 소프트 차단(우회 가능성 있음, 캐주얼 제한용). */
+/* ADEF 구글 로그인 게이트 — 클라이언트측(GIS). 정적 사이트라 소프트 차단(우회 가능성 있음, 캐주얼 제한용). */
 (function(){
   var CID='575127134030-0023iive0i5aejtcmloa89nadhrnfmuc.apps.googleusercontent.com';
-  /* 허용 도메인 — ★정확히 일치만(endswith 금지: evil-adef.co.kr 이 통과한다). 계열사 추가는 이 배열에만. */
-  var DOMS=['adef.co.kr','wisebirds.com'], DOMLBL=DOMS.map(function(d){return '@'+d;}).join(' · ');
+  /* 허용 도메인 — ★정확히 일치만(endswith 금지: evil-adef.co.kr 이 통과한다). 계열사 추가는 이 배열에만.
+     ★★화면 문구는 「@adef.co.kr 계정만」인데 이 목록엔 wisebirds.com 이 있다 — **일부러 어긋나 있다**
+       (계열사 로그인은 열되 대외 노출은 안 한다, 2026-08-21 사용자 결정). 문구를 목록에 맞추지 말 것. */
+  var DOMS=['adef.co.kr','wisebirds.com'];
   function okDom(d){ return DOMS.indexOf(String(d||'').toLowerCase())>=0; }
   function unlock(){ var g=document.getElementById('authgate'); if(g) g.style.display='none'; document.documentElement.classList.remove('gate-locked');
     try{ var f=document.querySelector('.demo-embed iframe'); if(f){ var go=function(){ try{ if(f.contentWindow&&f.contentWindow.__bnDemoRestart) f.contentWindow.__bnDemoRestart(); }catch(_){ } };
@@ -1798,7 +1800,7 @@
       .then(function(r){ return r.json(); }).then(function(info){
         var dom=(info.hd||(String(info.email||'').split('@')[1]||'')).toLowerCase();
         if(info.email_verified && okDom(dom)){ markerSet(info.email,dom); unlock(); }
-        else { if(btn) btn.disabled=false; err('회사 구글 계정('+DOMLBL+')만 열람할 수 있어요. 로그인한 계정: '+(info.email||'알 수 없음')); }
+        else { if(btn) btn.disabled=false; err('ADEF 계정(@'+DOMS[0]+')만 열람할 수 있어요. 로그인한 계정: '+(info.email||'알 수 없음')); }
       }).catch(function(){ if(btn) btn.disabled=false; err('로그인 확인 중 오류가 발생했어요. 다시 시도해 주세요.'); });
   }
   var _initTry=0;

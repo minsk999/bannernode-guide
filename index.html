@@ -458,7 +458,7 @@
 
     </div>
 
-    <span class="ver">v1.0.192</span>
+    <span class="ver">v1.0.193</span>
 
     <span class="spacer"></span>
 
@@ -632,7 +632,7 @@
 
           <div class="dl-head">
 
-            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.192</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
+            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.193</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
 
             <div class="dl-detect" id="dlDetect" role="status">접속 기기 확인 중…</div>
 
@@ -1247,7 +1247,21 @@
 
           <details class="cl-entry current" open>
 
-            <summary class="cl-head"><span class="cl-ver">v1.0.192</span><span class="cl-badge">최신</span><span class="cl-date">2026-08-22</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+            <summary class="cl-head"><span class="cl-ver">v1.0.193</span><span class="cl-badge">최신</span><span class="cl-date">2026-08-24</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+
+            <div class="cl-body"><div class="cl-body-inner"><ul>
+
+              <li><b>★와이즈버즈 계정 로그인 지원</b> — 계열사 <b>와이즈버즈</b> 구성원도 <b>@wisebirds.com</b> 구글 계정으로 BannerNode에 로그인할 수 있어요. 이 사용 설명서도 같은 계정으로 열람됩니다. <small>로그인 화면 안내문에는 ADEF 기준으로 적혀 있지만, 와이즈버즈 계정도 그대로 통과해요.</small></li>
+
+              <li><b>안내 문구 다듬기</b> — 설치 안내(SmartScreen과 스마트 앱 컨트롤의 대응을 구분)와 앱 안내문 일부를 실제 동작에 맞춰 정리했어요.</li>
+
+            </ul></div></div>
+
+          </details>
+
+          <details class="cl-entry">
+
+            <summary class="cl-head"><span class="cl-ver">v1.0.192</span><span class="cl-date">2026-08-22</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
 
             <div class="cl-body"><div class="cl-body-inner"><ul>
 
@@ -1693,7 +1707,7 @@
 
 
 
-<footer>BannerNode v1.0.192 · 영상팀 내부용 · ADEF</footer>
+<footer>BannerNode v1.0.193 · 영상팀 내부용 · ADEF</footer>
 
 
 
@@ -1701,14 +1715,14 @@
 
   // 다운로드: 접속 기기 자동 감지 → 맞는 버튼을 앞으로 + 주 버튼 강조
   (function(){
-    const MAC_READY = true;    // v1.0.192 릴리즈에 arm64·x86_64 zip 업로드 완료(2026-08-22 · 이때부터 맥·윈도우 세대 동일)
+    const MAC_READY = true;    // v1.0.193 릴리즈에 arm64·x86_64 zip 업로드(2026-08-24) — v192 부터 맥·윈도우 세대 동일
     const BASE = 'https://github.com/minsk999/bannernode-guide/releases/latest/download/';
     // ★★ 맥은 'latest' 를 쓰면 안 된다 ★★
     //   Windows 만 올라간 릴리즈(v1.0.175)가 latest 가 되는 순간
     //   latest/download/BannerNode-macOS-*.zip 이 404 가 된다(실측 확인, 2026-08-04 사용자 제보).
     //   그래서 **맥 자산이 실제로 존재하는 태그**를 고정한다.
     //   ⚠️ 맥 빌드를 새로 올리면 MAC_TAG 를 그 태그로 바꿀 것(안 바꾸면 옛 버전이 계속 배포된다).
-    const MAC_TAG = 'v1.0.192';
+    const MAC_TAG = 'v1.0.193';
     const MAC_BASE = 'https://github.com/minsk999/bannernode-guide/releases/download/' + MAC_TAG + '/';
     const MAC_URL_ARM = MAC_BASE + 'BannerNode-macOS-arm64.zip';
     const MAC_URL_X64 = MAC_BASE + 'BannerNode-macOS-x86_64.zip';

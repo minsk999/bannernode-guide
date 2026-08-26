@@ -206,7 +206,7 @@
 
   .hero .eyebrow{font-size:13px; font-weight:600; color:var(--ink-3); letter-spacing:.04em; text-transform:uppercase; margin-bottom:14px;}
 
-  .hero h1{font-size:clamp(34px,6vw,54px); font-weight:800; letter-spacing:-0.005em; line-height:1.18;}  /* ★-0.025em 에서 완화(2026-08-26) — 한글 볼드가 54px 에서 서로 닿아 보였다(사용자 제보). 시안 5단계 중 D 선택: 54px 기준 약 +1.1px(B→C→D 로 단계적으로 완화). */
+  .hero h1{font-size:clamp(34px,6vw,54px); font-weight:800; letter-spacing:0; line-height:1.18;}  /* ★-0.025em 에서 완화(2026-08-26) — 한글 볼드가 54px 에서 서로 닿아 보였다(사용자 제보). 시안 5단계 중 E(마지막 단계) 선택: 자간 보정 자체를 뺀 값. 54px 기준 원본 대비 약 +1.35px(B→C→D→E 로 단계적으로 완화). */
 
   .hero h1 .hl{color:var(--lime-fg);}
 .hero h1 .garnish{display:block; font-size:.40em; letter-spacing:-0.012em; line-height:1.35; margin-top:14px;}

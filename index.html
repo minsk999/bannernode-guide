@@ -498,7 +498,7 @@
 
     </div>
 
-    <span class="ver">v1.0.197</span>
+    <span class="ver">v1.0.198</span>
 
     <span class="spacer"></span>
 
@@ -672,7 +672,7 @@
 
           <div class="dl-head">
 
-            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.197</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
+            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.198</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
 
             <div class="dl-detect" id="dlDetect" role="status">접속 기기 확인 중…</div>
 
@@ -1287,7 +1287,21 @@
 
           <details class="cl-entry current" open>
 
-            <summary class="cl-head"><span class="cl-ver">v1.0.197</span><span class="cl-badge">최신</span><span class="cl-date">2026-08-26</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+            <summary class="cl-head"><span class="cl-ver">v1.0.198</span><span class="cl-badge">최신</span><span class="cl-date">2026-08-27</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
+
+            <div class="cl-body"><div class="cl-body-inner"><ul>
+
+              <li><b>도착한 소재가 무엇인지 색으로 보여요</b> — NAS에서 가져온 파일이 다 받아지면 카드와 노드 테두리가 한 번 빛나는데, 지금까지는 영상·배너·음원이 <b>모두 같은 색</b>이었어요. 이제 <b>영상은 라임 · 배너는 블루 · 음원은 핑크</b>로 갈라집니다. <small>설정에서 세 색을 바꾸면 이 빛도 그 색을 따라가요.</small></li>
+
+              <li><b>로그아웃하면 NAS 연결도 함께 끊겨요</b> — 예전에는 앱에서 로그아웃해도 NAS 연결이 그대로 남아, <b>다음에 로그인한 사람이 앞사람 계정으로</b> NAS를 쓰게 됐어요. 폴더 목록이 안 나오거나(코드 407) 엉뚱한 폴더가 보이던 원인입니다. <small>저장해 둔 NAS 로그인 정보는 지우지 않으니, 다시 로그인하면 평소처럼 자동으로 연결됩니다.</small></li>
+
+            </ul></div></div>
+
+          </details>
+
+          <details class="cl-entry">
+
+            <summary class="cl-head"><span class="cl-ver">v1.0.197</span><span class="cl-date">2026-08-26</span><span class="cl-chev"><svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></span></summary>
 
             <div class="cl-body"><div class="cl-body-inner"><ul>
 
@@ -1813,7 +1827,7 @@
 
 
 
-<footer>BannerNode v1.0.197 · 영상팀 내부용 · ADEF</footer>
+<footer>BannerNode v1.0.198 · 영상팀 내부용 · ADEF</footer>
 
 
 
@@ -1821,14 +1835,14 @@
 
   // 다운로드: 접속 기기 자동 감지 → 맞는 버튼을 앞으로 + 주 버튼 강조
   (function(){
-    const MAC_READY = true;    // v1.0.197 릴리즈에 arm64·x86_64 zip 업로드(2026-08-26) — v192 부터 맥·윈도우 세대 동일
+    const MAC_READY = true;    // v1.0.198 릴리즈에 arm64·x86_64 zip 업로드(2026-08-27) — v192 부터 맥·윈도우 세대 동일
     const BASE = 'https://github.com/minsk999/bannernode-guide/releases/latest/download/';
     // ★★ 맥은 'latest' 를 쓰면 안 된다 ★★
     //   Windows 만 올라간 릴리즈(v1.0.175)가 latest 가 되는 순간
     //   latest/download/BannerNode-macOS-*.zip 이 404 가 된다(실측 확인, 2026-08-04 사용자 제보).
     //   그래서 **맥 자산이 실제로 존재하는 태그**를 고정한다.
     //   ⚠️ 맥 빌드를 새로 올리면 MAC_TAG 를 그 태그로 바꿀 것(안 바꾸면 옛 버전이 계속 배포된다).
-    const MAC_TAG = 'v1.0.197';
+    const MAC_TAG = 'v1.0.198';
     const MAC_BASE = 'https://github.com/minsk999/bannernode-guide/releases/download/' + MAC_TAG + '/';
     const MAC_URL_ARM = MAC_BASE + 'BannerNode-macOS-arm64.zip';
     const MAC_URL_X64 = MAC_BASE + 'BannerNode-macOS-x86_64.zip';

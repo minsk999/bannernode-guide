@@ -1,0 +1,92 @@
+<!doctype html><html lang="ko"><head>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="referrer" content="no-referrer">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>애드아카이브 · 탐색과 외부 공유 시연</title><link rel="stylesheet" href="demo-font.css"><link rel="stylesheet" href="archive-demo.css"><link rel="stylesheet" href="demo-controls.css"></head><body>
+<div class="viewport"><div id="scene" aria-label="애드아카이브 탐색 및 공유 시연">
+<header class="site-header"><img class="logo-mark" src="media/adarchive-logo.svg" alt="애드아카이브"><div class="header-mid"><span>Seoul <b>17:53</b></span><span>crnas.adef.co.kr:8444 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 4H6.6A2.6 2.6 0 0 0 4 6.6V15.5H6.5V6.5H15.5Z"/><rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2.6"/></svg></span></div><button id="menu" class="menu-btn" aria-label="메뉴 열기"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round">
+        <path class="bl bl1" pathLength="1" d="M5 7.5 H27"/>
+        <path class="bl bl2" pathLength="1" d="M27 15.5 H5"/>
+        <path class="bl bl3" pathLength="1" d="M5 23.5 H18"/>
+        <circle class="bdot" cx="26" cy="23.5" r="3.5" fill="currentColor" stroke="none"/>
+      </svg></button></header>
+<div id="filterbar" class="filterbar"><div class="filter-pill"><div class="filter-row"><div id="catPills" class="cats"></div><button class="pill" id="typeToggle"><span id="typeToggleLabel">작업 성격</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg></button><button class="pill" id="pinToggle"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 3H17V21L12 16.5L7 21Z"/></svg>저장 <b>12</b></button><input id="search" class="search" placeholder="영상·광고주·캠페인 검색" readonly></div><div id="activeChips" class="typebar" hidden><span>필터</span><button class="pill on">네플스 <span aria-hidden="true">×</span></button></div><div id="typePills" class="typebar" hidden></div></div></div>
+<section class="library"><div class="lib-heading"><div><h1 id="libraryCategory">커머스</h1><h2 id="libraryTitle">네플스 <small>(888)</small></h2></div><span id="libraryCount">1570 films — 7 advertisers</span></div><div class="bento" id="cards"></div></section>
+<div id="fpicker" class="adv-picker" hidden><h5 class="fp-title">광고주 <span>· 커머스</span></h5><input class="fp-search" placeholder="광고주 검색" readonly><div class="adv-head"><button id="sort-name">광고주<span></span></button><button id="sort-period">기간<span>↓</span></button><button id="sort-count">영상 수<span></span></button></div><div class="adv-list" id="advertisers"></div></div>
+<div id="player" class="player" hidden><div class="player-backdrop"></div><div class="player-panel"><button class="player-close" aria-label="닫기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg></button><div class="player-stage" id="playerStage"><video id="previewVideo" src="media/archive-membership.mp4" poster="media/archive-68156a2ba279b83d.jpg" muted loop playsinline preload="metadata"></video></div><div class="player-head"><h2 class="player-title">260731_네플스_7월멤버십_1080x1080_HYC_@AV_vari</h2><p class="player-client">네플스 · RTB</p></div><div class="player-metaband"><div class="meta-grid"><div><small>category</small><b>커머스</b></div><div><small>format</small><b>MP4</b></div><div><small>size</small><b>21.8 MB</b></div><div><small>resolution</small><b>1080×1080</b></div><div><small>duration</small><b>00:17</b></div><div><small>fps</small><b>30</b></div><div><small>modified</small><b>2026.07.31</b></div></div><code class="player-path">/cr/2026_업무요청/네이버쇼핑/영상/7월/260715_7월멤버십_모션영상_HYC/VARI/RTB/260731_네플스_7월멤버십_1080x1080_HYC_@AV_vari.mp4</code><div class="player-actions"><button><svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 3H17V21L12 16.5L7 21Z"/></svg>저장</button><button><svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 4H6.6A2.6 2.6 0 0 0 4 6.6V15.5H6.5V6.5H15.5Z"/><rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2.6"/></svg>복사</button><button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="3.3" ry="9"/><path d="M3 12H21"/></svg>링크 공유</button><button class="pill-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m-5-5 5 5 5-5M4 14v6h16v-6"/></svg>다운로드</button></div></div></div></div>
+<div class="radial" id="radial" hidden >
+  <button id="radial-save" class="radial-item" data-act="save">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 3 H17 V21 L12 16.5 L7 21 Z"/></svg>
+    <i>저장</i>
+  </button>
+  <button id="radial-copy" class="radial-item" data-act="copy">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 4 H6.6 A2.6 2.6 0 0 0 4 6.6 V15.5 H6.5 V6.5 H15.5 Z"/><rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2.6"/></svg>
+    <i>복사</i>
+  </button>
+  <button id="radial-share" class="radial-item" data-act="share">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="3.3" ry="9"/><path d="M3 12 H21"/></svg>
+    <i>공유</i>
+  </button>
+  <button id="radial-dl" class="radial-item" data-act="dl">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.7 3 h2.6 v7.2 l2.5-2.5 1.85 1.85 L12 15.2 L6.35 9.55 L8.2 7.7 l2.5 2.5 Z"/><path d="M3 14.2 h2.6 v4.2 h12.8 v-4.2 H21 v4.8 a2 2 0 0 1 -2 2 H5 a2 2 0 0 1 -2 -2 Z"/></svg>
+    <i>다운로드</i>
+  </button>
+  <button id="radial-cat" class="radial-item" data-act="cat">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12.2 2.6 H5.2 A2.6 2.6 0 0 0 2.6 5.2 v7 c0 .69 .27 1.35 .76 1.84 l7.6 7.6 a2.6 2.6 0 0 0 3.68 0 l6-6 a2.6 2.6 0 0 0 0-3.68 l-7.6-7.6 A2.6 2.6 0 0 0 12.2 2.6 Z M8 6.2 a1.8 1.8 0 1 1 0 3.6 a1.8 1.8 0 0 1 0-3.6 Z"/></svg>
+    <i>분류 변경</i>
+  </button>
+</div>
+<div id="shareMenu" class="share-menu" hidden><h5>링크 공유</h5><button class="share-choice"><b>사내 공유</b><small>구글 로그인한 사내 인원만</small></button><button id="share-external" class="share-choice"><b>외부 공유 (광고주)</b><small>비밀번호로, 로그인 없이 열람</small></button></div>
+<div class="appdlg" id="shareDlg" hidden >
+  <div class="appdlg-backdrop"></div>
+  <div class="appdlg-panel squircle sharedlg-panel">
+    <h4 class="appdlg-title">외부 공유 링크 만들기</h4>
+    <p class="appdlg-msg" id="shareDlgSub"></p>
+    <label class="sharedlg-label" for="shareDlgPw">비밀번호 <i>(4자 이상 · 열람 시 입력해야 함)</i></label>
+    <input class="appdlg-input" id="shareDlgPw" type="password" maxlength="60" placeholder="공유 비밀번호" autocomplete="new-password" data-cursor="text">
+    <label class="sharedlg-label">권한</label>
+    <div class="segmented sharedlg-seg" id="shareDlgPerm" role="radiogroup">
+      <button type="button" data-v="play" aria-checked="true" data-cursor="pointer" id="perm-play">재생만</button>
+      <button type="button" data-v="download" aria-checked="false" data-cursor="pointer" id="perm-download">재생 + 다운로드</button>
+    </div>
+    <label class="sharedlg-label">유효기간</label>
+    <div class="segmented sharedlg-seg" id="shareDlgExp" role="radiogroup">
+      <button type="button" data-v="7" aria-checked="false" data-cursor="pointer" id="exp-week">7일</button>
+      <button type="button" data-v="30" aria-checked="true" data-cursor="pointer">30일</button>
+      <button type="button" data-v="90" aria-checked="false" data-cursor="pointer">90일</button>
+      <button type="button" data-v="0" aria-checked="false" data-cursor="pointer">무제한</button>
+    </div>
+    <div class="appdlg-actions">
+      <button class="pill-btn pill-ghost" id="shareDlgCancel">취소</button>
+      <button class="pill-btn" id="shareDlgOk">링크 만들기</button>
+    </div>
+  </div>
+</div>
+
+<div class="appdlg" id="shareResult" hidden>
+  <div class="appdlg-backdrop"></div>
+  <div class="appdlg-panel squircle sharedlg-panel">
+    <button class="sharedlg-x" id="shareResultX" aria-label="닫기" data-cursor="pointer">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <h4 class="appdlg-title" id="shareResultTitle">외부 공유 링크가 생성되었습니다</h4>
+    <label class="sharedlg-label">링크</label>
+    <div class="share-result-row">
+      <input class="share-result-field" id="shareResultLink" readonly data-cursor="pointer" title="클릭하면 새 창에서 열기">
+      <button class="pill-btn share-result-copy" id="shareResultCopyLink" data-cursor="pointer">복사</button>
+    </div>
+    <p class="share-result-note" id="shareResultNote" hidden></p>
+    <div id="shareResultPwWrap">
+      <label class="sharedlg-label">비밀번호</label>
+      <div class="share-result-row">
+        <input class="share-result-field" id="shareResultPw" readonly data-cursor="pointer" title="클릭하면 복사">
+        <button class="pill-btn share-result-copy" id="shareResultCopyPw" data-cursor="pointer">복사</button>
+      </div>
+      <p class="share-result-warn">⚠️ 비밀번호는 서버에 <b>암호화 저장되어 분실하면 찾을 수 없습니다.</b> 링크와 함께 안전하게 보관하세요.</p>
+    </div>
+  </div>
+</div>
+
+
+<svg id="cursor" width="28" height="32" viewBox="0 0 24 28" aria-hidden="true"></svg><span id="click-ring" aria-hidden="true"></span>
+</div></div><footer class="demo-controls"><div class="demo-progress"><i id="meter"></i></div><span id="caption">카테고리에서 광고주 찾기</span><div><button id="pause" aria-label="시연 일시정지">일시정지</button><button id="replay" aria-label="시연 처음부터 다시 보기">다시 보기</button></div></footer>
+<script src="archive-data.js"></script><script src="archive-timeline.js"></script><script src="archive-cards.js"></script><script src="demo-controls.js"></script><script src="archive-demo.js"></script></body></html>

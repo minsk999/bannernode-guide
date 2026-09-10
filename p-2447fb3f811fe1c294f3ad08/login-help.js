@@ -3,14 +3,23 @@
   document.querySelectorAll('[data-copy-password]').forEach(button=>{
     const group=button.closest('.ar-access')||button.closest('article');
     const output=group.querySelector('.password-copy-status');
-    let reset;
+    const icon=button.querySelector('svg'),originalIcon=icon.innerHTML,originalStroke=icon.getAttribute('stroke-width');
+    let reset,iconReset,attempt=0;
+    function restoreIcon(){icon.innerHTML=originalIcon;icon.setAttribute('stroke-width',originalStroke);}
     button.addEventListener('click',async()=>{
-      clearTimeout(reset);
+      const current=++attempt;
+      clearTimeout(reset);clearTimeout(iconReset);
       try {
         await navigator.clipboard.writeText(password);
+        if(current!==attempt)return;
+        icon.innerHTML='<path d="m5 12 4 4L19 6"/>';
+        icon.setAttribute('stroke-width','2');
+        iconReset=setTimeout(restoreIcon,1600);
         output.textContent='패스워드를 복사했습니다.';
         reset=setTimeout(()=>{output.textContent='';},2500);
       } catch {
+        if(current!==attempt)return;
+        restoreIcon();
         output.textContent='자동 복사가 제한되어 있습니다. 직접 복사해 주세요: '+password;
       }
     });

@@ -1,5 +1,20 @@
 (() => {
   const password='aicompetition2026';
+  document.querySelectorAll('[data-copy-password]').forEach(button=>{
+    const group=button.closest('.ar-access')||button.closest('article');
+    const output=group.querySelector('.password-copy-status');
+    let reset;
+    button.addEventListener('click',async()=>{
+      clearTimeout(reset);
+      try {
+        await navigator.clipboard.writeText(password);
+        output.textContent='패스워드를 복사했습니다.';
+        reset=setTimeout(()=>{output.textContent='';},2500);
+      } catch {
+        output.textContent='자동 복사가 제한되어 있습니다. 직접 복사해 주세요: '+password;
+      }
+    });
+  });
   const dialog=document.createElement('dialog');dialog.id='login-help';dialog.setAttribute('aria-labelledby','login-help-title');
   dialog.innerHTML='<div class="help-top"><button class="help-close" aria-label="입장 안내 닫기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><iframe title="패스워드 펼치기·입력·입장 시연"></iframe><div class="help-bottom"><h2 id="login-help-title">패스워드로 입장하기</h2><div class="help-password"><button id="help-secret" aria-label="패스워드 표시하고 복사">•••••••••••••••••</button><button id="help-copy" aria-label="패스워드 복사"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M15 8V3H3v13h5"/></svg></button></div><p class="help-status" role="status"></p><button class="help-replay">입장 방법 다시 보기</button><a class="help-destination" target="_blank" rel="noopener"></a></div>';
   document.body.append(dialog);let opener=null,mode='app',copyTimer;

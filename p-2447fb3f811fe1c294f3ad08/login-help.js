@@ -3,23 +3,26 @@
   document.querySelectorAll('[data-copy-password]').forEach(button=>{
     const group=button.closest('.ar-access')||button.closest('article');
     const output=group.querySelector('.password-copy-status');
+    const label=group.querySelector('.ar-password-note .password-label-current')||button.querySelector('.password-label-current');
+    const originalLabel=label.textContent;
     const icon=button.querySelector('svg'),originalIcon=icon.innerHTML,originalStroke=icon.getAttribute('stroke-width');
-    let reset,iconReset,attempt=0;
+    let reset,attempt=0;
     function restoreIcon(){icon.innerHTML=originalIcon;icon.setAttribute('stroke-width',originalStroke);}
+    function restore(){restoreIcon();label.textContent=originalLabel;}
     button.addEventListener('click',async()=>{
       const current=++attempt;
-      clearTimeout(reset);clearTimeout(iconReset);
+      clearTimeout(reset);
       try {
         await navigator.clipboard.writeText(password);
         if(current!==attempt)return;
         icon.innerHTML='<path d="m5 12 4 4L19 6"/>';
         icon.setAttribute('stroke-width','2');
-        iconReset=setTimeout(restoreIcon,1600);
-        output.textContent='패스워드를 복사했습니다.';
-        reset=setTimeout(()=>{output.textContent='';},2500);
+        label.textContent=button.classList.contains('password-copy-icon')?'패스워드를 복사했습니다.':'복사 완료';
+        output.textContent='';
+        reset=setTimeout(restore,1600);
       } catch {
         if(current!==attempt)return;
-        restoreIcon();
+        restore();
         output.textContent='자동 복사가 제한되어 있습니다. 직접 복사해 주세요: '+password;
       }
     });

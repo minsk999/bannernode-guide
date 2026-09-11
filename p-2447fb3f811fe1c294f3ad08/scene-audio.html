@@ -2314,4 +2314,24 @@ if(managed){addEventListener('message',e=>{if(e.source===parent&&e.origin===pare
 else new IntersectionObserver(es=>viewportActive(es[0].isIntersecting),{threshold:.05}).observe(document.body);
 document.addEventListener('visibilitychange',()=>{last=0;syncMedia();});addEventListener('resize',fit);sync();fit();requestAnimationFrame(tick);
 })();
-</script></body></html>
+</script><div id="tooltip"></div>
+<script data-tooltip-script>
+/* 앱 커스텀 툴팁 배선(data-tip) — 배너노드 index.html 구현 이식 */
+(function(){ const TIP=document.getElementById('tooltip'); if(!TIP) return; let cur=null;
+  function show(el){ const t=el.getAttribute('data-tip'); if(!t){ hide(); return; } cur=el;
+    TIP.textContent=t; TIP.classList.remove('show','below');
+    const r=el.getBoundingClientRect(); const tw=TIP.offsetWidth, th=TIP.offsetHeight, gap=10, M=8;
+    let cx=r.left+r.width/2; cx=Math.max(tw/2+M, Math.min(window.innerWidth-tw/2-M, cx));
+    const above = r.top - th - gap > M;
+    TIP.style.left=cx+'px';
+    if(above){ TIP.style.top=(r.top-th-gap)+'px'; TIP.className='show'; }
+    else { TIP.style.top=(r.bottom+gap)+'px'; TIP.className='below show'; } }
+  function hide(){ cur=null; TIP.classList.remove('show'); }
+  document.addEventListener('mouseover',e=>{ const el=e.target.closest('[data-tip]'); if(el&&el!==cur) show(el); });
+  document.addEventListener('mouseout',e=>{ const el=e.target.closest('[data-tip]'); if(el&&!el.contains(e.relatedTarget)) hide(); });
+  document.addEventListener('mousedown',hide,true);
+  window.addEventListener('wheel',hide,{passive:true});
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') hide(); });
+})();
+</script>
+</body></html>

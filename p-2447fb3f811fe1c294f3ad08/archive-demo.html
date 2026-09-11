@@ -1,7 +1,13 @@
 <!doctype html><html lang="ko"><head>
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
 <meta name="referrer" content="no-referrer">
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>애드아카이브 · 탐색과 외부 공유 시연</title><link rel="icon" type="image/svg+xml" href="media/bannernode-icon.svg"><link rel="stylesheet" href="demo-font.css"><link rel="stylesheet" href="archive-demo.css"><link rel="stylesheet" href="demo-controls.css"></head><body>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>애드아카이브 · 탐색과 외부 공유 시연</title><link rel="icon" type="image/svg+xml" href="media/bannernode-icon.svg"><link rel="stylesheet" href="demo-font.css"><link rel="stylesheet" href="archive-demo.css"><link rel="stylesheet" href="demo-controls.css"><style>
+/* ── 앱 커스텀 툴팁 이식(#tooltip · data-tip — 배너노드 index.html 과 동일 룩/모션) ── */
+#tooltip{position:fixed;z-index:900;pointer-events:none;width:max-content;white-space:normal;max-width:min(280px,86vw);line-height:1.5;font-size:11.5px;font-weight:500;background:#14171f;color:#f5f6f3;padding:7px 12px 7px 13px;border-radius:9px;border:1px solid #2a3038;border-left:2.5px solid #a2ff00;box-shadow:0 8px 22px rgba(0,0,0,.4);opacity:0;transform:translate(-50%,6px);transition:opacity .15s cubic-bezier(.22,.68,0,1),transform .22s cubic-bezier(.22,.68,0,1)}
+#tooltip.show{opacity:1;transform:translate(-50%,0)}
+#tooltip.below{transform:translate(-50%,-6px)}
+#tooltip.below.show{opacity:1;transform:translate(-50%,0)}
+</style></head><body>
 <div class="viewport"><div id="scene" aria-label="애드아카이브 탐색 및 공유 시연">
 <header class="site-header"><img class="logo-mark" src="media/adarchive-logo.svg" alt="애드아카이브"><div class="header-mid"><span>Seoul <b>17:53</b></span><span>crnas.adef.co.kr:8444 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.5 4H6.6A2.6 2.6 0 0 0 4 6.6V15.5H6.5V6.5H15.5Z"/><rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2.6"/></svg></span></div><button id="menu" class="menu-btn" aria-label="메뉴 열기"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="4.5" stroke-linecap="round">
         <path class="bl bl1" pathLength="1" d="M5 7.5 H27"/>
@@ -71,14 +77,14 @@
     <h4 class="appdlg-title" id="shareResultTitle">외부 공유 링크가 생성되었습니다</h4>
     <label class="sharedlg-label">링크</label>
     <div class="share-result-row">
-      <input class="share-result-field" id="shareResultLink" readonly data-cursor="pointer" title="클릭하면 새 창에서 열기">
+      <input class="share-result-field" id="shareResultLink" readonly data-cursor="pointer" data-tip="클릭하면 새 창에서 열기">
       <button class="pill-btn share-result-copy" id="shareResultCopyLink" data-cursor="pointer">복사</button>
     </div>
     <p class="share-result-note" id="shareResultNote" hidden></p>
     <div id="shareResultPwWrap">
       <label class="sharedlg-label">비밀번호</label>
       <div class="share-result-row">
-        <input class="share-result-field" id="shareResultPw" readonly data-cursor="pointer" title="클릭하면 복사">
+        <input class="share-result-field" id="shareResultPw" readonly data-cursor="pointer" data-tip="클릭하면 복사">
         <button class="pill-btn share-result-copy" id="shareResultCopyPw" data-cursor="pointer">복사</button>
       </div>
       <p class="share-result-warn">⚠️ 비밀번호는 서버에 <b>암호화 저장되어 분실하면 찾을 수 없습니다.</b> 링크와 함께 안전하게 보관하세요.</p>
@@ -89,4 +95,24 @@
 
 <svg id="cursor" width="28" height="32" viewBox="0 0 24 28" aria-hidden="true"></svg><span id="click-ring" aria-hidden="true"></span>
 </div></div><footer class="demo-controls"><div class="demo-progress"><i id="meter"></i></div><span id="caption">카테고리에서 광고주 찾기</span><div><button id="pause" aria-label="시연 일시정지">일시정지</button><button id="replay" aria-label="시연 처음부터 다시 보기">다시 보기</button></div></footer>
-<script src="archive-data.js"></script><script src="archive-timeline.js"></script><script src="archive-cards.js"></script><script src="demo-controls.js"></script><script src="archive-demo.js"></script></body></html>
+<script src="archive-data.js"></script><script src="archive-timeline.js"></script><script src="archive-cards.js"></script><script src="demo-controls.js"></script><script src="archive-demo.js"></script><div id="tooltip"></div>
+<script data-tooltip-script>
+/* 앱 커스텀 툴팁 배선(data-tip) — 배너노드 index.html 구현 이식 */
+(function(){ const TIP=document.getElementById('tooltip'); if(!TIP) return; let cur=null;
+  function show(el){ const t=el.getAttribute('data-tip'); if(!t){ hide(); return; } cur=el;
+    TIP.textContent=t; TIP.classList.remove('show','below');
+    const r=el.getBoundingClientRect(); const tw=TIP.offsetWidth, th=TIP.offsetHeight, gap=10, M=8;
+    let cx=r.left+r.width/2; cx=Math.max(tw/2+M, Math.min(window.innerWidth-tw/2-M, cx));
+    const above = r.top - th - gap > M;
+    TIP.style.left=cx+'px';
+    if(above){ TIP.style.top=(r.top-th-gap)+'px'; TIP.className='show'; }
+    else { TIP.style.top=(r.bottom+gap)+'px'; TIP.className='below show'; } }
+  function hide(){ cur=null; TIP.classList.remove('show'); }
+  document.addEventListener('mouseover',e=>{ const el=e.target.closest('[data-tip]'); if(el&&el!==cur) show(el); });
+  document.addEventListener('mouseout',e=>{ const el=e.target.closest('[data-tip]'); if(el&&!el.contains(e.relatedTarget)) hide(); });
+  document.addEventListener('mousedown',hide,true);
+  window.addEventListener('wheel',hide,{passive:true});
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') hide(); });
+})();
+</script>
+</body></html>

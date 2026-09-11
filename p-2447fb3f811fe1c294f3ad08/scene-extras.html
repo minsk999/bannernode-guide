@@ -7,7 +7,8 @@
 <style>
 :root{--canvas:radial-gradient(circle at 1px 1px,rgba(255,255,255,.05) 1px,transparent 0) 0 0/28px 28px,#090a0e}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#090a0e;font-family:'Pretendard','Pretendard Variable',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
-.stage{position:absolute;inset:0;background:var(--canvas);overflow:hidden}
+/* app-ui.css 의 .stage(margin:6px auto · clip-path round 12px)와 이름이 겹친다 — 여기서 되돌린다 */
+.stage{position:absolute;inset:0;margin:0;border-radius:0;clip-path:none;background:var(--canvas);overflow:hidden}
 #scene{position:absolute;left:0;top:0;width:1000px;height:640px;transform-origin:0 0;display:grid;grid-template-columns:.9fr .85fr 1.45fr;gap:24px;padding:70px 34px 0;align-items:start;box-sizing:border-box}
 .pane{position:relative;min-width:0}
 .eyebrow{font-size:11px;letter-spacing:1.5px;color:#8b91a4;margin:0 0 12px 2px;font-weight:600}

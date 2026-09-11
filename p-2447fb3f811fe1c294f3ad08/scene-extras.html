@@ -1,0 +1,237 @@
+<!doctype html><html lang="ko"><meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>용량 압축 · 포맷 출력 · 매체 가이드 HTML 애니메이션</title>
+<link rel="stylesheet" href="demo-font.css"><link rel="stylesheet" href="app-ui.css"><link rel="stylesheet" href="demo-controls.css">
+<style>
+:root{--canvas:radial-gradient(circle at 1px 1px,rgba(255,255,255,.05) 1px,transparent 0) 0 0/28px 28px,#090a0e}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#090a0e;font-family:'Pretendard','Pretendard Variable',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+.stage{position:absolute;inset:0;background:var(--canvas);overflow:hidden}
+#scene{position:absolute;left:0;top:0;width:1000px;height:640px;transform-origin:0 0;display:grid;grid-template-columns:.9fr .85fr 1.45fr;gap:24px;padding:70px 34px 0;align-items:start;box-sizing:border-box}
+.pane{position:relative;min-width:0}
+.eyebrow{font-size:11px;letter-spacing:1.5px;color:#8b91a4;margin:0 0 12px 2px;font-weight:600}
+.eyebrow b{color:var(--acc);font-weight:600;margin-right:6px}
+/* 07 SIZE — 렌더큐 푸터의 용량·화질 패널을 카드로 */
+.vcard{background:var(--surface2);border:1px solid var(--stroke2);border-radius:13px;padding:12px 13px;box-shadow:var(--shadow)}
+.vcard .vpanel{margin-top:6px}.vcard .vpanel.open{margin-top:10px}
+.vcard .vpi{min-height:0;overflow:visible;display:grid;gap:10px}
+.setdd .ddmenu{display:grid;gap:2px;padding:5px;opacity:0;transform:translateY(-6px) scale(.97);pointer-events:none;transition:opacity .16s var(--ease),transform .2s var(--ease)}
+.dd.open .ddmenu{opacity:1;transform:none;pointer-events:auto}
+.readout{margin-top:14px;padding:11px 12px;border-radius:10px;background:var(--field);border:1px solid var(--stroke);display:flex;align-items:baseline;gap:8px;font-size:11.5px;color:var(--mut);white-space:nowrap}
+.readout b{font-size:14px;color:var(--txt);font-weight:600;font-variant-numeric:tabular-nums}
+.readout b.acc{color:var(--acc)}.readout i{font-style:normal;color:var(--dim)}
+.readout .to{opacity:0;transform:translateX(-6px);transition:opacity .35s var(--ease),transform .35s var(--ease)}
+.readout.on .to{opacity:1;transform:none}
+/* 08 FORMAT — 출력 설정 팝오버를 인라인으로 */
+.je{position:relative;display:block;background:var(--surface2);border:1px solid var(--stroke2);border-radius:13px;box-shadow:var(--shadow);width:100%}
+.je .je-hd{font-size:12.5px;font-weight:600;color:var(--txt)}.je .je-hd svg{width:15px;height:15px;flex:none;color:var(--mut)}
+.je .je-name{font-family:inherit;pointer-events:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.je .je-ext{cursor:pointer;color:var(--txt);font-size:12.5px;font-weight:600}
+.je .je-ext .je-extlbl{min-width:34px}.je .je-ext svg{width:12px;height:12px;color:var(--mut)}
+.je .je-extmenu{display:none;padding:5px;z-index:5}.je .je-combo.open .je-extmenu{display:grid;gap:2px}
+.je .je-extopt.hot{background:var(--inset)}
+.je .je-act{justify-content:flex-end;margin-top:2px}.je .je-act button{font:inherit;font-size:12px;padding:8px 14px;border-radius:9px;border:1px solid var(--stroke2);background:var(--field);color:var(--txt)}
+.je .out{margin-top:10px;font-size:11.5px;color:var(--mut);display:flex;gap:6px;align-items:center}.je .out b{color:var(--txt);font-weight:500}.je .out b em{font-style:normal;color:var(--acc)}
+/* 09 GUIDE — 9:16 미리보기 + 매체 칩 */
+.gwrap{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:start}
+.bigcine.demo{width:260px;height:462px;background:#000;border:1px solid var(--stroke2);border-radius:13px;clip-path:inset(0 round 13px)}
+.bigcine.demo>img.src{width:100%;height:100%;object-fit:cover;display:block}
+.bigcine.demo>img.gd-ov{opacity:0;transition:opacity .5s var(--ease)}.bigcine.demo>img.gd-ov.on{opacity:1}
+.gchips{display:grid;gap:8px}
+.gchip{display:flex;align-items:center;gap:9px;padding:8px 10px;white-space:nowrap;border-radius:10px;border:1px solid var(--stroke);background:var(--field);color:var(--txt);font-size:12px;cursor:pointer;transition:border-color .16s,background .16s}
+.gchip .k{width:22px;height:22px;border-radius:6px;background:var(--inset);border:1px solid var(--stroke2);display:grid;place-items:center;font-size:11px;font-weight:700;color:var(--mut);flex:none}
+.gchip.on{border-color:var(--acc);background:rgba(var(--accRGB),.08)}.gchip.on .k{color:#0c1400;background:var(--acc);border-color:var(--acc)}
+.gnote{margin-top:10px;font-size:11px;color:var(--dim);line-height:1.6}.dzk{display:inline-flex;align-items:center;gap:5px;margin-right:9px;color:var(--mut)}.dzk i{width:9px;height:9px;border-radius:2px;display:inline-block}.dzk i.r{background:rgba(255,64,64,.7)}.dzk i.y{background:rgba(255,200,0,.6)}
+/* 공통 */
+.pressed{transform:scale(.97)}
+#pointer{position:absolute;width:27px;height:35px;z-index:800;filter:drop-shadow(0 3px 3px #0008);transform-origin:4px 3px}
+/* Load after scenes.css. Motion and click scale belong to the zero-size anchor;
+   artwork offsets belong to its children so scaling never moves the hotspot. */
+#pointer {
+  position: absolute;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: visible;
+  pointer-events: none;
+  transform-origin: 0 0;
+  filter: none;
+  z-index: 800;
+}
+#pointer > svg {
+  position: absolute;
+  inset: auto;
+  left: 0;
+  top: 0;
+  /* 58px at hero width 1680 maps to 34.5px at stage width 1000.
+     Use 40px to retain finger detail when the stage is scaled down. */
+  width: 40px;
+  height: 40px;
+  display: none;
+  opacity: 1;
+  overflow: visible;
+  pointer-events: none;
+  animation: none;
+  transition: none;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, .6));
+}
+/* Exact viewBox hotspots: arrow (6,2.8), finger (10.7,3.9),
+   open palm and grip (11.6,9.5), resize (12,12), in a 24×24 box.
+   Both hand modes share their hotspot so hover-to-drag does not jump. */
+#pointer > .sh-arrow { transform: translate(-25%, -11.6666666667%); }
+#pointer > .sh-point { transform: translate(-44.5833333333%, -16.25%); }
+#pointer > .sh-grab,
+#pointer > .sh-grabbing { transform: translate(-48.3333333333%, -39.5833333333%); }
+#pointer > .sh-resize { transform: translate(-50%, -50%); }
+#pointer:not([data-mode]) > .sh-arrow,
+#pointer[data-mode="arrow"] > .sh-arrow,
+#pointer[data-mode="point"] > .sh-point,
+#pointer[data-mode="grab"] > .sh-grab,
+#pointer[data-mode="grabbing"] > .sh-grabbing,
+#pointer[data-mode="resize"] > .sh-resize { display: block; }
+'use strict';
+const $=s=>document.querySelector(s),all=s=>[...document.querySelectorAll(s)];
+const type=document.body.dataset.scene,scene=$('#scene'),pointer=$('#pointer'),ring=$('#click-ring');
+const media=all('video');
+all('.node.banner .frame').forEach(frame=>frame.insertAdjacentHTML('beforeend','<div class="vmark demo-video-area"><span class="vc tl"></span><span class="vc tr"></span><span class="vc bl"></span><span class="vc br"></span><span class="vmark-lbl">영상 영역</span></div>'));
+if(type==='nas'){$('.naslist').append($('#nas-file-2'));scene.insertAdjacentHTML('beforeend','<div class="demo-marquee" hidden></div>');}
+.scene-controls{position:absolute;bottom:0;left:0;right:0;height:43px;padding:0 14px;background:#11151b;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #2a303a;color:#b9c1ce;font-size:12px}
+.scene-controls>div{display:flex;gap:5px}
+.scene-controls button{width:30px;height:29px;padding:0;border:1px solid #343b47;background:#191f28;border-radius:7px;color:#d7deeb;font-size:16px;display:flex;align-items:center;justify-content:center}
+.scene-controls button:focus-visible{outline:2px solid #a2ff00;outline-offset:2px}
+.scene-controls button:hover{color:var(--acc)}
+.scene-controls{line-height:1.15;gap:10px}
+.scene-controls>span{display:flex;align-items:center;min-height:30px}
+.scene-controls button{line-height:1;display:grid;place-items:center}
+.scene-controls button svg{width:16px;height:16px;display:block}
+.scene-controls.demo-toolbar, .demo-controls.demo-toolbar {
+  box-sizing: border-box; height: auto; min-height: 68px; padding: 12px 16px;
+  display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 16px;
+  align-items: center; background: #101419; border-top: 1px solid #2c343e;
+  color: #a5adba; z-index: 1002; isolation: isolate;
+}
+.scene-controls.demo-toolbar, .demo-controls.demo-toolbar {
+    grid-template-columns: minmax(0,1fr); gap: 8px; padding: 12px;
+  }
+const k=Math.max(.05,Math.min(innerWidth/1000,(innerHeight-($('.scene-controls').offsetHeight||68))/640));scene.style.transform=`scale(${k}
+BNDemoControls.mount($('.scene-controls'),640/1000,`scene-${type}
+</style>
+<body><div class="stage">
+<div id="scene">
+  <section class="pane">
+    <div class="eyebrow"><b>07</b>SIZE · 목표 용량</div>
+    <div class="vcard">
+      <button class="vtog open" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 10l5 5 5-5"/></svg><span>용량·화질 설정</span><span class="vsum" id="vsum">모두 자동</span></button>
+      <div class="vpanel open"><div class="vpi">
+        <div class="setrow">
+          <div class="setfield"><span class="setlabel">해상도</span><div class="dd setdd "><button type="button" class="ddbtn"><span class="ddlbl">원본</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 10l5 5 5-5"/></svg></button><div class="ddmenu"><div class="ddopt sel" data-v="원본">원본</div><div class="ddopt" data-v="1920×1080">1920×1080</div><div class="ddopt" data-v="1280×720">1280×720</div></div></div></div>
+          <div class="setfield"><span class="setlabel">목표 용량</span><div class="dd setdd " id="ddTmb"><button type="button" class="ddbtn"><span class="ddlbl">자동</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 10l5 5 5-5"/></svg></button><div class="ddmenu"><div class="ddopt sel" data-v="자동">자동</div><div class="ddopt" data-v="25 MB">25 MB</div><div class="ddopt" data-v="50 MB">50 MB</div><div class="ddopt" data-v="100 MB">100 MB</div></div></div></div>
+        </div>
+        <div class="setrow">
+          <div class="setfield"><span class="setlabel">비트레이트</span><div class="dd setdd "><button type="button" class="ddbtn"><span class="ddlbl">자동</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 10l5 5 5-5"/></svg></button><div class="ddmenu"><div class="ddopt sel" data-v="자동">자동</div><div class="ddopt" data-v="저화질">저화질</div><div class="ddopt" data-v="일반화질">일반화질</div><div class="ddopt" data-v="고화질">고화질</div></div></div></div>
+          <div class="setfield"><span class="setlabel">fps</span><div class="dd setdd "><button type="button" class="ddbtn"><span class="ddlbl">원본</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 10l5 5 5-5"/></svg></button><div class="ddmenu"><div class="ddopt sel" data-v="원본">원본</div><div class="ddopt" data-v="24">24</div><div class="ddopt" data-v="30">30</div><div class="ddopt" data-v="60">60</div></div></div></div>
+        </div>
+      </div></div>
+      <div class="readout" id="readout"><span>예상 용량</span><b>48.2 MB</b><span class="to"><i>→</i> <b class="acc" id="szTo">24.6 MB</b></span></div>
+    </div>
+  </section>
+  <section class="pane">
+    <div class="eyebrow"><b>08</b>FORMAT · 출력 포맷</div>
+    <div class="je">
+      <div class="je-hd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M5 4h9l5 5v11H5z"/></svg>출력 설정</div>
+      <div class="je-bd">
+        <div class="je-combo" id="combo"><span class="je-name">260911_예제_결합</span>
+          <div class="je-ext" id="ext"><span class="je-extlbl" id="extlbl">.mp4</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 10l5 5 5-5"/></svg>
+            <div class="je-extmenu" id="extmenu"><div class="je-extopt on" data-f="mp4">mp4</div><div class="je-extopt" data-f="mov">mov</div><div class="je-extopt" data-f="gif">gif</div><div class="je-extopt" data-f="png">png</div></div>
+          </div>
+        </div>
+        <div class="je-act"><button type="button" class="je-cancel">취소</button><button type="button" class="je-save" id="save">저장</button></div>
+        <div class="out">출력 <b>260911_예제_결합<em id="outext">.mp4</em></b></div>
+      </div>
+    </div>
+  </section>
+  <section class="pane">
+    <div class="eyebrow"><b>09</b>GUIDE · 매체별 지면 가이드</div>
+    <div class="gwrap">
+      <div class="bigcine demo"><img class="src" src="media/sample-poster.jpg" alt=""><img class="gd-ov" id="govA" src="media/guide-ig-dz.png" alt=""><img class="gd-ov" id="govB" src="media/guide-yt-dz.png" alt=""></div>
+      <div>
+        <div class="gchips">
+          <div class="gchip" data-g="ig"><span class="k">I</span>Instagram</div>
+          <div class="gchip" data-g="yt"><span class="k">Y</span>YouTube 쇼츠</div>
+          <div class="gchip" data-g="tt"><span class="k">T</span>TikTok</div>
+        </div>
+        <div class="gnote"><span class="dzk"><i class="r"></i>UI에 가려지는 영역</span><span class="dzk"><i class="y"></i>명도 대비 주의</span><br>미리보기에만 겹칩니다.<br>렌더 결과에는 들어가지 않습니다.</div>
+      </div>
+    </div>
+  </section>
+</div>
+<div id="pointer" data-mode="arrow" aria-hidden="true"><svg class="sh-arrow" viewBox="0 0 24 24"><path fill="#fff" stroke="#0a0b0f" stroke-width="1.5" stroke-linejoin="round" d="M6 2.8v15.9l4.2-3.9 2.5 5.9 3-1.3-2.5-5.8h5.3z"/></svg><svg class="sh-grabbing" viewBox="0 0 24 24"><path fill="#fff" stroke="#0a0b0f" stroke-width="1.3" stroke-linejoin="round" d="M7.2 9.6c0-.9.7-1.6 1.5-1.6.4 0 .8.2 1.1.5.2-.7.8-1.2 1.5-1.2.6 0 1.2.4 1.4 1 .3-.4.7-.6 1.2-.6.9 0 1.6.7 1.6 1.6v.3c.2-.1.5-.2.8-.2.9 0 1.6.7 1.6 1.6V15c0 3.3-2.7 6-6 6h-.8c-1.9 0-3.7-.9-4.8-2.4l-1.6-2.1c-.5-.7-.4-1.7.3-2.2.6-.5 1.5-.4 2 .2l.2.2V9.6z"/></svg><svg class="sh-point" viewBox="0 0 24 24"><path fill="#fff" stroke="#0a0b0f" stroke-width="1.3" d="M9.2 12.6V5.4a1.5 1.5 0 0 1 3 0v5.5l4.6 1c1 .2 1.7 1.1 1.7 2.1V17a4.4 4.4 0 0 1-4.4 4.4h-2.4a4.4 4.4 0 0 1-3.5-1.7l-3-3.9a1.6 1.6 0 0 1 2.4-2.1l1.6 1.5z"/></svg><svg class="sh-grab" viewBox="0 0 24 24"><path fill="#fff" stroke="#0a0b0f" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" d="M7.2 12V6.5a1.3 1.3 0 0 1 2.6 0V10 4.5a1.3 1.3 0 0 1 2.6 0V10 5.3a1.3 1.3 0 0 1 2.6 0v5.4V7.5a1.3 1.3 0 0 1 2.6 0V15c0 3.3-2.7 6-6 6h-.8c-1.9 0-3.7-.9-4.8-2.4l-2.5-4.1a1.4 1.4 0 0 1 2.3-1.6l1.4 1.8V12z"/></svg><svg class="sh-resize" viewBox="0 0 24 24"><path fill="#fff" stroke="#0a0b0f" stroke-width="1.3" stroke-linejoin="round" d="M2 12l5-5v3h10V7l5 5-5 5v-3H7v3z"/></svg></div>
+<div class="scene-controls"><span id="scene-caption"></span><div><button id="pause" aria-label="시연 일시정지">Ⅱ</button><button id="replay" aria-label="시연 처음부터">↻</button></div></div>
+</div>
+<script src="demo-controls.js"></script>
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const P=$('#pointer'), cap=$('#scene-caption');
+const stage=$('.stage');
+const SC=$('#scene'); let K=1;
+function center(el){const r=el.getBoundingClientRect(), s=SC.getBoundingClientRect();return {x:(r.left-s.left+r.width/2)/K, y:(r.top-s.top+r.height/2)/K};}
+function moveTo(el,dx,dy){const c=center(el);P.style.transform='translate('+(c.x+(dx||0))+'px,'+(c.y+(dy||0))+'px)';}
+function press(el){el.classList.add('pressed');setTimeout(()=>el.classList.remove('pressed'),140);}
+P.style.transition='transform .55s cubic-bezier(.32,.72,0,1)'; P.style.left='0'; P.style.top='0'; SC.appendChild(P);
+function fit(){const bar=$('.scene-controls').offsetHeight||68;K=Math.max(.05,Math.min(innerWidth/1000,(innerHeight-bar)/640));SC.style.transform='scale('+K+')';SC.style.left=(innerWidth-1000*K)/2+'px';}
+addEventListener('resize',fit);addEventListener('bn-controls-resize',fit);fit();
+const GUIDE={ig:'media/guide-ig-dz.png',yt:'media/guide-yt-dz.png',tt:'media/guide-tt-dz.png'};
+let timers=[], playing=true, t0=0, top='A';
+Object.values({ig:'media/guide-ig-dz.png',yt:'media/guide-yt-dz.png',tt:'media/guide-tt-dz.png'}).forEach(u=>{const i=new Image();i.src=u;});
+function at(ms,fn){timers.push(setTimeout(fn,ms));}
+function reset(){
+  timers.forEach(clearTimeout);timers=[];
+  $('#vsum').textContent='모두 자동'; $('#readout').classList.remove('on');
+  const tmb=$('#ddTmb'); tmb.classList.remove('open'); tmb.querySelector('.ddlbl').textContent='자동';
+  $$('#ddTmb .ddopt').forEach((o,i)=>o.classList.toggle('sel',i===0));
+  $('#combo').classList.remove('open'); $('#extlbl').textContent='.mp4'; $('#outext').textContent='.mp4';
+  $$('#extmenu .je-extopt').forEach((o,i)=>{o.classList.toggle('on',i===0);o.classList.remove('hot')});
+  $$('.gchip').forEach(c=>c.classList.remove('on')); $('#govA').classList.remove('on'); $('#govB').classList.remove('on'); top='A';
+  P.setAttribute('data-mode','arrow'); moveTo($('.pane'),-40,60); cap.textContent='';
+}
+function run(){
+  reset();
+  // ── 07 SIZE
+  at(400,()=>{P.setAttribute('data-mode','point');moveTo($('#ddTmb .ddbtn'),0,0);cap.textContent='목표 용량 선택';});
+  at(1000,()=>{press($('#ddTmb .ddbtn'));$('#ddTmb').classList.add('open');});
+  at(1550,()=>moveTo($('#ddTmb .ddopt[data-v="25 MB"]'),0,0));
+  at(2050,()=>{const o=$('#ddTmb .ddopt[data-v="25 MB"]');press(o);$$('#ddTmb .ddopt').forEach(x=>x.classList.remove('sel'));o.classList.add('sel');
+    $('#ddTmb .ddlbl').textContent='25 MB';$('#ddTmb').classList.remove('open');$('#vsum').textContent='25 MB · 자동';});
+  at(2350,()=>{$('#readout').classList.add('on');cap.textContent='목표 용량 25 MB · 2-pass 인코딩';});
+  // ── 08 FORMAT
+  at(3500,()=>{moveTo($('#ext'),0,0);cap.textContent='출력 포맷 선택';});
+  at(4050,()=>{$('#combo').classList.add('open');});
+  const fmts=['mov','gif','png'];
+  fmts.forEach((f,i)=>{
+    at(4550+i*620,()=>{moveTo($('#extmenu [data-f="'+f+'"]'),0,0);$$('#extmenu .je-extopt').forEach(o=>o.classList.toggle('hot',o.dataset.f===f));});
+    at(4550+i*620+300,()=>{$$('#extmenu .je-extopt').forEach(o=>o.classList.toggle('on',o.dataset.f===f));$('#extlbl').textContent='.'+f;$('#outext').textContent='.'+f;cap.textContent='출력 포맷 .'+f;});
+  });
+  at(6700,()=>{$('#combo').classList.remove('open');$$('#extmenu .je-extopt').forEach(o=>o.classList.remove('hot'));cap.textContent='mp4 · mov · gif · png 로 출력';});
+  // ── 09 GUIDE
+  const gs=['ig','yt','tt'], names={ig:'Instagram 피드·릴스',yt:'YouTube 쇼츠',tt:'TikTok'};
+  gs.forEach((g,i)=>{
+    at(7600+i*1000,()=>moveTo($('.gchip[data-g="'+g+'"]'),0,0));
+    at(7600+i*1000+400,()=>{const c=$('.gchip[data-g="'+g+'"]');press(c);$$('.gchip').forEach(x=>x.classList.remove('on'));c.classList.add('on');
+      const nxt=top==='A'?$('#govB'):$('#govA'), cur=top==='A'?$('#govA'):$('#govB');nxt.src=GUIDE[g];nxt.style.zIndex=3;cur.style.zIndex=2;nxt.classList.add('on');cur.classList.remove('on');top=top==='A'?'B':'A';cap.textContent=names[g]+' 가이드 · 위험영역 강조 켬';});
+  });
+  at(11200,()=>{if(playing)run();});
+}
+window.BNDemoControls&&BNDemoControls.mount($('.scene-controls'),1000/640,'scene-extras.html');
+const pauseBtn=$('#pause');
+function syncBtn(){window.BNDemoControls&&BNDemoControls.play(pauseBtn,!playing,true);}
+pauseBtn.addEventListener('click',()=>{playing=!playing;if(playing)run();else{timers.forEach(clearTimeout);timers=[];}syncBtn();});
+$('#replay').addEventListener('click',()=>{playing=true;run();syncBtn();});
+syncBtn();
+document.fonts&&document.fonts.ready.then(run)||run();
+})();
+</script>
+</body></html>

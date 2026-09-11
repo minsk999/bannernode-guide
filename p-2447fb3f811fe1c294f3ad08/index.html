@@ -64,6 +64,9 @@ h1,h2{letter-spacing:-.025em;word-break:keep-all;overflow-wrap:break-word}
 #tooltip.below{transform:translate(-50%,-6px)}
 #tooltip.below.show{opacity:1;transform:translate(-50%,0)}
 .feature-more{margin:26px 0 0;font-size:14px;line-height:1.7;color:var(--mut)}
+.feature-row.feature-extras{grid-template-columns:1fr;gap:26px;align-items:start}
+.feature-extras .feature-copy{max-width:640px}
+.feature-extras .feature-copy h3{margin:10px 0 12px}
 
 /* One comparison frame; the three app actions expand the production step. */
 #why{height:auto;margin-top:100px;padding:0 0 80px;--j-dim:0;--j-bridge:1;--j-after:1;--j-one:1;--j-two:1;--j-three:1;--j-progress:1}
@@ -938,6 +941,7 @@ intranet-ttalkak/src/popup.html f-title, f-memo, btn-send. No deployment or adop
 
 
 
+
 <section id="compare" class="wrap section compare">
 <div class="section-top"><span class="eyebrow">03 / THE DIFFERENCE</span><span class="muted">같은 작업, 두 가지 방식.</span></div>
 <h2>8분 작업에서<br><span class="lime">6초의 완성으로</span></h2>
@@ -1059,8 +1063,10 @@ intranet-ttalkak/src/popup.html f-title, f-memo, btn-send. No deployment or adop
 <div class="feature-row"><div><span class="feature-number">04 — NAS BROWSER</span><h3>한 화면에서,<br>가져오고 올리기.</h3><p>공유 소재를 한 화면에서 주고받으세요. 저장소(NAS)의 영상과 배너를 함께 끌어오고, 작업 화면의 음원은 저장소로 끌어 올립니다.</p></div><div class="feature-motion"><iframe data-scene-src="scene-nas.html?v=46d951231a" title="NAS 파일 드래그 임포트 HTML 애니메이션" loading="lazy"></iframe></div></div>
 <div class="feature-row"><div><span class="feature-number">05 — REPEAT</span><h3>짧은 영상도,<br>반복해서 길게.</h3><p>짧은 영상을 반복해 더 길게 활용하세요. 반복 횟수를 바꾸며 총 길이를 확인하고, 완료를 눌러 렌더큐에 추가합니다.</p></div><div class="feature-motion"><iframe data-scene-src="scene-loop.html?v=9a6ecb5e67" title="영상 반복 HTML 애니메이션" loading="lazy"></iframe></div></div>
 <div class="feature-row"><div><span class="feature-number">06 — AUDIO TRIM</span><h3>음원도,<br>필요한 구간만.</h3><p>파형을 보며 음원도 필요한 구간만 남기세요. 양 끝 손잡이로 구간을 정하고, 파형을 확대하거나 앞뒤로 이동하며 세밀하게 다듬습니다.</p></div><div class="feature-motion"><iframe data-scene-src="scene-audio.html?v=99f8676b00" title="음원 구간 편집 HTML 애니메이션" loading="lazy"></iframe></div></div>
-<p class="feature-more">그 밖에 목표 용량에 맞춘 압축, mp4·mov·gif·png 출력, 매체별 지면 가이드 확인을 지원합니다.</p>
+<div class="feature-row feature-extras"><div class="feature-copy"><span class="feature-number">07 · 08 · 09 — SIZE · FORMAT · GUIDE</span><h3>용량도, 포맷도, 매체 규격도<br>같은 화면에서.</h3><p>목표 용량에 맞춘 압축, mp4·mov·gif·png 출력, 매체별 지면 가이드와 위험영역 강조를 지원합니다. 가이드는 미리보기에만 겹치고 렌더 결과에는 들어가지 않습니다.</p></div><div class="feature-motion"><iframe data-scene-src="scene-extras.html?v=9c6fd46c70" title="용량 압축·포맷 출력·매체 가이드 HTML 애니메이션" loading="lazy"></iframe></div></div>
 </div></section>
+
+
 
 
 

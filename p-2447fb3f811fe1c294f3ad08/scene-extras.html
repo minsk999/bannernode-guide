@@ -107,17 +107,6 @@ if(type==='nas'){$('.naslist').append($('#nas-file-2'));scene.insertAdjacentHTML
 .scene-controls>span{display:flex;align-items:center;min-height:30px}
 .scene-controls button{line-height:1;display:grid;place-items:center}
 .scene-controls button svg{width:16px;height:16px;display:block}
-.scene-controls.demo-toolbar, .demo-controls.demo-toolbar {
-  box-sizing: border-box; height: auto; min-height: 68px; padding: 12px 16px;
-  display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 16px;
-  align-items: center; background: #101419; border-top: 1px solid #2c343e;
-  color: #a5adba; z-index: 1002; isolation: isolate;
-}
-.scene-controls.demo-toolbar, .demo-controls.demo-toolbar {
-    grid-template-columns: minmax(0,1fr); gap: 8px; padding: 12px;
-  }
-const k=Math.max(.05,Math.min(innerWidth/1000,(innerHeight-($('.scene-controls').offsetHeight||68))/640));scene.style.transform=`scale(${k}
-BNDemoControls.mount($('.scene-controls'),640/1000,`scene-${type}
 </style>
 <body><div class="stage">
 <div id="scene">
@@ -185,6 +174,9 @@ P.style.transition='transform .55s cubic-bezier(.32,.72,0,1)'; P.style.left='0';
 function fit(){const bar=$('.scene-controls').offsetHeight||68;K=Math.max(.05,Math.min(innerWidth/1000,(innerHeight-bar)/640));SC.style.transform='scale('+K+')';SC.style.left=(innerWidth-1000*K)/2+'px';}
 addEventListener('resize',fit);addEventListener('bn-controls-resize',fit);fit();
 const GUIDE={ig:'media/guide-ig-dz.png',yt:'media/guide-yt-dz.png',tt:'media/guide-tt-dz.png'};
+// story.js 로더는 iframe load 시점에 이 플래그를 한 번만 본다(없으면 6초 후 재시도 ×3 → 「다시 불러오기」).
+document.documentElement.dataset.sceneReady='true';
+Object.values(GUIDE).forEach(u=>{const i=new Image();i.src=u;});
 let timers=[], playing=true, t0=0, top='A';
 Object.values({ig:'media/guide-ig-dz.png',yt:'media/guide-yt-dz.png',tt:'media/guide-tt-dz.png'}).forEach(u=>{const i=new Image();i.src=u;});
 function at(ms,fn){timers.push(setTimeout(fn,ms));}

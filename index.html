@@ -1983,9 +1983,10 @@
   try{ if(document.fonts&&document.fonts.ready) document.fonts.ready.then(agAnchor); }catch(_){ }
   window.addEventListener('resize', agAnchor);
   function saved(){ try{ return JSON.parse(localStorage.getItem('bn-guide-auth')||'null'); }catch(_){ return null; } }
-  /* 심사용 코드(경진대회) — 해시만 배포(원문 없음). JUDGE_EXP 가 지나면 저절로 무효. */
-  var JUDGE_SALT='3e457a432d23f014', JUDGE_H='797d5503ecebd53a65d4b55642aa74c8329ab8dc2a8145c427ddd12f948a3e92', JUDGE_EXP=Date.parse('2026-10-31T23:59:59+09:00')/1000;
-  function judgeValid(s){ return !!(s&&s.judge&&s.exp>Date.now()/1000&&Date.now()/1000<JUDGE_EXP); }
+  /* 개인용 패스워드(구 경진대회 심사 코드, 2026-10-14 교체) — 해시만 배포(원문 없음). JUDGE_EXP 가 지나면 저절로 무효.
+     ★세션에 해시 앞 12자(jh)를 담는다 — 비밀번호를 바꾸면 옛 비밀번호로 들어온 브라우저 세션도 같이 끊긴다(10-15). */
+  var JUDGE_SALT='290aad5bcb4cc649', JUDGE_H='7665e14b3f6984fcac3064a9f6917505b8f84c68c473f30c71f6e12847894565', JUDGE_EXP=Date.parse('3027-10-14T23:59:59+09:00')/1000;
+  function judgeValid(s){ return !!(s&&s.judge&&s.jh===JUDGE_H.slice(0,12)&&s.exp>Date.now()/1000&&Date.now()/1000<JUDGE_EXP); }
   function valid(){ var s=saved(); if(judgeValid(s)) return true; return !!(s&&okDom(s.hd)&&s.exp>Date.now()/1000); }
   function fresh(){ var s=saved(); if(judgeValid(s)) return true;   // 심사 입장은 구글 재확인 대상이 아님
     return !!(s&&(Date.now()/1000-(s.chk||0))<86400); }   // 24시간 내 구글 계정 생존 확인됨
@@ -2034,7 +2035,7 @@
     try{
       crypto.subtle.digest('SHA-256', new TextEncoder().encode(JUDGE_SALT+v)).then(function(buf){
         var h=Array.prototype.map.call(new Uint8Array(buf),function(b){return ('0'+b.toString(16)).slice(-2);}).join('');
-        if(h===JUDGE_H){ try{ localStorage.setItem('bn-guide-auth', JSON.stringify({judge:true, exp:Math.min(JUDGE_EXP, Math.floor(Date.now()/1000)+30*86400)})); }catch(_){ } err(''); unlock(); }
+        if(h===JUDGE_H){ try{ localStorage.setItem('bn-guide-auth', JSON.stringify({judge:true, jh:JUDGE_H.slice(0,12), exp:Math.min(JUDGE_EXP, Math.floor(Date.now()/1000)+30*86400)})); }catch(_){ } err(''); unlock(); }
         else err('패스워드가 올바르지 않아요. 다시 확인해 주세요.');
       });
     }catch(_){ err('이 브라우저에서는 코드 확인을 지원하지 않아요.'); }

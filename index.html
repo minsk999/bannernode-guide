@@ -477,12 +477,12 @@
   <div class="ag-card">
     <svg class="ag-logo" aria-hidden="true" viewBox="0 0 512 512"><rect width="512" height="512" rx="118" fill="#a2ff00"/><g transform="translate(128.09 128) scale(4.6529)" fill="#0a0b0f"><path d="M49.67,11.02c-.06,0-.12,0-.18,0-3.04,0-5.5-2.46-5.5-5.5h0s0-.02,0-.04c0-3.04-2.46-5.5-5.5-5.5-.21,0-.42.01-.62.04h-9.76c-.2-.02-.41-.04-.62-.04s-.42.01-.62.04h-9.76c-.2-.02-.41-.04-.62-.04-3.04,0-5.5,2.46-5.5,5.5,0,.01,0,.02,0,.04h0c0,3.04-2.46,5.5-5.5,5.5S0,13.49,0,16.53c0,0,0,0,0,0v10.98s0,0,0,0,0,0,0,0v10.98s0,0,0,0,0,0,0,0v10.98s0,0,0,0c0,3.04,2.46,5.5,5.5,5.5h32.99c3.04,0,5.5-2.46,5.5-5.5s2.46-5.5,5.5-5.5,5.5-2.46,5.5-5.5-2.46-5.5-5.5-5.5-5.5-2.46-5.5-5.5,2.46-5.5,5.5-5.5v-.02c3.04,0,5.5-2.46,5.5-5.5s-2.36-5.39-5.31-5.49ZM38.49,44.02h-21.99c-3.04,0-5.5-2.46-5.5-5.5s2.46-5.5,5.5-5.5h21.99c3.04,0,5.5,2.46,5.5,5.5s-2.46,5.5-5.5,5.5ZM38.49,22.03c-.12,0-.25-.01-.37-.02h-10.26c-.12,0-.24.02-.37.02s-.25-.01-.37-.02h-10.26c-.12,0-.24.02-.37.02-3.04,0-5.5-2.46-5.5-5.5s2.46-5.5,5.5-5.5h21.99c3.04,0,5.5,2.46,5.5,5.5s-2.46,5.5-5.5,5.5Z"/></g></svg>
     <div class="ag-title">ADEF 계정 로그인</div>
-    <p class="ag-sub">사내 구성원만 열람할 수 있어요.</p>
+    <p class="ag-sub">BannerNode 사용 설명서예요.</p>
     <button class="ag-btn" id="gaBtn"><svg class="gg" viewBox="0 0 48 48" fill="#a2ff00"><path d="M45.12 24.5c0-1.56-.14-3.06-.4-4.5H24v8.51h11.84c-.51 2.75-2.06 5.08-4.39 6.64v5.52h7.11c4.16-3.83 6.56-9.47 6.56-16.17z"/><path d="M24 46c5.94 0 10.92-1.97 14.56-5.33l-7.11-5.52c-1.97 1.32-4.49 2.1-7.45 2.1-5.73 0-10.58-3.87-12.31-9.07H4.34v5.7C7.96 41.07 15.4 46 24 46z"/><path d="M11.69 28.18C11.25 26.86 11 25.45 11 24s.25-2.86.69-4.18v-5.7H4.34C2.85 17.09 2 20.45 2 24s.85 6.91 2.34 9.88l7.35-5.7z"/><path d="M24 10.75c3.23 0 6.13 1.11 8.41 3.29l6.31-6.31C34.91 4.18 29.93 2 24 2 15.4 2 7.96 6.93 4.34 14.12l7.35 5.7c1.73-5.2 6.58-9.07 12.31-9.07z"/></svg>구글 계정으로 로그인</button>
     <div class="ag-err" id="gaErr"><p class="ag-errt" id="gaErrT"></p></div>
     <div class="ag-judge"><a class="agj-t" id="agjT" href="javascript:void(0)">패스워드로 로그인</a>
       <div class="agj-w" id="agjR"><div class="agj-row"><input id="agjC" type="password" placeholder="패스워드" autocomplete="off" spellcheck="false"><button type="button" id="agjB">입장</button></div></div></div>
-    <p class="ag-note">@adef.co.kr · @wisebirds.com 계정으로 로그인하세요.</p>
+    <p class="ag-note">회사 계정이 없으면 패스워드로 로그인하세요.</p>
   </div>
 </div>
 <script>document.documentElement.classList.add('gate-locked');</script>
@@ -1989,8 +1989,8 @@
 (function(){
   var CID='575127134030-0023iive0i5aejtcmloa89nadhrnfmuc.apps.googleusercontent.com';
   /* 허용 도메인 — ★정확히 일치만(endswith 금지: evil-adef.co.kr 이 통과한다). 계열사 추가는 이 배열에만.
-     ★2026-08-25 부터 문구가 이 목록과 어긋나지 않는다 — note 는 두 도메인을 함께 적고,
-       소개 문장의 「ADEF 구성원만」 배제어는 걷어냈다(「사내 구성원만」). 제목의 ADEF 는 의도적으로 남긴다. */
+     ★2026-11-24 사용자 결정: 문구를 앱 로그인 화면과 통일 — 소개 「BannerNode 사용 설명서예요」 ·
+       note 「회사 계정이 없으면 패스워드로 로그인하세요」(도메인 목록은 화면에서 뺐다 — 허용 판정은 이 배열 그대로). 제목의 ADEF 는 의도적으로 남긴다. */
   var DOMS=['adef.co.kr','wisebirds.com'];
   function okDom(d){ return DOMS.indexOf(String(d||'').toLowerCase())>=0; }
   function unlock(){ var g=document.getElementById('authgate'); if(g) g.style.display='none'; document.documentElement.classList.remove('gate-locked');
@@ -2015,8 +2015,17 @@
      ★세션에 해시 앞 12자(jh)를 담는다 — 비밀번호를 바꾸면 옛 비밀번호로 들어온 브라우저 세션도 같이 끊긴다(10-15). */
   var JUDGE_SALT='290aad5bcb4cc649', JUDGE_H='7665e14b3f6984fcac3064a9f6917505b8f84c68c473f30c71f6e12847894565', JUDGE_EXP=Date.parse('3027-10-14T23:59:59+09:00')/1000;
   function judgeValid(s){ return !!(s&&s.judge&&s.jh===JUDGE_H.slice(0,12)&&s.exp>Date.now()/1000&&Date.now()/1000<JUDGE_EXP); }
-  function valid(){ var s=saved(); if(judgeValid(s)) return true; return !!(s&&okDom(s.hd)&&s.exp>Date.now()/1000); }
-  function fresh(){ var s=saved(); if(judgeValid(s)) return true;   // 심사 입장은 구글 재확인 대상이 아님
+  /* 관리자 마스터 패스워드(2026-11-24 사용자 결정) = 관리 페이지 패스워드. ★해시를 이 페이지에 싣지 않는다(공개 페이지라 누구나 맞혀 볼 수 있다)
+     — 회사 서버(/api/bnp/master)가 확인하고 30일 표(m1.…)를 준다. 재방문은 표가 있으면 바로 열고 뒤에서 다시 묻는다(관리 패스워드를 바꾸면 401 → 닫힘).
+     협력사 패스워드(BNP-)는 같은 칸에서 받아 협력사용 설명서로 보낸다 — 같은 주소(github.io) 아래라 열람 표(bnpg)를 남겨 두면 그쪽이 다시 묻지 않는다. */
+  var BNP_API='https://crnas.adef.co.kr:8444/api/bnp/';
+  function masterValid(s){ return !!(s&&s.master&&typeof s.t==='string'&&s.exp>Date.now()/1000); }
+  function bnpPost(path,body){ return fetch(BNP_API+path,{method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(body),credentials:'omit',cache:'no-store'})
+    .then(function(r){ return r.json().then(function(j){ return {s:r.status,j:j||{}}; },function(){ return {s:r.status,j:{}}; }); }); }
+  function masterRecheck(){ var s=saved(); if(!masterValid(s)) return;
+    bnpPost('master',{token:s.t}).then(function(r){ if(r.s===401){ try{ localStorage.removeItem('bn-guide-auth'); }catch(_){ } location.reload(); } },function(){ }); }   // 서버 안 닿음 = 열어 둔다
+  function valid(){ var s=saved(); if(judgeValid(s)||masterValid(s)) return true; return !!(s&&okDom(s.hd)&&s.exp>Date.now()/1000); }
+  function fresh(){ var s=saved(); if(judgeValid(s)||masterValid(s)) return true;   // 개인용·관리자 패스워드는 구글 재확인 대상이 아님
     return !!(s&&(Date.now()/1000-(s.chk||0))<86400); }   // 24시간 내 구글 계정 생존 확인됨
   var btn=document.getElementById('gaBtn'), tokenClient=null;
   function markerSet(email,hd){ try{ localStorage.setItem('bn-guide-auth', JSON.stringify({email:email,hd:String(hd||String(email||'').split('@')[1]||'').toLowerCase(),exp:Math.floor(Date.now()/1000)+15552000,chk:Math.floor(Date.now()/1000)})); }catch(_){ } }
@@ -2031,7 +2040,7 @@
   }
   var _initTry=0;
   function init(){
-    if(valid()&&fresh()){ unlock(); return; }
+    if(valid()&&fresh()){ unlock(); masterRecheck(); return; }
     if(!(window.google&&google.accounts&&google.accounts.oauth2)){
       if(++_initTry>60){ err('로그인 스크립트를 불러오지 못했어요 — 인터넷 연결을 확인하고 새로고침해 주세요.'); return; }
       return setTimeout(init,150); }
@@ -2057,16 +2066,32 @@
   }
   var jT=document.getElementById('agjT'), jR=document.getElementById('agjR'), jC=document.getElementById('agjC'), jB=document.getElementById('agjB');
   if(jT&&jR){ jT.onclick=function(){ var on=jR.classList.toggle('on'); if(on&&jC) jC.focus(); }; }
+  var jBusy=false;
+  function jDone(m){ jBusy=false; if(jB) jB.disabled=false; err(m||''); }
   function judgeGo(){
-    var v=(jC&&jC.value||'').trim(); if(!v) return;
-    if(Date.now()/1000>=JUDGE_EXP){ err('패스워드 유효 기간이 끝났어요.'); return; }
+    var v=(jC&&jC.value||'').trim(); if(!v||jBusy) return;
+    jBusy=true; if(jB) jB.disabled=true; err('');
+    if(/^BNP-/i.test(v)){   // 협력사 패스워드 → 협력사용 설명서로
+      bnpPost('guide',{password:v}).then(function(r){
+        if(r.s===200&&r.j.ok&&r.j.token){ try{ localStorage.setItem('bnpg', JSON.stringify({t:r.j.token,exp:r.j.exp})); }catch(_){ } location.href='partner/'; return; }
+        jDone(r.s===429?'잠시 뒤에 다시 해 주세요.':r.s===403?'쓸 수 없는 패스워드예요. 담당자에게 문의해 주세요.':r.s>=500?'지금은 확인할 수 없어요. 잠시 뒤에 다시 해 주세요.':'패스워드가 올바르지 않아요. 다시 확인해 주세요.');
+      },function(){ jDone('연결이 안 돼요. 인터넷 연결을 확인하고 다시 해 주세요.'); });
+      return;
+    }
+    var master=function(){   // 개인용이 아니면 관리자 패스워드인지 서버에 묻는다
+      bnpPost('master',{password:v}).then(function(r){
+        if(r.s===200&&r.j.ok&&typeof r.j.token==='string'){ try{ localStorage.setItem('bn-guide-auth', JSON.stringify({master:true, t:r.j.token, exp:Number(r.j.exp)||Math.floor(Date.now()/1000)+30*86400})); }catch(_){ } jDone(''); unlock(); return; }
+        jDone(r.s===429?'잠시 뒤에 다시 해 주세요.':'패스워드가 올바르지 않아요. 다시 확인해 주세요.');
+      },function(){ jDone('패스워드가 올바르지 않거나 서버에 연결하지 못했어요.'); });
+    };
+    if(Date.now()/1000>=JUDGE_EXP) return master();
     try{
       crypto.subtle.digest('SHA-256', new TextEncoder().encode(JUDGE_SALT+v)).then(function(buf){
         var h=Array.prototype.map.call(new Uint8Array(buf),function(b){return ('0'+b.toString(16)).slice(-2);}).join('');
-        if(h===JUDGE_H){ try{ localStorage.setItem('bn-guide-auth', JSON.stringify({judge:true, jh:JUDGE_H.slice(0,12), exp:Math.min(JUDGE_EXP, Math.floor(Date.now()/1000)+30*86400)})); }catch(_){ } err(''); unlock(); }
-        else err('패스워드가 올바르지 않아요. 다시 확인해 주세요.');
-      });
-    }catch(_){ err('이 브라우저에서는 코드 확인을 지원하지 않아요.'); }
+        if(h===JUDGE_H){ try{ localStorage.setItem('bn-guide-auth', JSON.stringify({judge:true, jh:JUDGE_H.slice(0,12), exp:Math.min(JUDGE_EXP, Math.floor(Date.now()/1000)+30*86400)})); }catch(_){ } jDone(''); unlock(); }
+        else master();
+      },master);
+    }catch(_){ master(); }
   }
   if(jB) jB.onclick=judgeGo;
   if(jC) jC.addEventListener('keydown',function(ev){ if(ev.key==='Enter') judgeGo(); });

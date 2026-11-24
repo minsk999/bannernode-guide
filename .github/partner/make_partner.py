@@ -875,7 +875,7 @@ html.pwl #pwl{display:flex;position:fixed;inset:0;align-items:center;justify-con
 </style>
 <script>(function(){var v=null;try{v=JSON.parse(localStorage.getItem('bnpg')||'null')}catch(e){}if(!v||!v.t||!(v.exp*1000>Date.now()))document.documentElement.classList.add('pwl')})();</script>'''
 
-PW_LOCK_BODY = '''<div id="pwl"><form class="pwl-card" autocomplete="off"><h1>BannerNode 사용 설명서</h1><p>ADEF에서 받은 패스워드를 입력해 주세요.</p><input type="password" placeholder="BNP-" spellcheck="false" aria-label="패스워드"><button type="submit">열기</button><div class="pwl-msg" role="alert"></div><div class="pwl-note">이 브라우저에서는 30일 동안 다시 묻지 않아요.</div></form></div>
+PW_LOCK_BODY = '''<div id="pwl"><form class="pwl-card" autocomplete="off"><h1>BannerNode for Partners</h1><p>발급받은 패스워드를 입력해 주세요.</p><input type="password" placeholder="BNP-" spellcheck="false" aria-label="패스워드"><button type="submit">열기</button><div class="pwl-msg" role="alert"></div><div class="pwl-note">이 브라우저에서는 30일 동안 로그인이 유지돼요.</div></form></div>
 <script>(function(){
 var API='%s',K='bnpg',H=document.documentElement;
 var f=document.querySelector('#pwl form'),inp=f.querySelector('input'),btn=f.querySelector('button'),msg=f.querySelector('.pwl-msg');

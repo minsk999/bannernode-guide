@@ -9,6 +9,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <meta name="robots" content="noindex, nofollow">
+<style>
+html.pwl body>*:not(#pwl){display:none!important}
+#pwl{display:none}
+html.pwl #pwl{display:flex;position:fixed;inset:0;align-items:center;justify-content:center;padding:24px;background:var(--bg)}
+#pwl .pwl-card{width:min(380px,100%);box-sizing:border-box;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:36px 32px 26px;text-align:center}
+#pwl h1{font-size:20px;font-weight:700;margin:0 0 8px;color:var(--ink)}
+#pwl p{font-size:13.5px;color:var(--ink-2);margin:0 0 20px;line-height:1.6}
+#pwl input{width:100%;box-sizing:border-box;height:44px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg-soft);color:var(--ink);font:600 14px 'JetBrains Mono',monospace;outline:none}
+#pwl input:focus{border-color:var(--lime)}
+#pwl button{margin-top:12px;width:100%;height:44px;border:0;border-radius:12px;background:var(--lime);color:var(--lime-ink);font:700 14px 'Inter Tight','Pretendard',sans-serif;cursor:pointer}
+#pwl button:disabled{opacity:.5;cursor:default}
+#pwl .pwl-msg{min-height:20px;margin-top:12px;font-size:12.5px;color:var(--red)}
+#pwl .pwl-note{margin-top:4px;font-size:11.5px;color:var(--ink-3)}
+</style>
+<script>(function(){var v=null;try{v=JSON.parse(localStorage.getItem('bnpg')||'null')}catch(e){}if(!v||!v.t||!(v.exp*1000>Date.now()))document.documentElement.classList.add('pwl')})();</script>
 
 <title>BannerNode · 사용 설명서</title>
 
@@ -1235,6 +1250,24 @@
   document.addEventListener('keydown',e=>{ if(e.key==='Escape') hide(); });
 })();
 </script>
+<div id="pwl"><form class="pwl-card" autocomplete="off"><h1>BannerNode 사용 설명서</h1><p>ADEF에서 받은 패스워드를 입력해 주세요.</p><input type="password" placeholder="BNP-" spellcheck="false" aria-label="패스워드"><button type="submit">열기</button><div class="pwl-msg" role="alert"></div><div class="pwl-note">이 브라우저에서는 30일 동안 다시 묻지 않아요.</div></form></div>
+<script>(function(){
+var API='https://crnas.adef.co.kr:8444/api/bnp/guide',K='bnpg',H=document.documentElement;
+var f=document.querySelector('#pwl form'),inp=f.querySelector('input'),btn=f.querySelector('button'),msg=f.querySelector('.pwl-msg');
+function get(){try{return JSON.parse(localStorage.getItem(K)||'null')}catch(e){return null}}
+function put(v){try{if(v)localStorage.setItem(K,JSON.stringify(v));else localStorage.removeItem(K)}catch(e){}}
+var STOP='쓸 수 없는 패스워드예요. ADEF 담당자에게 문의해 주세요.';
+var ERR={invalid:'패스워드가 올바르지 않아요.',revoked:STOP,suspended:STOP,rate:'잠시 뒤에 다시 해 주세요.'};
+function call(body){return fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(body),credentials:'omit',cache:'no-store'}).then(function(r){return r.json().then(function(j){return{s:r.status,j:j||{}}},function(){return{s:r.status,j:{}}})})}
+function lock(m){H.classList.add('pwl');msg.textContent=m||'';btn.disabled=false;setTimeout(function(){inp.focus()},0)}
+function unlock(){H.classList.remove('pwl');var id=location.hash.slice(1),t=id&&document.getElementById(decodeURIComponent(id));if(t){H.style.scrollBehavior='auto';t.scrollIntoView();H.style.scrollBehavior=''}}
+f.addEventListener('submit',function(e){e.preventDefault();var p=inp.value.trim();if(!p){lock('패스워드를 입력해 주세요.');return}
+btn.disabled=true;msg.textContent='';
+call({password:p}).then(function(r){if(r.s===200&&r.j.ok&&r.j.token){put({t:r.j.token,exp:r.j.exp});inp.value='';btn.disabled=false;unlock()}
+else lock(ERR[r.j.error]||(r.s===429?ERR.rate:r.s===403?STOP:r.s>=500?'지금은 확인할 수 없어요. 잠시 뒤에 다시 해 주세요.':ERR.invalid))},function(){lock('연결이 안 돼요. 인터넷 연결을 확인하고 다시 해 주세요.')})});
+if(H.classList.contains('pwl')){put(null);setTimeout(function(){inp.focus()},0)}
+else call({token:get().t}).then(function(r){if(r.s===401||r.s===403){put(null);lock(r.s===403?STOP:'패스워드를 다시 입력해 주세요.')}},function(){});
+})();</script>
 </body>
 
 </html>

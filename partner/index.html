@@ -21,7 +21,11 @@ html.pwl #pwl{display:flex;position:fixed;inset:0;align-items:center;justify-con
 #pwl button{margin-top:12px;width:100%;height:44px;border:0;border-radius:12px;background:var(--lime);color:var(--lime-ink);font:700 14px 'Inter Tight','Pretendard',sans-serif;cursor:pointer}
 #pwl button:disabled{opacity:.5;cursor:default}
 #pwl .pwl-msg{min-height:20px;margin-top:12px;font-size:12.5px;color:var(--red)}
+#pwl .pwl-msg.ok{color:var(--ink-3)}
 #pwl .pwl-note{margin-top:4px;font-size:11.5px;color:var(--ink-3)}
+#pwl-out{width:38px;height:38px;padding:0;border-radius:11px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer;display:grid;place-items:center;transition:all .15s}
+#pwl-out:hover{color:var(--ink);border-color:var(--ink-3)}
+#pwl-out svg{width:18px;height:18px;fill:currentColor}
 </style>
 <script>(function(){var v=null;try{v=JSON.parse(localStorage.getItem('bnpg')||'null')}catch(e){}if(!v||!v.t||!(v.exp*1000>Date.now()))document.documentElement.classList.add('pwl')})();</script>
 
@@ -419,7 +423,7 @@ html.pwl #pwl{display:flex;position:fixed;inset:0;align-items:center;justify-con
 
     <span class="ver">v1.0.200</span>
 
-    <span class="spacer"></span>
+    <span class="spacer"></span><button type="button" id="pwl-out" aria-label="로그아웃" data-tip="로그아웃"><svg viewBox="0 0 24 24"><path d="M6.6 3H12v2.9H7.9v12.2H12V21H6.6A1.6 1.6 0 0 1 5 19.4V4.6A1.6 1.6 0 0 1 6.6 3z"/><path d="M11.4 10.5h5.5V7.5L21.9 12l-5 4.5v-3h-5.5z"/></svg></button>
 
 
   </div>
@@ -1259,7 +1263,8 @@ function put(v){try{if(v)localStorage.setItem(K,JSON.stringify(v));else localSto
 var STOP='쓸 수 없는 패스워드예요. ADEF 담당자에게 문의해 주세요.';
 var ERR={invalid:'패스워드가 올바르지 않아요.',revoked:STOP,suspended:STOP,rate:'잠시 뒤에 다시 해 주세요.'};
 function call(body){return fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(body),credentials:'omit',cache:'no-store'}).then(function(r){return r.json().then(function(j){return{s:r.status,j:j||{}}},function(){return{s:r.status,j:{}}})})}
-function lock(m){H.classList.add('pwl');msg.textContent=m||'';btn.disabled=false;setTimeout(function(){inp.focus()},0)}
+function lock(m,ok){H.classList.add('pwl');msg.textContent=m||'';msg.className='pwl-msg'+(ok?' ok':'');btn.disabled=false;setTimeout(function(){inp.focus()},0)}
+var out=document.getElementById('pwl-out');if(out)out.addEventListener('click',function(){put(null);inp.value='';lock('로그아웃했어요.',1)});
 function unlock(){H.classList.remove('pwl');var id=location.hash.slice(1),t=id&&document.getElementById(decodeURIComponent(id));if(t){H.style.scrollBehavior='auto';t.scrollIntoView();H.style.scrollBehavior=''}}
 f.addEventListener('submit',function(e){e.preventDefault();var p=inp.value.trim();if(!p){lock('패스워드를 입력해 주세요.');return}
 btn.disabled=true;msg.textContent='';

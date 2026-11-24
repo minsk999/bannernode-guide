@@ -53,6 +53,8 @@ GATE_LEFT = re.compile(r'authgate|gate-locked|accounts\.google\.com|gsi/client|g
 #   오탐 줄이기: 「검사내용」「회사내」의 사내 · 「실제보다」의 제보 · 「이동료」의 동료는 앞뒤 글자로 거른다.
 STAFF = re.compile(r'(?<![가-힣])사내|영상팀|구성원|임직원|계열사|인트라넷|그룹웨어|adef\.co\.kr|ADEF\s*계정|구글|퇴사'
                    r'|(?<![가-힣])동료|(?<![가-힣])제보(?!다)|협력사|대행사|내부용|팀장', re.I)
+# 패스워드 가리개가 묻는 서버(2026-11-24 사용자 결정 ① — 주소의 crnas 는 「보여도 괜찮다」). 최종 검사는 **이 글자 그대로만** 예외로 둔다.
+GUIDE_API = 'https://crnas.adef.co.kr:8444/api/bnp/guide'
 # 조사 결과의 고친 문구에 섞여 있는 자리표시([문의처 — 사용자 결정] 등) — 채우지 않고 넣으면 그대로 실린다
 PLACEHOLDER = '사용자 결정]'
 
@@ -526,6 +528,7 @@ def final_gate(text, name, required_ids=(), files=None, orig=None):
             for off, w in leak_hits(dec) + [(m.start(), m.group(0)) for m in STAFF.finditer(dec)]:
                 problems.append('%s data URI(%s) 안에 %r — %r' % (name, mime, w, dec[max(0, off - 30):off + 30]))
         scan = scan[:m.start(4)] + '·' * len(payload) + scan[m.end(4):]
+    scan = scan.replace(GUIDE_API, '·' * len(GUIDE_API))   # 가리개의 서버 주소 한 줄만 예외(같은 길이로 가려 줄 번호 유지)
     raw_hits = leak_hits(scan)
     for off, w in raw_hits:
         ln = text.count('\n', 0, off) + 1
@@ -852,6 +855,58 @@ def head_meta(doc):
     doc.log.append('robots noindex 추가')
 
 
+PW_LOCK_HEAD = '''<style>
+html.pwl body>*:not(#pwl){display:none!important}
+#pwl{display:none}
+html.pwl #pwl{display:flex;position:fixed;inset:0;align-items:center;justify-content:center;padding:24px;background:var(--bg)}
+#pwl .pwl-card{width:min(380px,100%);box-sizing:border-box;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:36px 32px 26px;text-align:center}
+#pwl h1{font-size:20px;font-weight:700;margin:0 0 8px;color:var(--ink)}
+#pwl p{font-size:13.5px;color:var(--ink-2);margin:0 0 20px;line-height:1.6}
+#pwl input{width:100%;box-sizing:border-box;height:44px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg-soft);color:var(--ink);font:600 14px 'JetBrains Mono',monospace;outline:none}
+#pwl input:focus{border-color:var(--lime)}
+#pwl button{margin-top:12px;width:100%;height:44px;border:0;border-radius:12px;background:var(--lime);color:var(--lime-ink);font:700 14px 'Inter Tight','Pretendard',sans-serif;cursor:pointer}
+#pwl button:disabled{opacity:.5;cursor:default}
+#pwl .pwl-msg{min-height:20px;margin-top:12px;font-size:12.5px;color:var(--red)}
+#pwl .pwl-note{margin-top:4px;font-size:11.5px;color:var(--ink-3)}
+</style>
+<script>(function(){var v=null;try{v=JSON.parse(localStorage.getItem('bnpg')||'null')}catch(e){}if(!v||!v.t||!(v.exp*1000>Date.now()))document.documentElement.classList.add('pwl')})();</script>'''
+
+PW_LOCK_BODY = '''<div id="pwl"><form class="pwl-card" autocomplete="off"><h1>BannerNode 사용 설명서</h1><p>ADEF에서 받은 패스워드를 입력해 주세요.</p><input type="password" placeholder="BNP-" spellcheck="false" aria-label="패스워드"><button type="submit">열기</button><div class="pwl-msg" role="alert"></div><div class="pwl-note">이 브라우저에서는 30일 동안 다시 묻지 않아요.</div></form></div>
+<script>(function(){
+var API='%s',K='bnpg',H=document.documentElement;
+var f=document.querySelector('#pwl form'),inp=f.querySelector('input'),btn=f.querySelector('button'),msg=f.querySelector('.pwl-msg');
+function get(){try{return JSON.parse(localStorage.getItem(K)||'null')}catch(e){return null}}
+function put(v){try{if(v)localStorage.setItem(K,JSON.stringify(v));else localStorage.removeItem(K)}catch(e){}}
+var STOP='쓸 수 없는 패스워드예요. ADEF 담당자에게 문의해 주세요.';
+var ERR={invalid:'패스워드가 올바르지 않아요.',revoked:STOP,suspended:STOP,rate:'잠시 뒤에 다시 해 주세요.'};
+function call(body){return fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(body),credentials:'omit',cache:'no-store'}).then(function(r){return r.json().then(function(j){return{s:r.status,j:j||{}}},function(){return{s:r.status,j:{}}})})}
+function lock(m){H.classList.add('pwl');msg.textContent=m||'';btn.disabled=false;setTimeout(function(){inp.focus()},0)}
+function unlock(){H.classList.remove('pwl');var id=location.hash.slice(1),t=id&&document.getElementById(decodeURIComponent(id));if(t){H.style.scrollBehavior='auto';t.scrollIntoView();H.style.scrollBehavior=''}}
+f.addEventListener('submit',function(e){e.preventDefault();var p=inp.value.trim();if(!p){lock('패스워드를 입력해 주세요.');return}
+btn.disabled=true;msg.textContent='';
+call({password:p}).then(function(r){if(r.s===200&&r.j.ok&&r.j.token){put({t:r.j.token,exp:r.j.exp});inp.value='';btn.disabled=false;unlock()}
+else lock(ERR[r.j.error]||(r.s===429?ERR.rate:r.s===403?STOP:r.s>=500?'지금은 확인할 수 없어요. 잠시 뒤에 다시 해 주세요.':ERR.invalid))},function(){lock('연결이 안 돼요. 인터넷 연결을 확인하고 다시 해 주세요.')})});
+if(H.classList.contains('pwl')){put(null);setTimeout(function(){inp.focus()},0)}
+else call({token:get().t}).then(function(r){if(r.s===401||r.s===403){put(null);lock(r.s===403?STOP:'패스워드를 다시 입력해 주세요.')}},function(){});
+})();</script>
+''' % GUIDE_API
+
+
+def pw_lock(doc):
+    """패스워드 가리개(2026-11-24 사용자 결정 ①) — 화면을 가릴 뿐 진짜 잠금이 아니다(소스·공개 저장소에는 내용이 있다).
+    처음엔 패스워드를 회사 서버(GUIDE_API)에 물어 맞으면 서버가 준 열람 표(30일)를 브라우저에 둔다.
+    다음 방문은 표가 있으면 바로 보여 주고 뒤에서 다시 묻는다 — 해지·일시 정지·재발급이면 그때 닫는다. 서버가 안 닿으면 열어 둔 채로 둔다(설명서가 서버 점검에 막히지 않게)."""
+    t = doc.tree()
+    rb = query(t, sel('meta', attr=('name', 'robots')))
+    bd = [n for n in t.all if n.tag == 'body']
+    if len(rb) != 1 or len(bd) != 1 or bd[0].es is None:
+        raise Fail('가리개 자리(robots meta · body)를 못 찾았습니다')
+    if query(t, sel(id='pwl')):
+        raise Fail('원본에 #pwl 이 이미 있습니다 — 가리개 id 를 바꿀 것')
+    doc.text = apply_edits(doc.text, [(rb[0].e, rb[0].e, '\n' + PW_LOCK_HEAD), (bd[0].es, bd[0].es, PW_LOCK_BODY)])
+    doc.log.append('패스워드 가리개 추가(서버 %s)' % GUIDE_API.split('/api/')[1])
+
+
 # ───────────────────────────── 실행 ─────────────────────────────
 def read(p):
     with io.open(p, encoding='utf-8', newline='') as f:
@@ -871,6 +926,7 @@ def build(rules, drules=None):
     sync_toc(doc)
     renumber(doc)
     head_meta(doc)
+    pw_lock(doc)
     # 데모는 협력사 폴더에 사본을 둔다 — 사내 데모에 사내 전용 장면이 생기면 같은 검사에 걸려 협력사로 넘어가지 않는다
     t = doc.tree()
     fr = [n for n in t.all if n.tag == 'iframe']

@@ -867,7 +867,11 @@ html.pwl #pwl{display:flex;position:fixed;inset:0;align-items:center;justify-con
 #pwl button{margin-top:12px;width:100%;height:44px;border:0;border-radius:12px;background:var(--lime);color:var(--lime-ink);font:700 14px 'Inter Tight','Pretendard',sans-serif;cursor:pointer}
 #pwl button:disabled{opacity:.5;cursor:default}
 #pwl .pwl-msg{min-height:20px;margin-top:12px;font-size:12.5px;color:var(--red)}
+#pwl .pwl-msg.ok{color:var(--ink-3)}
 #pwl .pwl-note{margin-top:4px;font-size:11.5px;color:var(--ink-3)}
+#pwl-out{width:38px;height:38px;padding:0;border-radius:11px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer;display:grid;place-items:center;transition:all .15s}
+#pwl-out:hover{color:var(--ink);border-color:var(--ink-3)}
+#pwl-out svg{width:18px;height:18px;fill:currentColor}
 </style>
 <script>(function(){var v=null;try{v=JSON.parse(localStorage.getItem('bnpg')||'null')}catch(e){}if(!v||!v.t||!(v.exp*1000>Date.now()))document.documentElement.classList.add('pwl')})();</script>'''
 
@@ -880,7 +884,8 @@ function put(v){try{if(v)localStorage.setItem(K,JSON.stringify(v));else localSto
 var STOP='쓸 수 없는 패스워드예요. ADEF 담당자에게 문의해 주세요.';
 var ERR={invalid:'패스워드가 올바르지 않아요.',revoked:STOP,suspended:STOP,rate:'잠시 뒤에 다시 해 주세요.'};
 function call(body){return fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(body),credentials:'omit',cache:'no-store'}).then(function(r){return r.json().then(function(j){return{s:r.status,j:j||{}}},function(){return{s:r.status,j:{}}})})}
-function lock(m){H.classList.add('pwl');msg.textContent=m||'';btn.disabled=false;setTimeout(function(){inp.focus()},0)}
+function lock(m,ok){H.classList.add('pwl');msg.textContent=m||'';msg.className='pwl-msg'+(ok?' ok':'');btn.disabled=false;setTimeout(function(){inp.focus()},0)}
+var out=document.getElementById('pwl-out');if(out)out.addEventListener('click',function(){put(null);inp.value='';lock('로그아웃했어요.',1)});
 function unlock(){H.classList.remove('pwl');var id=location.hash.slice(1),t=id&&document.getElementById(decodeURIComponent(id));if(t){H.style.scrollBehavior='auto';t.scrollIntoView();H.style.scrollBehavior=''}}
 f.addEventListener('submit',function(e){e.preventDefault();var p=inp.value.trim();if(!p){lock('패스워드를 입력해 주세요.');return}
 btn.disabled=true;msg.textContent='';
@@ -890,6 +895,10 @@ if(H.classList.contains('pwl')){put(null);setTimeout(function(){inp.focus()},0)}
 else call({token:get().t}).then(function(r){if(r.s===401||r.s===403){put(null);lock(r.s===403?STOP:'패스워드를 다시 입력해 주세요.')}},function(){});
 })();</script>
 ''' % GUIDE_API
+
+PW_OUT_BTN = ('<button type="button" id="pwl-out" aria-label="로그아웃" data-tip="로그아웃"><svg viewBox="0 0 24 24">'
+              '<path d="M6.6 3H12v2.9H7.9v12.2H12V21H6.6A1.6 1.6 0 0 1 5 19.4V4.6A1.6 1.6 0 0 1 6.6 3z"/>'
+              '<path d="M11.4 10.5h5.5V7.5L21.9 12l-5 4.5v-3h-5.5z"/></svg></button>')
 
 
 def pw_lock(doc):
@@ -901,9 +910,14 @@ def pw_lock(doc):
     bd = [n for n in t.all if n.tag == 'body']
     if len(rb) != 1 or len(bd) != 1 or bd[0].es is None:
         raise Fail('가리개 자리(robots meta · body)를 못 찾았습니다')
-    if query(t, sel(id='pwl')):
-        raise Fail('원본에 #pwl 이 이미 있습니다 — 가리개 id 를 바꿀 것')
-    doc.text = apply_edits(doc.text, [(rb[0].e, rb[0].e, '\n' + PW_LOCK_HEAD), (bd[0].es, bd[0].es, PW_LOCK_BODY)])
+    if query(t, sel(id='pwl')) or query(t, sel(id='pwl-out')):
+        raise Fail('원본에 #pwl · #pwl-out 이 이미 있습니다 — 가리개 id 를 바꿀 것')
+    # 로그아웃(11-24 사용자 요청) = 머리띠 오른쪽 끝(사내 판 로그아웃 자리). 열람 표는 서버에 저장되지 않는 서명이라 지우기만 하면 된다.
+    sp = query(t, sel('span', cls='spacer', inside=sel('header')))
+    if len(sp) != 1:
+        raise Fail('로그아웃 자리(header 의 span.spacer)가 %d개입니다' % len(sp))
+    doc.text = apply_edits(doc.text, [(rb[0].e, rb[0].e, '\n' + PW_LOCK_HEAD), (sp[0].e, sp[0].e, PW_OUT_BTN),
+                                      (bd[0].es, bd[0].es, PW_LOCK_BODY)])
     doc.log.append('패스워드 가리개 추가(서버 %s)' % GUIDE_API.split('/api/')[1])
 
 

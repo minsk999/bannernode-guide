@@ -12,17 +12,60 @@
 <style>
 html.pwl body>*:not(#pwl){display:none!important}
 #pwl{display:none}
-html.pwl #pwl{display:flex;position:fixed;inset:0;align-items:center;justify-content:center;padding:24px;background:var(--bg)}
-#pwl .pwl-card{width:min(380px,100%);box-sizing:border-box;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:36px 32px 26px;text-align:center}
-#pwl h1{font-size:20px;font-weight:700;margin:0 0 8px;color:var(--ink)}
-#pwl p{font-size:13.5px;color:var(--ink-2);margin:0 0 20px;line-height:1.6}
-#pwl input{width:100%;box-sizing:border-box;height:44px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg-soft);color:var(--ink);font:600 14px 'JetBrains Mono',monospace;outline:none}
-#pwl input:focus{border-color:var(--lime)}
-#pwl button{margin-top:12px;width:100%;height:44px;border:0;border-radius:12px;background:var(--lime);color:var(--lime-ink);font:700 14px 'Inter Tight','Pretendard',sans-serif;cursor:pointer}
-#pwl button:disabled{opacity:.5;cursor:default}
-#pwl .pwl-msg{min-height:20px;margin-top:12px;font-size:12.5px;color:var(--red)}
-#pwl .pwl-msg.ok{color:var(--ink-3)}
-#pwl .pwl-note{margin-top:4px;font-size:11.5px;color:var(--ink-3)}
+html.pwl #pwl{display:flex;position:fixed;inset:0;overflow-y:auto;overscroll-behavior:contain;padding:24px;
+  background:radial-gradient(900px 520px at 50% -10%,#121621 0%,var(--bg) 64%);
+  font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Segoe UI','Malgun Gothic',sans-serif}
+/* 시안 A 「연결선」(2026-11-25 사용자 선택) — 영상 노드 → 배너 노드 선이 카드 뒤로 지나간다. 장식은 전부 aria-hidden · 좁거나 낮은 화면에선 숨김 */
+#pwl .pwl-dots{position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1.2px);background-size:24px 24px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 50%,#000 30%,transparent 75%);mask-image:radial-gradient(ellipse at 50% 50%,#000 30%,transparent 75%)}
+#pwl .pwl-wire{position:fixed;inset:0;width:100%;height:100%;pointer-events:none}
+#pwl .pwl-nd{position:fixed;width:150px;height:96px;box-sizing:border-box;border-radius:14px;background:rgba(20,21,25,.7);border:1.5px solid;pointer-events:none;
+  display:flex;align-items:flex-end;padding:10px 12px;font:600 11px 'JetBrains Mono',monospace;color:var(--ink-3);letter-spacing:.04em}
+#pwl .pwl-nd b{position:absolute;inset:10px 12px 28px;border-radius:7px}
+#pwl .pwl-nd i{position:absolute;top:50%;width:11px;height:11px;box-sizing:border-box;margin-top:-5.5px;border-radius:50%;background:var(--bg);border:2px solid}
+#pwl .pwl-nd.v{border-color:rgba(162,255,0,.55);left:max(4vw,24px);top:calc(50% - 150px)}
+#pwl .pwl-nd.v b{background:linear-gradient(135deg,#2b3a12,#141a0b)}
+#pwl .pwl-nd.v i{right:-7px;border-color:var(--lime)}
+#pwl .pwl-nd.b{border-color:rgba(0,110,255,.6);right:max(4vw,24px);top:calc(50% + 60px)}
+#pwl .pwl-nd.b b{background:repeating-conic-gradient(#20242f 0deg 90deg,#171a22 90deg 180deg) 50%/10px 10px;box-shadow:inset 0 0 0 7px #0b2c63}
+#pwl .pwl-nd.b i{left:-7px;border-color:#006eff}
+@media (max-width:760px),(max-height:560px){#pwl .pwl-nd,#pwl .pwl-wire{display:none}}
+#pwl .pwl-card{position:relative;margin:auto;width:min(400px,100%);box-sizing:border-box;padding:42px 36px 30px;text-align:center;border-radius:24px;
+  background:rgba(18,20,26,.82);border:1px solid var(--line);box-shadow:0 30px 80px rgba(0,0,0,.55);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+@media (max-width:520px){#pwl .pwl-card{padding:36px 22px 26px}}
+#pwl .pwl-logo{width:56px;height:56px;display:block;margin:0 auto 22px;filter:drop-shadow(0 10px 26px rgba(162,255,0,.28))}
+#pwl .pwl-eye-brow{font:800 11.5px 'Inter Tight','Pretendard',sans-serif;letter-spacing:.22em;color:var(--lime);text-transform:uppercase;margin:0 0 10px}
+#pwl h1{font:700 24px/1.2 'Inter Tight','Pretendard',sans-serif;letter-spacing:-.025em;margin:0;color:var(--ink);text-wrap:balance}
+#pwl .pwl-sub{font-size:13.5px;line-height:1.65;color:var(--ink-2);margin:10px 0 26px;text-wrap:balance}
+#pwl .pwl-fld{display:flex;align-items:center;height:48px;box-sizing:border-box;border-radius:13px;border:1px solid var(--line);background:var(--bg-soft);transition:border-color .18s,box-shadow .18s}
+#pwl .pwl-fld:focus-within{border-color:var(--lime);box-shadow:0 0 0 4px rgba(162,255,0,.10)}
+#pwl .pwl-fld.err,#pwl .pwl-fld.err:focus-within{border-color:rgba(248,113,113,.75);box-shadow:0 0 0 4px rgba(248,113,113,.10)}
+#pwl .pwl-ic{width:18px;height:18px;margin-left:15px;flex:none;fill:var(--ink-3);transition:fill .18s}
+#pwl .pwl-fld:focus-within .pwl-ic{fill:var(--lime)}
+#pwl .pwl-fld.err .pwl-ic{fill:var(--red)}
+#pwl input{flex:1;min-width:0;height:100%;padding:0 10px;border:0;background:none;outline:none;color:var(--ink);font:600 15px 'JetBrains Mono',monospace;letter-spacing:.06em}
+#pwl input::placeholder{color:var(--ink-3)}
+#pwl .pwl-eye{width:40px;height:40px;margin-right:4px;padding:0;flex:none;border:0;border-radius:10px;background:none;color:var(--ink-3);cursor:pointer;display:grid;place-items:center}
+#pwl .pwl-eye:hover{color:var(--ink)}
+#pwl .pwl-eye:focus-visible{outline:2px solid var(--lime);outline-offset:-2px}
+#pwl .pwl-eye svg{width:18px;height:18px;fill:currentColor}
+#pwl .pwl-go{position:relative;margin-top:12px;width:100%;height:48px;border:0;border-radius:13px;background:var(--lime);color:var(--lime-ink);
+  font:700 15px 'Inter Tight','Pretendard',sans-serif;letter-spacing:-.01em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s cubic-bezier(.32,.72,0,1),filter .15s}
+#pwl .pwl-go:hover{filter:brightness(1.06)}
+#pwl .pwl-go:active{transform:scale(.985)}
+#pwl .pwl-go:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+#pwl .pwl-go svg{width:16px;height:16px;fill:currentColor;transition:transform .2s cubic-bezier(.32,.72,0,1)}
+#pwl .pwl-go:hover svg{transform:translateX(3px)}
+#pwl .pwl-go:disabled{cursor:default}
+#pwl .pwl-go:disabled span,#pwl .pwl-go:disabled svg{opacity:0}
+#pwl .pwl-go:disabled::after{content:"";position:absolute;width:18px;height:18px;box-sizing:border-box;border-radius:50%;border:2.5px solid rgba(10,11,15,.25);border-top-color:var(--lime-ink);animation:pwlspin .7s linear infinite}
+@keyframes pwlspin{to{transform:rotate(360deg)}}
+#pwl .pwl-shake{animation:pwlshake .36s cubic-bezier(.32,.72,0,1)}
+@keyframes pwlshake{20%{transform:translateX(-6px)}45%{transform:translateX(5px)}70%{transform:translateX(-3px)}100%{transform:none}}
+#pwl .pwl-msg{min-height:20px;margin-top:12px;font-size:13px;line-height:1.55;color:var(--red)}
+#pwl .pwl-msg.ok{color:var(--ink-2)}
+#pwl .pwl-note{margin-top:14px;font-size:12px;line-height:1.6;color:var(--ink-3)}
+@media (prefers-reduced-motion:reduce){#pwl *{animation:none!important;transition:none!important}}
 #pwl-out{width:38px;height:38px;padding:0;border-radius:11px;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);cursor:pointer;display:grid;place-items:center;transition:all .15s}
 #pwl-out:hover{color:var(--ink);border-color:var(--ink-3)}
 #pwl-out svg{width:18px;height:18px;fill:currentColor}
@@ -1254,23 +1297,37 @@ html.pwl #pwl{display:flex;position:fixed;inset:0;align-items:center;justify-con
   document.addEventListener('keydown',e=>{ if(e.key==='Escape') hide(); });
 })();
 </script>
-<div id="pwl"><form class="pwl-card" autocomplete="off"><h1>BannerNode for Partners</h1><p>발급받은 패스워드를 입력해 주세요.</p><input type="password" placeholder="BNP-" spellcheck="false" aria-label="패스워드"><button type="submit">열기</button><div class="pwl-msg" role="alert"></div><div class="pwl-note">이 브라우저에서는 30일 동안 로그인이 유지돼요.</div></form></div>
+<div id="pwl"><div class="pwl-dots" aria-hidden="true"></div><svg class="pwl-wire" aria-hidden="true"></svg><div class="pwl-nd v" aria-hidden="true"><b></b>video.mp4<i></i></div><div class="pwl-nd b" aria-hidden="true"><b></b>banner.png<i></i></div>
+<form class="pwl-card" autocomplete="off"><svg class="pwl-logo" aria-hidden="true" viewBox="0 0 512 512"><rect width="512" height="512" rx="118" fill="#a2ff00"/><g transform="translate(128.09 128) scale(4.6529)" fill="#0a0b0f"><path d="M49.67,11.02c-.06,0-.12,0-.18,0-3.04,0-5.5-2.46-5.5-5.5h0s0-.02,0-.04c0-3.04-2.46-5.5-5.5-5.5-.21,0-.42.01-.62.04h-9.76c-.2-.02-.41-.04-.62-.04s-.42.01-.62.04h-9.76c-.2-.02-.41-.04-.62-.04-3.04,0-5.5,2.46-5.5,5.5,0,.01,0,.02,0,.04h0c0,3.04-2.46,5.5-5.5,5.5S0,13.49,0,16.53c0,0,0,0,0,0v10.98s0,0,0,0,0,0,0,0v10.98s0,0,0,0,0,0,0,0v10.98s0,0,0,0c0,3.04,2.46,5.5,5.5,5.5h32.99c3.04,0,5.5-2.46,5.5-5.5s2.46-5.5,5.5-5.5,5.5-2.46,5.5-5.5-2.46-5.5-5.5-5.5-5.5-2.46-5.5-5.5,2.46-5.5,5.5-5.5v-.02c3.04,0,5.5-2.46,5.5-5.5s-2.36-5.39-5.31-5.49ZM38.49,44.02h-21.99c-3.04,0-5.5-2.46-5.5-5.5s2.46-5.5,5.5-5.5h21.99c3.04,0,5.5,2.46,5.5,5.5s-2.46,5.5-5.5,5.5ZM38.49,22.03c-.12,0-.25-.01-.37-.02h-10.26c-.12,0-.24.02-.37.02s-.25-.01-.37-.02h-10.26c-.12,0-.24.02-.37.02-3.04,0-5.5-2.46-5.5-5.5s2.46-5.5,5.5-5.5h21.99c3.04,0,5.5,2.46,5.5,5.5s-2.46,5.5-5.5,5.5Z"/></g></svg>
+<p class="pwl-eye-brow">Partner Guide</p><h1>BannerNode for Partners</h1><p class="pwl-sub">발급받은 패스워드를 입력해 주세요.</p>
+<div class="pwl-fld"><svg class="pwl-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10V7.5a5 5 0 0 1 10 0V10h.5A1.5 1.5 0 0 1 19 11.5v8a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 19.5v-8A1.5 1.5 0 0 1 6.5 10H7zm2.4 0h5.2V7.5a2.6 2.6 0 0 0-5.2 0V10z"/></svg><input type="password" placeholder="BNP-" spellcheck="false" aria-label="패스워드"><button type="button" class="pwl-eye" aria-label="패스워드 보기" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5c5 0 8.6 4.3 9.8 6.2.3.5.3 1.1 0 1.6C20.6 14.7 17 19 12 19s-8.6-4.3-9.8-6.2a1.5 1.5 0 0 1 0-1.6C3.4 9.3 7 5 12 5zm0 3.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6zm0 2a1.8 1.8 0 1 1 0 3.6 1.8 1.8 0 0 1 0-3.6z"/></svg></button></div>
+<button type="submit" class="pwl-go"><span>설명서 열기</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.2 5.3 20 12l-6.8 6.7-1.7-1.7 3.8-3.8H4v-2.4h11.3l-3.8-3.8z"/></svg></button>
+<div class="pwl-msg" role="alert"></div><p class="pwl-note">이 브라우저에서는 30일 동안 로그인이 유지돼요.<br>패스워드가 없으면 ADEF 담당자에게 문의해 주세요.</p></form></div>
 <script>(function(){
 var API='https://crnas.adef.co.kr:8444/api/bnp/guide',K='bnpg',H=document.documentElement;
-var f=document.querySelector('#pwl form'),inp=f.querySelector('input'),btn=f.querySelector('button'),msg=f.querySelector('.pwl-msg');
+var f=document.querySelector('#pwl form'),inp=f.querySelector('input'),btn=f.querySelector('.pwl-go'),msg=f.querySelector('.pwl-msg'),fld=f.querySelector('.pwl-fld'),eye=f.querySelector('.pwl-eye');
+eye.addEventListener('click',function(){var s=inp.type==='password';inp.type=s?'text':'password';eye.setAttribute('aria-pressed',s?'true':'false');eye.setAttribute('aria-label',s?'패스워드 숨기기':'패스워드 보기');inp.focus()});
+inp.addEventListener('input',function(){fld.classList.remove('err')});
+var svgW=document.querySelector('#pwl .pwl-wire'),RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+function wire(){if(!H.classList.contains('pwl'))return;var a=document.querySelector('#pwl .pwl-nd.v i').getBoundingClientRect(),b=document.querySelector('#pwl .pwl-nd.b i').getBoundingClientRect();
+if(!a.width||!b.width){svgW.innerHTML='';return}
+var x1=a.left+a.width/2,y1=a.top+a.height/2,x2=b.left+b.width/2,y2=b.top+b.height/2,dx=Math.max(120,(x2-x1)*.45),d='M'+x1+' '+y1+' C'+(x1+dx)+' '+y1+' '+(x2-dx)+' '+y2+' '+x2+' '+y2;
+svgW.innerHTML='<defs><linearGradient id="pwlwg" x1="0" x2="1"><stop offset="0" stop-color="#a2ff00"/><stop offset="1" stop-color="#006eff"/></linearGradient></defs><path d="'+d+'" fill="none" stroke="url(#pwlwg)" stroke-width="2" stroke-opacity=".55"/>'+(RM?'':'<circle r="3.5" fill="#e8e8ec"><animateMotion dur="3.2s" repeatCount="indefinite" path="'+d+'"/></circle>')}
+addEventListener('resize',wire);
 function get(){try{return JSON.parse(localStorage.getItem(K)||'null')}catch(e){return null}}
 function put(v){try{if(v)localStorage.setItem(K,JSON.stringify(v));else localStorage.removeItem(K)}catch(e){}}
 var STOP='쓸 수 없는 패스워드예요. ADEF 담당자에게 문의해 주세요.';
 var ERR={invalid:'패스워드가 올바르지 않아요.',revoked:STOP,suspended:STOP,rate:'잠시 뒤에 다시 해 주세요.'};
 function call(body){return fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(body),credentials:'omit',cache:'no-store'}).then(function(r){return r.json().then(function(j){return{s:r.status,j:j||{}}},function(){return{s:r.status,j:{}}})})}
-function lock(m,ok){H.classList.add('pwl');msg.textContent=m||'';msg.className='pwl-msg'+(ok?' ok':'');btn.disabled=false;setTimeout(function(){inp.focus()},0)}
+function lock(m,ok){H.classList.add('pwl');msg.textContent=m||'';msg.className='pwl-msg'+(ok?' ok':'');btn.disabled=false;
+var bad=!!m&&!ok;fld.classList.toggle('err',bad);fld.classList.remove('pwl-shake');if(bad){void fld.offsetWidth;fld.classList.add('pwl-shake')}wire();setTimeout(function(){inp.focus()},0)}
 var out=document.getElementById('pwl-out');if(out)out.addEventListener('click',function(){put(null);inp.value='';lock('로그아웃했어요.',1)});
-function unlock(){H.classList.remove('pwl');var id=location.hash.slice(1),t=id&&document.getElementById(decodeURIComponent(id));if(t){H.style.scrollBehavior='auto';t.scrollIntoView();H.style.scrollBehavior=''}}
+function unlock(){H.classList.remove('pwl');inp.type='password';eye.setAttribute('aria-pressed','false');eye.setAttribute('aria-label','패스워드 보기');svgW.innerHTML='';var id=location.hash.slice(1),t=id&&document.getElementById(decodeURIComponent(id));if(t){H.style.scrollBehavior='auto';t.scrollIntoView();H.style.scrollBehavior=''}}
 f.addEventListener('submit',function(e){e.preventDefault();var p=inp.value.trim();if(!p){lock('패스워드를 입력해 주세요.');return}
-btn.disabled=true;msg.textContent='';
+btn.disabled=true;msg.textContent='';fld.classList.remove('err');
 call({password:p}).then(function(r){if(r.s===200&&r.j.ok&&r.j.token){put({t:r.j.token,exp:r.j.exp});inp.value='';btn.disabled=false;unlock()}
 else lock(ERR[r.j.error]||(r.s===429?ERR.rate:r.s===403?STOP:r.s>=500?'지금은 확인할 수 없어요. 잠시 뒤에 다시 해 주세요.':ERR.invalid))},function(){lock('연결이 안 돼요. 인터넷 연결을 확인하고 다시 해 주세요.')})});
-if(H.classList.contains('pwl')){put(null);setTimeout(function(){inp.focus()},0)}
+if(H.classList.contains('pwl')){put(null);wire();setTimeout(function(){inp.focus()},0)}
 else call({token:get().t}).then(function(r){if(r.s===401||r.s===403){put(null);lock(r.s===403?STOP:'패스워드를 다시 입력해 주세요.')}},function(){});
 })();</script>
 </body>

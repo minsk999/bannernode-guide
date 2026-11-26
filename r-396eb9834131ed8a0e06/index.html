@@ -956,7 +956,7 @@ SCENES.namebtn = async (st, R) => {
 <script>
 /* 여러 카드 이름 한 번에 — 렌더큐 드래그 선택(#marquee) → F2 → 「파일명 규칙」 모달 N장 모드(고른 항목만 기존 이름 뒤에 얹기).
    앱 근거: index.html openNameRule(N장: 페이지·작업자·작업종류·작업구분만) · brcApplyTail · nmrSync(「N장에 적용」) · nmrApply 토스트.
-   단순화: 카드 5장(앱 예시는 18장), 합성·완료 기록 제외 상황 생략, 작업자 이니셜은 가상 값. */
+   작업종류 = 드롭다운(.nmr-ddb · 2026-11-26). 단순화: 카드 5장(앱 예시는 18장), 합성·완료 기록 제외 상황 생략, 작업자 이니셜은 가상 값. */
 SCENES.namemulti = async (st, R) => {
   st.classList.add('s-namemulti');
   const P = '.s-namemulti ';
@@ -976,6 +976,14 @@ SCENES.namemulti = async (st, R) => {
     '.nmr-lb.tp{align-self:start;padding-top:5px}',
     '.nmr-memo{flex:none;font-size:9.5px;color:var(--dim)}',
     '.nmr-in{width:62px;height:21px;border-radius:7px;border:1px solid var(--stroke);background:var(--field);font-size:10px;padding:0 8px;display:flex;align-items:center;color:var(--dim)}',
+    '.ddb{flex:0 1 180px;height:21px;display:flex;align-items:center;justify-content:space-between;gap:5px;border-radius:7px;border:1px solid var(--stroke);background:var(--field);padding:0 8px;font-size:10.5px;transition:border-color .2s}',
+    '.ddb.on{border-color:var(--acc)} .ddb .ph{color:var(--dim)}',
+    '.ddb em{font-style:normal;color:var(--dim);font-size:9px;margin-left:4px} .ddm em{font-style:normal;color:var(--dim);font-size:9px;margin-left:5px;margin-right:auto}',
+    '.ddb svg{width:10px;height:10px;color:var(--mut);transition:transform .2s} .ddb.on svg{transform:rotate(180deg)}',
+    '.ddm{position:absolute;z-index:60;width:180px;padding:4px;border-radius:9px;border:1px solid var(--stroke2);background:rgba(26,28,40,.97);box-shadow:0 14px 30px -8px rgba(0,0,0,.7);opacity:0;transform:translateY(-4px);transition:opacity .15s,transform .18s var(--ease);pointer-events:none}',
+    '.ddm.on{opacity:1;transform:none}',
+    '.ddo{display:flex;align-items:center;padding:3px 7px;border-radius:5px;font-size:10px;line-height:1.4}',
+    '.ddo.hov{background:rgba(255,255,255,.07)} .ddo.sel{color:var(--acc);font-weight:600} .ddo.sel::after{content:"✓";font-size:9px}',
     '.nmr-pills{display:flex;flex-wrap:wrap;gap:4px}',
     '.nmr-pill{height:20px;padding:0 6px;border-radius:7px;border:1px solid var(--stroke);background:var(--field);color:var(--mut);font-size:10px;display:inline-flex;align-items:center;white-space:nowrap;transition:all .2s,transform .12s}',
     '.nmr-pill.on{background:rgba(var(--accRGB),.16);border-color:rgba(var(--accRGB),.6);color:var(--acc)}',
@@ -1015,25 +1023,41 @@ SCENES.namemulti = async (st, R) => {
   const tail = s => [s, f.worker, f.kind, f.type].filter(Boolean).join('_');
   const pills = (k, lb, opts) => '<label class="nmr-lb tp">' + lb + '</label><div class="nmr-pills">' + opts.map(o => '<span class="nmr-pill" data-k="' + k + '" data-v="' + o[0] + '">' + o[0] + (o[1] ? '<em>' + o[1] + '</em>' : '') + '</span>').join('') + '</div>';
   const KIND = [['@MB', '모션배너'], ['@BC', '배너결합'], ['@SZ', '사이즈배리'], ['@ED', '편집'], ['@AV', 'AI활용영상'], ['@AB', 'AI활용배너'], ['@MV', '모션영상'], ['@SH', '촬영'], ['@CP', '용량배리']];
+  // 작업종류 = 드롭다운(앱 2026-11-26 — 칩 9개가 창을 세로로 늘려 바꿨다). 앱 nmrKindLabel · NMR_KIND 문구 그대로
+  const CHV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>';
+  const ddRow = (lb, none) => '<label class="nmr-lb">' + lb + '</label><div class="nmr-cell" style="display:flex;align-items:center;gap:6px"><span class="ddb" id="ddb"><span><span class="ph">' + none + '</span></span>' + CHV + '</span></div>';
+  const ddMenu = none => h('div', 'ddm', [['', none]].concat(KIND).map(o => '<div class="ddo" data-v="' + o[0] + '">' + (o[0] ? o[0] + '<em>' + o[1] + '</em>' : none.replace('|', '<em>') + '</em>') + '</div>').join(''), st);
+  const ddPick = async (btn, menu, v, ms) => {
+    await R.to(btn, ms, -40); await R.click(); btn.classList.add('on');
+    const p = R.pos(btn), H = menu.offsetHeight, down = 400 - (p.t + p.h) - 8;
+    menu.style.left = p.l + 'px'; menu.style.top = (H <= down ? p.t + p.h + 4 : p.t - 4 - H) + 'px';
+    menu.querySelector('.ddo').classList.add('sel');
+    menu.classList.add('on'); await R.wait(450);
+    const o = menu.querySelector('.ddo[data-v="' + v + '"]');
+    await R.to(o, 500, -40); o.classList.add('hov'); await R.wait(200); await R.click();
+    menu.classList.remove('on'); btn.classList.remove('on'); o.classList.remove('hov');
+    menu.querySelectorAll('.ddo').forEach(x => x.classList.toggle('sel', x === o));
+    btn.firstElementChild.innerHTML = o.innerHTML;
+  };
   const dim = h('div', 'k-dim', '', st);
   const md = h('div', 'k-modal nmr', '<div class="nmr-hd"><span class="hi">' + ICO + '</span><b>파일명 규칙</b><span class="nmr-cnt">카드 ' + n + '장</span><span class="nmr-x">' + X + '</span></div>'
     + '<div class="nmr-bd"><div class="nmr-grid">'
     + '<label class="nmr-lb">페이지</label><div><span class="nmr-in">그대로</span></div>'
     + '<label class="nmr-lb">작업자</label><div style="display:flex;align-items:center;gap:6px"><span class="nmr-in" style="color:var(--txt)">KSY</span><span class="nmr-memo">한 번 넣으면 기억해요</span></div>'
-    + pills('kind', '작업종류', KIND)
-    + pills('type', '작업구분', [['xian'], ['vari'], ['sf']])
+    + ddRow('작업종류', '그대로')
+    + pills('type', '작업구분', [['xian'], ['vari'], ['sf'], ['retuch', '+1']])
     + '</div><div class="nmr-hint">고른 항목만 기존 이름 뒤에 얹어요 — 여기서는 지울 수 없습니다(지우려면 카드를 한 장씩 열어 [편집]).</div>'
     + '<div><div class="nmr-pvl">미리보기 <span>실제로 만들어질 파일 이름이에요</span></div><div class="nmr-pvbox">'
     + cards.map(c => '<div class="nmr-row same"><span class="nmr-from">' + c._stem + '</span><span class="nmr-to">' + c._stem + '</span></div>').join('') + '</div></div>'
     + '</div><div class="nmr-ft"><span class="nmr-note">바뀌는 이름이 없어요</span><span class="rzb ghost">취소</span><span class="rzb pri off" id="ap">적용</span></div>', st);
   md.style.top = Math.max(6, (400 - md.offsetHeight) / 2) + 'px';
+  const ddm = ddMenu('그대로|안 건드려요');
   const rows = [...md.querySelectorAll('.nmr-row')], note = md.querySelector('.nmr-note'), ap = md.querySelector('#ap');
   // 미리보기 줄이 위에서 아래로 차례로 길어진다
   const sync = async () => {
     note.textContent = n + '장의 이름이 바뀝니다'; ap.classList.remove('off'); ap.textContent = n + '장에 적용';
     for (let i = 0; i < n; i++) { rows[i].classList.remove('same'); rows[i].querySelector('.nmr-to').textContent = tail(cards[i]._stem); await R.wait(70); }
   };
-  const press = async (k, v, ms) => { const b = md.querySelector('.nmr-pill[data-k="' + k + '"][data-v="' + v + '"]'); await R.to(b, ms); await R.click(b); b.classList.add('on'); f[k] = v; await sync(); };
 
   // ── 박자 ──
   R.cursor(300, 360);
@@ -1059,7 +1083,7 @@ SCENES.namemulti = async (st, R) => {
   await R.wait(650);
   await sync();
   await R.wait(250);
-  await press('kind', '@SZ', 450);
+  await ddPick(md.querySelector('#ddb'), ddm, '@SZ', 450); f.kind = '@SZ'; await sync();
   await R.wait(350);
   await R.to(ap, 500);
   ap.classList.add('big');
@@ -1078,7 +1102,7 @@ SCENES.namemulti = async (st, R) => {
 <script>
 /* 파일명을 항목으로 짓기 — 렌더큐 카드 더블클릭 → 「출력 설정」 팝오버 → [편집] → 「파일명 규칙」 모달(1장 = 조립기).
    앱 근거: index.html openJobEdit(.je-*) · openNameRule(.nmr-*) · brcBuild 순서(날짜_광고주_캠페인_해상도_작업자_@작업종류_작업구분).
-   단순화: 페이지·작업내용 칸 생략, 작업자 이니셜은 가상 값(실제 팀원 이니셜 노출 금지). */
+   작업종류 = 드롭다운(.nmr-ddb · 2026-11-26). 단순화: 페이지·작업내용 칸 생략, 작업자 이니셜은 가상 값(실제 팀원 이니셜 노출 금지). */
 SCENES.namerule = async (st, R) => {
   st.classList.add('s-namerule');
   const P = '.s-namerule ';
@@ -1118,6 +1142,14 @@ SCENES.namerule = async (st, R) => {
     '.nmr-ro{display:inline-flex;align-items:center;gap:6px;height:20px;padding:0 8px;border-radius:7px;background:rgba(255,255,255,.05);font-size:10.5px}',
     '.nmr-ro i{font-style:normal;color:var(--dim);font-size:9.5px}',
     '.nmr-tag{flex:none;font-size:9px;border-radius:5px;padding:1px 5px;color:#e8b45a;border:1px solid rgba(232,180,90,.34);background:rgba(232,180,90,.08)}',
+    '.ddb{flex:0 1 180px;height:21px;display:flex;align-items:center;justify-content:space-between;gap:5px;border-radius:7px;border:1px solid var(--stroke);background:var(--field);padding:0 8px;font-size:10.5px;transition:border-color .2s}',
+    '.ddb.on{border-color:var(--acc)} .ddb .ph{color:var(--dim)}',
+    '.ddb em{font-style:normal;color:var(--dim);font-size:9px;margin-left:4px} .ddm em{font-style:normal;color:var(--dim);font-size:9px;margin-left:5px;margin-right:auto}',
+    '.ddb svg{width:10px;height:10px;color:var(--mut);transition:transform .2s} .ddb.on svg{transform:rotate(180deg)}',
+    '.ddm{position:absolute;z-index:60;width:180px;padding:4px;border-radius:9px;border:1px solid var(--stroke2);background:rgba(26,28,40,.97);box-shadow:0 14px 30px -8px rgba(0,0,0,.7);opacity:0;transform:translateY(-4px);transition:opacity .15s,transform .18s var(--ease);pointer-events:none}',
+    '.ddm.on{opacity:1;transform:none}',
+    '.ddo{display:flex;align-items:center;padding:3px 7px;border-radius:5px;font-size:10px;line-height:1.4}',
+    '.ddo.hov{background:rgba(255,255,255,.07)} .ddo.sel{color:var(--acc);font-weight:600} .ddo.sel::after{content:"✓";font-size:9px}',
     '.nmr-pills{display:flex;flex-wrap:wrap;gap:4px}',
     '.nmr-pill{height:20px;padding:0 6px;border-radius:7px;border:1px solid var(--stroke);background:var(--field);color:var(--mut);font-size:10px;display:inline-flex;align-items:center;white-space:nowrap;transition:all .2s,transform .12s}',
     '.nmr-pill.on{background:rgba(var(--accRGB),.16);border-color:rgba(var(--accRGB),.6);color:var(--acc)}',
@@ -1161,6 +1193,22 @@ SCENES.namerule = async (st, R) => {
   const build = () => [f.date, f.client, f.campaign, f.res, f.worker, f.kind, f.type].filter(Boolean).join('_');
   const pills = (k, lb, opts) => '<label class="nmr-lb tp">' + lb + '</label><div class="nmr-pills">' + opts.map(o => '<span class="nmr-pill" data-k="' + k + '" data-v="' + o[0] + '">' + o[0] + (o[1] ? '<em>' + o[1] + '</em>' : '') + '</span>').join('') + '</div>';
   const KIND = [['@MB', '모션배너'], ['@BC', '배너결합'], ['@SZ', '사이즈배리'], ['@ED', '편집'], ['@AV', 'AI활용영상'], ['@AB', 'AI활용배너'], ['@MV', '모션영상'], ['@SH', '촬영'], ['@CP', '용량배리']];
+  // 작업종류 = 드롭다운(앱 2026-11-26 — 칩 9개가 창을 세로로 늘려 바꿨다). 앱 nmrKindLabel · NMR_KIND 문구 그대로
+  const CHV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>';
+  const ddRow = (lb, none) => '<label class="nmr-lb">' + lb + '</label><div class="nmr-cell" style="display:flex;align-items:center;gap:6px"><span class="ddb" id="ddb"><span><span class="ph">' + none + '</span></span>' + CHV + '</span></div>';
+  const ddMenu = none => h('div', 'ddm', [['', none]].concat(KIND).map(o => '<div class="ddo" data-v="' + o[0] + '">' + (o[0] ? o[0] + '<em>' + o[1] + '</em>' : none.replace('|', '<em>') + '</em>') + '</div>').join(''), st);
+  const ddPick = async (btn, menu, v, ms) => {
+    await R.to(btn, ms, -40); await R.click(); btn.classList.add('on');
+    const p = R.pos(btn), H = menu.offsetHeight, down = 400 - (p.t + p.h) - 8;
+    menu.style.left = p.l + 'px'; menu.style.top = (H <= down ? p.t + p.h + 4 : p.t - 4 - H) + 'px';
+    menu.querySelector('.ddo').classList.add('sel');
+    menu.classList.add('on'); await R.wait(450);
+    const o = menu.querySelector('.ddo[data-v="' + v + '"]');
+    await R.to(o, 500, -40); o.classList.add('hov'); await R.wait(200); await R.click();
+    menu.classList.remove('on'); btn.classList.remove('on'); o.classList.remove('hov');
+    menu.querySelectorAll('.ddo').forEach(x => x.classList.toggle('sel', x === o));
+    btn.firstElementChild.innerHTML = o.innerHTML;
+  };
   const dim = h('div', 'k-dim', '', st);
   const md = h('div', 'k-modal nmr', '<div class="nmr-hd"><span class="hi">' + ICO + '</span><b>파일명 규칙</b><span class="nmr-cnt">카드 1장</span><span class="nmr-x">' + X + '</span></div>'
     + '<div class="nmr-bd"><div class="nmr-grid">'
@@ -1169,12 +1217,13 @@ SCENES.namerule = async (st, R) => {
     + '<label class="nmr-lb">캠페인</label><div class="nmr-cell"><div class="k-in nmr-in" id="inK"></div></div>'
     + '<label class="nmr-lb">해상도</label><div class="nmr-cell"><span class="nmr-ro">1080x1920<i>렌더 크기를 따라가요</i></span></div>'
     + '<label class="nmr-lb">작업자</label><div class="nmr-cell"><div class="k-in nmr-in wk"><span class="tx">KSY</span></div><span class="nmr-memo">한 번 넣으면 기억해요</span></div>'
-    + pills('kind', '작업종류', KIND)
-    + pills('type', '작업구분', [['xian'], ['vari'], ['sf']])
+    + ddRow('작업종류', '없음')
+    + pills('type', '작업구분', [['xian'], ['vari'], ['sf'], ['retuch', '1']])
     + '</div><div class="nmr-hint">비운 항목은 이름에서 빠져요. 순서는 규칙대로 자동으로 맞춰집니다.</div>'
     + '<div><div class="nmr-pvl">미리보기 <span>실제로 만들어질 파일 이름이에요</span></div><div class="nmr-pvbox"><div class="nmr-row"><span class="nmr-from">' + from + '</span><span class="nmr-to">' + build() + '</span></div></div></div>'
     + '</div><div class="nmr-ft"><span class="nmr-note">1장의 이름이 바뀝니다</span><span class="rzb ghost">취소</span><span class="rzb pri" id="ap">적용</span></div>', st);
   md.style.top = Math.max(6, (400 - md.offsetHeight) / 2) + 'px';
+  const ddm = ddMenu('없음|이름에서 빠져요');
   const row = md.querySelector('.nmr-row'), note = md.querySelector('.nmr-note'), ap = md.querySelector('#ap');
   const sync = () => { const to = build(), same = to === from; row.classList.toggle('same', same); row.querySelector('.nmr-to').textContent = to; note.textContent = same ? '바뀌는 이름이 없어요' : '1장의 이름이 바뀝니다'; ap.classList.toggle('off', same); };
   const pill = (k, v) => md.querySelector('.nmr-pill[data-k="' + k + '"][data-v="' + v + '"]');
@@ -1206,7 +1255,8 @@ SCENES.namerule = async (st, R) => {
   inC.classList.remove('focus'); inC.querySelector('.hl').classList.remove('hl');
   for (const ch of '리뷰') { await R.type(inK, ch, 160); f.campaign += ch; sync(); }
   await R.wait(300);
-  await press('kind', '@SZ', 400);
+  inK.classList.remove('focus'); inK.querySelector('.caret')?.remove();
+  await ddPick(md.querySelector('#ddb'), ddm, '@SZ', 450); f.kind = '@SZ'; sync();
   await R.wait(150);
   await press('type', 'xian', 400);
   await R.wait(400);

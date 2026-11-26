@@ -84,7 +84,7 @@ body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--f);overflo
 .toc li button i{font-style:normal;font-family:var(--mono);font-size:12px;color:var(--dim);width:20px}
 .toc li button em{margin-left:auto;font-style:normal;font-size:11px;color:var(--dim);font-weight:600}
 /* 수리 모음 */
-.fixes{position:absolute;left:64px;right:64px;top:286px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.fixes{position:absolute;left:64px;right:64px;top:286px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
 .fx{background:var(--panel);border:1px solid var(--stroke);border-radius:14px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(8px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
 .slide.on .fx{opacity:1;transform:none}
 .fx b{font-size:17px}
@@ -250,6 +250,9 @@ const SLIDES = [
     ['해상도 설정이 그대로','세로 영상은 세로로 맞추고, 원본보다 크게도 만들어요.'],
     ['검은 화면이면 이유를 알려 줘요','광고 차단 프로그램이 막을 때 이름을 짚어 안내해요.'],
     ['로그아웃해도 안 멈춰요','로그아웃 뒤 빈 화면에 갇히던 문제.'],
+
+    ['창이 안 잘려요','작은 창에서도 창 머리가 위쪽 바에, 버튼이 화면 아래에 가려지지 않아요.'],
+    ['스크롤바는 하나로','모양이 다른 기본 스크롤바를 앱 전용 얇은 바로 통일했어요. 다 보이면 안 떠요.'],
   ]},
 ];
 

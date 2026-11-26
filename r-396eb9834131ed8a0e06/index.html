@@ -235,7 +235,7 @@ const SLIDES = [
   { id:'batchall', tag:'new', scene:'batchall', title:'같은 배너 전체에 적용', line:'맞춰 둔 크기·위치를 같은 배너를 쓰는 카드 전체에 한 번에 넣어요.', where:'합성 미리보기' },
   { id:'xfsync', tag:'new', scene:'xfsync', title:'함께 맞추기', line:'한 장을 고치면, 같이 만든 카드들도 자동으로 따라 맞춰져요.', where:'합성 편집기 스위치' },
   { id:'wirecut', tag:'new', scene:'wirecut', title:'연결선 바로 끊기', line:'선 위에 마우스를 올리면 가운데 X — 누르면 그 연결만 끊어요.', where:'노드 캔버스' },
-  { id:'namerule', tag:'new', scene:'namerule', title:'고르면 완성되는 파일명', line:'광고주 · 캠페인 · 작업종류를 고르면 팀 규칙대로 이름이 만들어져요. 작업자 이니셜은 한 번만 넣으면 기억해요.', keys:['더블클릭','파일명 규칙'], where:'렌더큐 → 출력 설정' },
+  { id:'namerule', tag:'new', scene:'namerule', title:'고르면 완성되는 파일명', line:'광고주 · 캠페인 · 작업종류를 고르면 팀 규칙대로 이름이 만들어져요. 작업자 이니셜은 한 번만 넣으면 기억해요.', keys:['더블클릭','편집'], where:'렌더큐 → 출력 설정' },
   { id:'namemulti', tag:'new', scene:'namemulti', title:'여러 카드 이름 한 번에', line:'여러 장을 골라 작업자 · 작업종류를 한 번에 붙여요.', keys:['드래그 선택','F2'], where:'렌더큐' },
   { id:'livecard', tag:'imp', scene:'livecard', title:'렌더 중에도 새 카드', line:'렌더가 도는 동안 연결한 작업도 바로 대기 카드로 나타나요.', where:'렌더큐' },
   { id:'typenum', tag:'imp', scene:'typenum', title:'숫자를 바로 입력', line:'미리보기 크기 %는 눌러서 직접 입력, 해상도는 1440*1800 처럼 * 도 돼요.', where:'합성 미리보기 · 크기 입력칸' },
@@ -902,7 +902,7 @@ SCENES.namemulti = async (st, R) => {
     + '<label class="nmr-lb">작업자</label><div style="display:flex;align-items:center;gap:6px"><span class="nmr-in" style="color:var(--txt)">KSY</span><span class="nmr-memo">한 번 넣으면 기억해요</span></div>'
     + pills('kind', '작업종류', KIND)
     + pills('type', '작업구분', [['xian'], ['vari'], ['sf']])
-    + '</div><div class="nmr-hint">고른 항목만 기존 이름 뒤에 얹어요 — 여기서는 지울 수 없습니다(지우려면 카드를 한 장씩 열어 [파일명 규칙]).</div>'
+    + '</div><div class="nmr-hint">고른 항목만 기존 이름 뒤에 얹어요 — 여기서는 지울 수 없습니다(지우려면 카드를 한 장씩 열어 [편집]).</div>'
     + '<div><div class="nmr-pvl">미리보기 <span>실제로 만들어질 파일 이름이에요</span></div><div class="nmr-pvbox">'
     + cards.map(c => '<div class="nmr-row same"><span class="nmr-from">' + c._stem + '</span><span class="nmr-to">' + c._stem + '</span></div>').join('') + '</div></div>'
     + '</div><div class="nmr-ft"><span class="nmr-note">바뀌는 이름이 없어요</span><span class="rzb ghost">취소</span><span class="rzb pri off" id="ap">적용</span></div>', st);
@@ -956,7 +956,7 @@ SCENES.namemulti = async (st, R) => {
 
 </script>
 <script>
-/* 파일명을 항목으로 짓기 — 렌더큐 카드 더블클릭 → 「출력 설정」 팝오버 → [파일명 규칙] → 「파일명 규칙」 모달(1장 = 조립기).
+/* 파일명을 항목으로 짓기 — 렌더큐 카드 더블클릭 → 「출력 설정」 팝오버 → [편집] → 「파일명 규칙」 모달(1장 = 조립기).
    앱 근거: index.html openJobEdit(.je-*) · openNameRule(.nmr-*) · brcBuild 순서(날짜_광고주_캠페인_해상도_작업자_@작업종류_작업구분).
    단순화: 페이지·작업내용 칸 생략, 작업자 이니셜은 가상 값(실제 팀원 이니셜 노출 금지). */
 SCENES.namerule = async (st, R) => {
@@ -1033,7 +1033,7 @@ SCENES.namerule = async (st, R) => {
   card('b2', D + '_여름_리뷰_1080x1920', '1080×1920 · 여름_리뷰.mp4');
 
   // 출력 설정 팝오버(카드 왼쪽)
-  const je = h('div', 'je', '<div class="je-hd">' + DOC + '<b>출력 설정</b></div><div class="je-bd"><div class="je-combo"><span class="je-name">' + D + '_봄시즌_1080x1920</span><span class="je-ext">mp4' + CHEV + '</span></div><div class="je-act"><span class="je-rule">파일명 규칙</span><span class="je-cancel">취소</span><span class="je-save">저장</span></div></div>', st);
+  const je = h('div', 'je', '<div class="je-hd">' + DOC + '<b>출력 설정</b></div><div class="je-bd"><div class="je-combo"><span class="je-name">' + D + '_봄시즌_1080x1920</span><span class="je-ext">mp4' + CHEV + '</span></div><div class="je-act"><span class="je-rule">편집</span><span class="je-cancel">취소</span><span class="je-save">저장</span></div></div>', st);
 
   // 파일명 규칙 모달(1장) — 작업자는 한 번 넣어 두면 기억한 이니셜이 미리 채워져 있다
   const f = { date: D, client: '봄시즌', campaign: '', res: '1080x1920', worker: 'KSY', kind: '', type: '' };

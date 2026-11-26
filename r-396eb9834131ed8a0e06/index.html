@@ -224,7 +224,7 @@ const SLIDES = [
   { kind:'cover', sub:'편집은 더 자유롭게, 작업은 더 빠르게' },
   { kind:'toc', title:'목차', groups:[
     { name:'영상 편집', items:['multicut','pick','fill','shrink','place','batchall','xfsync'] },
-    { name:'노드 · 렌더큐', items:['wirecut','namerule','namemulti','livecard','typenum'] },
+    { name:'노드 · 렌더큐', items:['wirecut','namerule','namebtn','namemulti','livecard','typenum'] },
     { name:'열기 · 공유 · 수리', items:['frame','newer','partner','fixes'] },
   ]},
   { id:'multicut', tag:'new', scene:'multicut', title:'여러 컷 이어붙이기', line:'한 영상에서 구간을 여러 개 골라, 순서대로 이어 붙여 한 편으로 렌더해요. A/D 로 한 프레임씩 옮기고 W/S 로 시작·끝을 찍어요.', keys:['A/D 1프레임','W/S 시작·끝'], where:'컷편집 창 · 크기·배경 변환 창' },
@@ -236,6 +236,7 @@ const SLIDES = [
   { id:'xfsync', tag:'new', scene:'xfsync', title:'함께 맞추기', line:'한 장을 고치면, 같이 만든 카드들도 자동으로 따라 맞춰져요.', where:'합성 편집기 스위치' },
   { id:'wirecut', tag:'new', scene:'wirecut', title:'연결선 바로 끊기', line:'선 위에 마우스를 올리면 가운데 X — 누르면 그 연결만 끊어요.', where:'노드 캔버스' },
   { id:'namerule', tag:'new', scene:'namerule', title:'고르면 완성되는 파일명', line:'광고주 · 캠페인 · 작업종류를 고르면 팀 규칙대로 이름이 만들어져요. 작업자 이니셜은 한 번만 넣으면 기억해요.', keys:['더블클릭','편집'], where:'렌더큐 → 출력 설정' },
+  { id:'namebtn', tag:'new', scene:'namebtn', title:'배치리네이머처럼 숫자 올리기', line:'페이지는 [−][+], 수정 차수는 retuch 로 하나씩 올려요. 캠페인·작업내용은 +1, 글자는 찾아 바꾸기로.', keys:['−  +','retuch','찾아 바꾸기'], where:'파일명 규칙 창' },
   { id:'namemulti', tag:'new', scene:'namemulti', title:'여러 카드 이름 한 번에', line:'여러 장을 골라 작업자 · 작업종류를 한 번에 붙여요.', keys:['드래그 선택','F2'], where:'렌더큐' },
   { id:'livecard', tag:'imp', scene:'livecard', title:'렌더 중에도 새 카드', line:'렌더가 도는 동안 연결한 작업도 바로 대기 카드로 나타나요.', where:'렌더큐' },
   { id:'typenum', tag:'imp', scene:'typenum', title:'숫자를 바로 입력', line:'미리보기 크기 %는 눌러서 직접 입력, 해상도는 1440*1800 처럼 * 도 돼요.', where:'합성 미리보기 · 크기 입력칸' },
@@ -830,6 +831,125 @@ SCENES.multicut = async (st, R) => {
   await play(7.0, 9.8);
   $('.pp').innerHTML = PLAY;
   await R.wait(500);
+};
+
+</script>
+<script>
+/* 파일명 규칙 — 배치리네이머 버튼들(2026-11-26): 페이지 [−][+] · retuch 수정 차수 +1(「2 → 3」) · 캠페인 [+1](_1) · 찾아 바꾸기.
+   앱 근거: index.html openNameRule(.nmr-mini data-act pg+/inc · data-v="retuch+" · data-k from/to) · nmrNameOf(retuch+ → retuch(N+1)) · nmrApply 토스트.
+   단순화: 해상도·작업종류 칸은 화면에서 생략(이름에는 그대로 남는다), 작업자 이니셜·파일명은 가상 값. */
+SCENES.namebtn = async (st, R) => {
+  st.classList.add('s-namebtn');
+  const P = '.s-namebtn ';
+  h('style', '', [
+    '.nmr{width:560px;left:40px}',
+    '.nmr-hd{display:flex;align-items:center;gap:7px;padding:8px 11px;border-bottom:1px solid var(--stroke)}',
+    '.nmr-hd .hi svg{width:14px;height:14px;color:var(--acc);display:block} .nmr-hd b{font-size:12px;font-weight:600}',
+    '.nmr-cnt{flex:1;font-size:10px;color:var(--mut)}',
+    '.nmr-x svg{width:12px;height:12px;color:var(--mut);display:block}',
+    '.nmr-bd{padding:8px 11px;display:flex;flex-direction:column;gap:6px}',
+    '.nmr-grid{display:grid;grid-template-columns:58px minmax(0,1fr);gap:5px 9px;align-items:center}',
+    '.nmr-lb{font-size:9.5px;color:var(--mut);font-weight:600;text-align:right}',
+    '.nmr-cell{display:flex;align-items:center;gap:5px;min-width:0}',
+    '.nmr-in.k-in{flex:1;height:21px;border-radius:7px;border-color:var(--stroke);font-size:10.5px;font-weight:400;padding:0 8px}',
+    '.nmr-in.k-in.num{flex:0 0 44px}',
+    '.nmr-in.k-in.wk{flex:0 0 64px}',
+    '.nmr-in.k-in.ph .tx:empty::before{content:attr(data-ph);color:var(--dim)}',
+    '.nmr-memo{flex:none;font-size:9.5px;color:var(--dim)}',
+    '.nmr-ro{display:inline-flex;align-items:center;gap:6px;height:20px;padding:0 8px;border-radius:7px;background:rgba(255,255,255,.05);font-size:10.5px}',
+    '.nmr-ro i{font-style:normal;color:var(--dim);font-size:9.5px}',
+    '.mini{flex:none;height:21px;min-width:21px;padding:0 7px;border-radius:7px;border:1px solid var(--stroke);background:rgba(255,255,255,.04);color:var(--mut);font-size:10px;display:inline-flex;align-items:center;justify-content:center;transition:all .15s,transform .12s}',
+    '.mini.hot{color:var(--acc);border-color:rgba(var(--accRGB),.5)}',
+    '.fr-arw{flex:none;color:var(--dim);font-size:10px}',
+    '.nq{width:272px;left:338px;top:24px}',
+    '.k-card .nm{white-space:normal;word-break:normal;overflow-wrap:anywhere;font-size:9.5px;line-height:1.3}',
+    '.nmr-pills{display:flex;flex-wrap:wrap;gap:4px}',
+    '.nmr-pill{height:20px;padding:0 6px;border-radius:7px;border:1px solid var(--stroke);background:var(--field);color:var(--mut);font-size:10px;display:inline-flex;align-items:center;white-space:nowrap;transition:all .2s,transform .12s}',
+    '.nmr-pill.on{background:rgba(var(--accRGB),.16);border-color:rgba(var(--accRGB),.6);color:var(--acc)}',
+    '.nmr-pill em{font-style:normal;opacity:.62;margin-left:4px;font-size:9px}',
+    '.nmr-pvl{font-size:10px;color:var(--mut);font-weight:600;margin-bottom:4px;display:flex;gap:6px;align-items:center}',
+    '.nmr-pvl span{color:var(--dim);font-weight:400;font-size:9px}',
+    '.nmr-pvbox{border:1px solid var(--stroke);border-radius:8px;background:var(--field);padding:3px}',
+    '.nmr-row{padding:4px 7px;font-size:10px;line-height:1.4;word-break:break-all}',
+    '.nmr-from{display:block;color:var(--dim);text-decoration:line-through;text-decoration-color:rgba(255,255,255,.22)}',
+    '.nmr-to{display:block;color:var(--txt);font-weight:600}',
+    '.nmr-to b{color:var(--acc);font-weight:700}',
+    '.nmr-ft{display:flex;align-items:center;gap:7px;padding:8px 11px;border-top:1px solid var(--stroke)}',
+    '.nmr-note{flex:1;font-size:10px;color:var(--mut)}',
+    '.rzb{height:26px;min-width:52px;padding:0 11px;border-radius:7px;border:1px solid var(--stroke);background:var(--field);font-size:10.5px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;transition:all .2s,transform .12s}',
+    '.rzb.ghost{color:var(--mut)} .rzb.pri{background:var(--acc);color:#0a0b0f;border-color:transparent;min-width:64px}',
+  ].map(r => r.split(/(?<=\})\s+(?=\.)/).map(x => P + x).join(' ')).join('\n'), st);
+
+  const ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 2.8 12V4.8A2 2 0 0 1 4.8 2.8H12a2 2 0 0 1 1.4.6l7.2 7.2a2 2 0 0 1 0 2.8Z"/><path d="M7.5 7.5h.01"/></svg>';
+  const X = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  const f = { date: '261124', client: '봄시즌', campaign: '리뷰', page: 2, task: '컷편집', res: '1080x1920', worker: 'KSY', kind: '@SZ', rN: 2, up: false, from: '', to: '' };
+  const name = () => { let n = [f.date, f.client, f.campaign, f.page ? f.page + 'p' : '', f.task, f.res, f.worker, f.kind, 'retuch' + (f.rN + (f.up ? 1 : 0))].filter(Boolean).join('_');
+    if (f.from) n = n.split(f.from).join(f.to); return n; };
+  const from = name();
+  // 뒤: 렌더큐 대기 카드(적용하면 이름이 바뀐다)
+  const q = h('div', 'k-q nq', '<div class="k-qh"><span>Render Queue</span><span>1</span></div>', st);
+  const c1 = h('div', 'k-card sel', '<div class="t"><div class="k-vid"></div></div><div class="x"><div class="nm">' + (from + '.mp4').replace(/_/g, '_<wbr>') + '</div><div class="mt">1080×1920 · 봄시즌.mp4</div><div class="k-prog"><i></i></div></div>', q);
+  const dim = h('div', 'k-dim on', '', st);
+  const md = h('div', 'k-modal nmr', '<div class="nmr-hd"><span class="hi">' + ICO + '</span><b>파일명 규칙</b><span class="nmr-cnt">카드 1장</span><span class="nmr-x">' + X + '</span></div>'
+    + '<div class="nmr-bd"><div class="nmr-grid">'
+    + '<label class="nmr-lb">날짜</label><div class="nmr-cell"><span class="nmr-ro">' + f.date + '<i>자동</i></span><span class="mini">오늘로</span></div>'
+    + '<label class="nmr-lb">광고주</label><div class="nmr-cell"><div class="k-in nmr-in"><span class="tx">봄시즌</span></div></div>'
+    + '<label class="nmr-lb">캠페인</label><div class="nmr-cell"><div class="k-in nmr-in" id="inK"><span class="tx">리뷰</span></div><span class="mini" id="kInc">+1</span></div>'
+    + '<label class="nmr-lb">페이지</label><div class="nmr-cell"><div class="k-in nmr-in num" id="inP"><span class="tx">2</span></div><span class="mini">−</span><span class="mini" id="pUp">+</span></div>'
+    + '<label class="nmr-lb">작업내용</label><div class="nmr-cell"><div class="k-in nmr-in"><span class="tx">컷편집</span></div><span class="mini">+1</span></div>'
+    + '<label class="nmr-lb">작업자</label><div class="nmr-cell"><div class="k-in nmr-in wk"><span class="tx">KSY</span></div><span class="nmr-memo">한 번 넣으면 기억해요</span></div>'
+    + '<label class="nmr-lb">작업구분</label><div class="nmr-pills"><span class="nmr-pill">xian</span><span class="nmr-pill">vari</span><span class="nmr-pill">sf</span><span class="nmr-pill" id="rt">retuch<em>2 → 3</em></span></div>'
+    + '<label class="nmr-lb">찾아 바꾸기</label><div class="nmr-cell"><div class="k-in nmr-in ph" id="inF"><span class="tx" data-ph="찾을 글자"></span></div><span class="fr-arw">→</span><div class="k-in nmr-in ph" id="inT"><span class="tx" data-ph="바꿀 글자"></span></div></div>'
+    + '</div>'
+    + '<div><div class="nmr-pvl">미리보기 <span>실제로 만들어질 파일 이름이에요</span></div><div class="nmr-pvbox"><div class="nmr-row"><span class="nmr-from">' + from + '</span><span class="nmr-to"></span></div></div></div>'
+    + '</div><div class="nmr-ft"><span class="nmr-note">바뀌는 이름이 없어요</span><span class="rzb ghost">비우기</span><span class="rzb ghost">취소</span><span class="rzb pri" id="ap">적용</span></div>', st);
+  md.style.top = Math.max(6, (400 - md.offsetHeight) / 2) + 'px';
+  const to = md.querySelector('.nmr-to'), note = md.querySelector('.nmr-note');
+  // 바뀐 토큰만 라임으로 — 무엇이 바뀌었는지 한눈에
+  const sync = (hot) => { const n = name(); to.innerHTML = n.split('_').map(t => hot && hot.test(t) ? '<b>' + t + '</b>' : t).join('_'); note.textContent = n === from ? '바뀌는 이름이 없어요' : '1장의 이름이 바뀝니다'; };
+  sync();
+  await R.show(md);
+  R.cursor(330, 330);
+  await R.wait(500);
+
+  // ① 페이지 + 두 번 — 2p → 3p → 4p
+  const pUp = md.querySelector('#pUp'), inP = md.querySelector('#inP .tx');
+  await R.to(pUp, 600);
+  let off = R.tag('누를 때마다 +1');
+  for (let i = 0; i < 2; i++) { await R.click(pUp); f.page++; inP.textContent = f.page; sync(/^\d+p$/); await R.wait(380); }
+  off(); await R.wait(250);
+
+  // ② retuch — 수정 차수 2 → 3
+  const rt = md.querySelector('#rt');
+  await R.to(rt, 550);
+  await R.click(rt); rt.classList.add('on'); f.up = true; sync(/^retuch\d+$/);
+  off = R.tag('수정 차수 +1');
+  await R.wait(900); off();
+
+  // ③ 캠페인 +1 — 리뷰 → 리뷰_1
+  const kInc = md.querySelector('#kInc');
+  await R.to(kInc, 550);
+  await R.click(kInc); f.campaign = '리뷰_1'; md.querySelector('#inK .tx').textContent = f.campaign; sync(/^1$/);
+  await R.wait(700);
+
+  // ④ 찾아 바꾸기 — 봄시즌 → 여름
+  const inF = md.querySelector('#inF'), inT = md.querySelector('#inT');
+  await R.to(inF, 550); await R.click();
+  for (const ch of '봄시즌') { await R.type(inF, ch, 110); }
+  f.from = '봄시즌';
+  await R.to(inT, 450); await R.click(); inF.classList.remove('focus'); inF.querySelector('.caret')?.remove();
+  for (const ch of '여름') { await R.type(inT, ch, 140); f.to += ch; sync(/^여름$/); }
+  inT.classList.remove('focus'); inT.querySelector('.caret')?.remove();
+  await R.wait(700);
+
+  // ⑤ 적용
+  const ap = md.querySelector('#ap');
+  await R.to(ap, 550); await R.click(ap);
+  md.classList.remove('on'); dim.classList.remove('on');
+  c1.querySelector('.nm').innerHTML = (name() + '.mp4').replace(/_/g, '_<wbr>');
+  R.toast('1장의 이름을 바꿨어요');
+  await R.move(330, 330, 700);
+  await R.wait(1300);
 };
 
 </script>

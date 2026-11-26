@@ -591,6 +591,11 @@ def final_gate(text, name, required_ids=(), files=None, orig=None):
 
 # ───────────────────────────── 공통 단계 ─────────────────────────────
 PARTNER_SINCE = (1, 0, 204)   # 협력사 첫 배포판 — 변경 내역은 이 판부터 보여 준다(그 전 판은 사내 이력)
+# 협력사 사전 공개판(2026-11-25 사용자 결정 「협력사 페이지에만 v1.0.204」) — 사내 설명서·사원용 latest 릴리즈는 옛 판 그대로 두고
+# 협력사 다운로드만 이 태그의 릴리즈 자산(BannerNode-Windows.zip · BannerNode-macOS-arm64/x86_64.zip)으로 연다.
+# 그 릴리즈는 「최신 아님(prerelease)」으로 올려 사원 앱의 업데이트 알림(releases/latest)에 안 잡히게 한다.
+# 사내 설명서가 이 판 이상으로 올라가면 저절로 무시된다(그때부터는 원본 판 번호를 따른다). 끄려면 None.
+PARTNER_EARLY = 'v1.0.204'
 NO_CHANGE_NOTE = '<li><small>사용 방법·기능은 이전 판과 같습니다.</small></li>'
 
 
@@ -1189,6 +1194,22 @@ def rules(d):
     DL = sel('script', has="const MAC_TAG = '")          # 다운로드 스크립트(원본 1879~1985줄 script)
 
     t = d.tree()
+    # 사전 공개판: 원본 판 번호가 그보다 낮으면 판 번호 표기 넷(히어로 · 다운로드 알약 · 푸터 · MAC_TAG)을 그 판으로 바꾼 뒤
+    # 아래 하한 규칙을 그대로 태운다 → Windows 주소는 그 판 번호로 고정되고 맥은 MAC_BASE 가 그 판을 가리킨다.
+    _early = ver_tuple(PARTNER_EARLY) if PARTNER_EARLY else None
+    if PARTNER_EARLY and (_early is None or _early < PARTNER_SINCE):
+        raise Fail('사전 공개판 PARTNER_EARLY(%r)가 판 번호가 아니거나 협력사 첫 판보다 낮습니다' % PARTNER_EARLY)
+    _v0 = query(t, sel('span', cls='ver'))
+    _v0 = ver_tuple(t.inner(_v0[0])) if len(_v0) == 1 else None
+    if _early and _v0 is not None and _v0 < _early:
+        _old = t.inner(query(t, sel('span', cls='ver'))[0]).strip()
+        _m0 = re.findall(r"const\s+MAC_TAG\s*=\s*'([^']*)'\s*;", t.inner(query(t, DL)[0])) if len(query(t, DL)) == 1 else []
+        d.set_inner(sel('span', cls='ver'), PARTNER_EARLY, old=_old, why='사전 공개판 — 히어로 판 번호')
+        d.set_inner(sel('span', cls='dl-ver', inside=start), PARTNER_EARLY, old=_old, why='사전 공개판 — 다운로드 알약 판 번호')
+        d.sub('<footer>BannerNode %s · ' % _old, '<footer>BannerNode %s · ' % PARTNER_EARLY, why='사전 공개판 — 푸터 판 번호')
+        if len(_m0) == 1 and ver_tuple(_m0[0]) is not None and ver_tuple(_m0[0]) < _early:
+            d.sub("const MAC_TAG = '%s';" % _m0[0], "const MAC_TAG = '%s';" % PARTNER_EARLY, inside=DL, why='사전 공개판 — 맥 내려받기 판')
+        t = d.tree()
     _ver = query(t, sel('span', cls='ver'))
     _dlv = query(t, sel('span', cls='dl-ver', inside=start))
     _scr = query(t, DL)

@@ -235,7 +235,7 @@ const SLIDES = [
   { id:'batchall', tag:'new', scene:'batchall', title:'같은 배너 전체에 적용', line:'맞춰 둔 크기·위치를 같은 배너를 쓰는 카드 전체에 한 번에 넣어요.', where:'합성 미리보기' },
   { id:'xfsync', tag:'new', scene:'xfsync', title:'함께 맞추기', line:'한 장을 고치면, 같이 만든 카드들도 자동으로 따라 맞춰져요.', where:'합성 편집기 스위치' },
   { id:'wirecut', tag:'new', scene:'wirecut', title:'연결선 바로 끊기', line:'선 위에 마우스를 올리면 가운데 X — 누르면 그 연결만 끊어요.', where:'노드 캔버스' },
-  { id:'namerule', tag:'new', scene:'namerule', title:'고르면 완성되는 파일명', line:'광고주 · 캠페인 · 작업자 · 작업종류를 고르면 팀 규칙대로 이름이 만들어져요.', keys:['더블클릭','항목으로'], where:'렌더큐 → 출력 설정' },
+  { id:'namerule', tag:'new', scene:'namerule', title:'고르면 완성되는 파일명', line:'광고주 · 캠페인 · 작업종류를 고르면 팀 규칙대로 이름이 만들어져요. 작업자 이니셜은 한 번만 넣으면 기억해요.', keys:['더블클릭','파일명 규칙'], where:'렌더큐 → 출력 설정' },
   { id:'namemulti', tag:'new', scene:'namemulti', title:'여러 카드 이름 한 번에', line:'여러 장을 골라 작업자 · 작업종류를 한 번에 붙여요.', keys:['드래그 선택','F2'], where:'렌더큐' },
   { id:'livecard', tag:'imp', scene:'livecard', title:'렌더 중에도 새 카드', line:'렌더가 도는 동안 연결한 작업도 바로 대기 카드로 나타나요.', where:'렌더큐' },
   { id:'typenum', tag:'imp', scene:'typenum', title:'숫자를 바로 입력', line:'미리보기 크기 %는 눌러서 직접 입력, 해상도는 1440*1800 처럼 * 도 돼요.', where:'합성 미리보기 · 크기 입력칸' },
@@ -834,7 +834,7 @@ SCENES.multicut = async (st, R) => {
 
 </script>
 <script>
-/* 여러 카드 이름 한 번에 — 렌더큐 드래그 선택(#marquee) → F2 → 「이름 규칙」 모달 N장 모드(고른 항목만 기존 이름 뒤에 얹기).
+/* 여러 카드 이름 한 번에 — 렌더큐 드래그 선택(#marquee) → F2 → 「파일명 규칙」 모달 N장 모드(고른 항목만 기존 이름 뒤에 얹기).
    앱 근거: index.html openNameRule(N장: 페이지·작업자·작업종류·작업구분만) · brcApplyTail · nmrSync(「N장에 적용」) · nmrApply 토스트.
    단순화: 카드 5장(앱 예시는 18장), 합성·완료 기록 제외 상황 생략, 작업자 이니셜은 가상 값. */
 SCENES.namemulti = async (st, R) => {
@@ -854,6 +854,7 @@ SCENES.namemulti = async (st, R) => {
     '.nmr-grid{display:grid;grid-template-columns:50px minmax(0,1fr);gap:5px 9px;align-items:center}',
     '.nmr-lb{font-size:9.5px;color:var(--mut);font-weight:600;text-align:right}',
     '.nmr-lb.tp{align-self:start;padding-top:5px}',
+    '.nmr-memo{flex:none;font-size:9.5px;color:var(--dim)}',
     '.nmr-in{width:62px;height:21px;border-radius:7px;border:1px solid var(--stroke);background:var(--field);font-size:10px;padding:0 8px;display:flex;align-items:center;color:var(--dim)}',
     '.nmr-pills{display:flex;flex-wrap:wrap;gap:4px}',
     '.nmr-pill{height:20px;padding:0 6px;border-radius:7px;border:1px solid var(--stroke);background:var(--field);color:var(--mut);font-size:10px;display:inline-flex;align-items:center;white-space:nowrap;transition:all .2s,transform .12s}',
@@ -889,19 +890,19 @@ SCENES.namemulti = async (st, R) => {
     const el = h('div', 'k-card', '<div class="t"><div class="k-vid ' + c + '"></div></div><div class="x"><div class="nm">' + wb(stem + ext) + '</div><div class="mt">' + s.replace('x', '×') + ' · ' + v + '.mp4</div><div class="k-prog"><i></i></div></div><span class="jst">대기</span>', q);
     el._stem = stem; return el; });
 
-  // 이름 규칙 모달(N장)
-  const n = JOBS.length, f = { worker: '', kind: '', type: '' };
+  // 파일명 규칙 모달(N장) — 기억한 작업자 이니셜이 미리 채워져 있어 열자마자 그 값이 얹힌다
+  const n = JOBS.length, f = { worker: 'KSY', kind: '', type: '' };
   const tail = s => [s, f.worker, f.kind, f.type].filter(Boolean).join('_');
   const pills = (k, lb, opts) => '<label class="nmr-lb tp">' + lb + '</label><div class="nmr-pills">' + opts.map(o => '<span class="nmr-pill" data-k="' + k + '" data-v="' + o[0] + '">' + o[0] + (o[1] ? '<em>' + o[1] + '</em>' : '') + '</span>').join('') + '</div>';
   const KIND = [['@MB', '모션배너'], ['@BC', '배너결합'], ['@SZ', '사이즈배리'], ['@ED', '편집'], ['@AV', 'AI활용영상'], ['@AB', 'AI활용배너'], ['@MV', '모션영상'], ['@SH', '촬영'], ['@CP', '용량배리']];
   const dim = h('div', 'k-dim', '', st);
-  const md = h('div', 'k-modal nmr', '<div class="nmr-hd"><span class="hi">' + ICO + '</span><b>이름 규칙</b><span class="nmr-cnt">카드 ' + n + '장</span><span class="nmr-x">' + X + '</span></div>'
+  const md = h('div', 'k-modal nmr', '<div class="nmr-hd"><span class="hi">' + ICO + '</span><b>파일명 규칙</b><span class="nmr-cnt">카드 ' + n + '장</span><span class="nmr-x">' + X + '</span></div>'
     + '<div class="nmr-bd"><div class="nmr-grid">'
     + '<label class="nmr-lb">페이지</label><div><span class="nmr-in">그대로</span></div>'
-    + pills('worker', '작업자', [['KSY'], ['LMH'], ['PJW'], ['CHA']])
+    + '<label class="nmr-lb">작업자</label><div style="display:flex;align-items:center;gap:6px"><span class="nmr-in" style="color:var(--txt)">KSY</span><span class="nmr-memo">한 번 넣으면 기억해요</span></div>'
     + pills('kind', '작업종류', KIND)
     + pills('type', '작업구분', [['xian'], ['vari'], ['sf']])
-    + '</div><div class="nmr-hint">고른 항목만 기존 이름 뒤에 얹어요 — 여기서는 지울 수 없습니다(지우려면 카드를 한 장씩 열어 [항목으로]).</div>'
+    + '</div><div class="nmr-hint">고른 항목만 기존 이름 뒤에 얹어요 — 여기서는 지울 수 없습니다(지우려면 카드를 한 장씩 열어 [파일명 규칙]).</div>'
     + '<div><div class="nmr-pvl">미리보기 <span>실제로 만들어질 파일 이름이에요</span></div><div class="nmr-pvbox">'
     + cards.map(c => '<div class="nmr-row same"><span class="nmr-from">' + c._stem + '</span><span class="nmr-to">' + c._stem + '</span></div>').join('') + '</div></div>'
     + '</div><div class="nmr-ft"><span class="nmr-note">바뀌는 이름이 없어요</span><span class="rzb ghost">취소</span><span class="rzb pri off" id="ap">적용</span></div>', st);
@@ -936,7 +937,7 @@ SCENES.namemulti = async (st, R) => {
   dim.classList.add('on');
   await R.show(md);
   await R.wait(650);
-  await press('worker', 'KSY', 600);
+  await sync();
   await R.wait(250);
   await press('kind', '@SZ', 450);
   await R.wait(350);
@@ -955,7 +956,7 @@ SCENES.namemulti = async (st, R) => {
 
 </script>
 <script>
-/* 파일명을 항목으로 짓기 — 렌더큐 카드 더블클릭 → 「출력 설정」 팝오버 → [항목으로] → 「이름 규칙」 모달(1장 = 조립기).
+/* 파일명을 항목으로 짓기 — 렌더큐 카드 더블클릭 → 「출력 설정」 팝오버 → [파일명 규칙] → 「파일명 규칙」 모달(1장 = 조립기).
    앱 근거: index.html openJobEdit(.je-*) · openNameRule(.nmr-*) · brcBuild 순서(날짜_광고주_캠페인_해상도_작업자_@작업종류_작업구분).
    단순화: 페이지·작업내용 칸 생략, 작업자 이니셜은 가상 값(실제 팀원 이니셜 노출 금지). */
 SCENES.namerule = async (st, R) => {
@@ -991,6 +992,8 @@ SCENES.namerule = async (st, R) => {
     '.nmr-cell{display:flex;align-items:center;gap:6px;min-width:0}',
     '.nmr-in.k-in{flex:1;height:21px;border-radius:7px;border-color:var(--stroke);font-size:10.5px;font-weight:400;padding:0 8px}',
     '.nmr-in.k-in.focus{border-color:var(--acc)}',
+    '.nmr-in.k-in.wk{flex:0 0 64px}',
+    '.nmr-memo{flex:none;font-size:9.5px;color:var(--dim)}',
     '.nmr-in .hl{background:rgba(var(--banRGB),.55)}',
     '.nmr-ro{display:inline-flex;align-items:center;gap:6px;height:20px;padding:0 8px;border-radius:7px;background:rgba(255,255,255,.05);font-size:10.5px}',
     '.nmr-ro i{font-style:normal;color:var(--dim);font-size:9.5px}',
@@ -1030,27 +1033,27 @@ SCENES.namerule = async (st, R) => {
   card('b2', D + '_여름_리뷰_1080x1920', '1080×1920 · 여름_리뷰.mp4');
 
   // 출력 설정 팝오버(카드 왼쪽)
-  const je = h('div', 'je', '<div class="je-hd">' + DOC + '<b>출력 설정</b></div><div class="je-bd"><div class="je-combo"><span class="je-name">' + D + '_봄시즌_1080x1920</span><span class="je-ext">mp4' + CHEV + '</span></div><div class="je-act"><span class="je-rule">항목으로</span><span class="je-cancel">취소</span><span class="je-save">저장</span></div></div>', st);
+  const je = h('div', 'je', '<div class="je-hd">' + DOC + '<b>출력 설정</b></div><div class="je-bd"><div class="je-combo"><span class="je-name">' + D + '_봄시즌_1080x1920</span><span class="je-ext">mp4' + CHEV + '</span></div><div class="je-act"><span class="je-rule">파일명 규칙</span><span class="je-cancel">취소</span><span class="je-save">저장</span></div></div>', st);
 
-  // 이름 규칙 모달(1장)
-  const f = { date: D, client: '봄시즌', campaign: '', res: '1080x1920', worker: '', kind: '', type: '' };
+  // 파일명 규칙 모달(1장) — 작업자는 한 번 넣어 두면 기억한 이니셜이 미리 채워져 있다
+  const f = { date: D, client: '봄시즌', campaign: '', res: '1080x1920', worker: 'KSY', kind: '', type: '' };
   const from = D + '_봄시즌_1080x1920';
   const build = () => [f.date, f.client, f.campaign, f.res, f.worker, f.kind, f.type].filter(Boolean).join('_');
   const pills = (k, lb, opts) => '<label class="nmr-lb tp">' + lb + '</label><div class="nmr-pills">' + opts.map(o => '<span class="nmr-pill" data-k="' + k + '" data-v="' + o[0] + '">' + o[0] + (o[1] ? '<em>' + o[1] + '</em>' : '') + '</span>').join('') + '</div>';
   const KIND = [['@MB', '모션배너'], ['@BC', '배너결합'], ['@SZ', '사이즈배리'], ['@ED', '편집'], ['@AV', 'AI활용영상'], ['@AB', 'AI활용배너'], ['@MV', '모션영상'], ['@SH', '촬영'], ['@CP', '용량배리']];
   const dim = h('div', 'k-dim', '', st);
-  const md = h('div', 'k-modal nmr', '<div class="nmr-hd"><span class="hi">' + ICO + '</span><b>이름 규칙</b><span class="nmr-cnt">카드 1장</span><span class="nmr-x">' + X + '</span></div>'
+  const md = h('div', 'k-modal nmr', '<div class="nmr-hd"><span class="hi">' + ICO + '</span><b>파일명 규칙</b><span class="nmr-cnt">카드 1장</span><span class="nmr-x">' + X + '</span></div>'
     + '<div class="nmr-bd"><div class="nmr-grid">'
     + '<label class="nmr-lb">날짜</label><div class="nmr-cell"><span class="nmr-ro">' + D + '<i>자동</i></span></div>'
     + '<label class="nmr-lb">광고주</label><div class="nmr-cell"><div class="k-in nmr-in" id="inC"><span class="tx hl">봄시즌</span></div><span class="nmr-tag">추측</span></div>'
     + '<label class="nmr-lb">캠페인</label><div class="nmr-cell"><div class="k-in nmr-in" id="inK"></div></div>'
     + '<label class="nmr-lb">해상도</label><div class="nmr-cell"><span class="nmr-ro">1080x1920<i>렌더 크기를 따라가요</i></span></div>'
-    + pills('worker', '작업자', [['KSY'], ['LMH'], ['PJW'], ['CHA']])
+    + '<label class="nmr-lb">작업자</label><div class="nmr-cell"><div class="k-in nmr-in wk"><span class="tx">KSY</span></div><span class="nmr-memo">한 번 넣으면 기억해요</span></div>'
     + pills('kind', '작업종류', KIND)
     + pills('type', '작업구분', [['xian'], ['vari'], ['sf']])
     + '</div><div class="nmr-hint">비운 항목은 이름에서 빠져요. 순서는 규칙대로 자동으로 맞춰집니다.</div>'
-    + '<div><div class="nmr-pvl">미리보기 <span>실제로 만들어질 파일 이름이에요</span></div><div class="nmr-pvbox"><div class="nmr-row same"><span class="nmr-from">' + from + '</span><span class="nmr-to">' + from + '</span></div></div></div>'
-    + '</div><div class="nmr-ft"><span class="nmr-note">바뀌는 이름이 없어요</span><span class="rzb ghost">취소</span><span class="rzb pri off" id="ap">적용</span></div>', st);
+    + '<div><div class="nmr-pvl">미리보기 <span>실제로 만들어질 파일 이름이에요</span></div><div class="nmr-pvbox"><div class="nmr-row"><span class="nmr-from">' + from + '</span><span class="nmr-to">' + build() + '</span></div></div></div>'
+    + '</div><div class="nmr-ft"><span class="nmr-note">1장의 이름이 바뀝니다</span><span class="rzb ghost">취소</span><span class="rzb pri" id="ap">적용</span></div>', st);
   md.style.top = Math.max(6, (400 - md.offsetHeight) / 2) + 'px';
   const row = md.querySelector('.nmr-row'), note = md.querySelector('.nmr-note'), ap = md.querySelector('#ap');
   const sync = () => { const to = build(), same = to === from; row.classList.toggle('same', same); row.querySelector('.nmr-to').textContent = to; note.textContent = same ? '바뀌는 이름이 없어요' : '1장의 이름이 바뀝니다'; ap.classList.toggle('off', same); };
@@ -1083,8 +1086,6 @@ SCENES.namerule = async (st, R) => {
   inC.classList.remove('focus'); inC.querySelector('.hl').classList.remove('hl');
   for (const ch of '리뷰') { await R.type(inK, ch, 160); f.campaign += ch; sync(); }
   await R.wait(300);
-  await press('worker', 'KSY');
-  await R.wait(150);
   await press('kind', '@SZ', 400);
   await R.wait(150);
   await press('type', 'xian', 400);

@@ -236,7 +236,7 @@ const SLIDES = [
   { id:'xfsync', tag:'new', scene:'xfsync', title:'함께 맞추기', line:'한 장을 고치면, 같이 만든 카드들도 자동으로 따라 맞춰져요.', where:'합성 편집기 스위치' },
   { id:'wirecut', tag:'new', scene:'wirecut', title:'연결선 바로 끊기', line:'선 위에 마우스를 올리면 가운데 X — 누르면 그 연결만 끊어요.', where:'노드 캔버스' },
   { id:'namerule', tag:'new', scene:'namerule', title:'고르면 완성되는 파일명', line:'광고주 · 캠페인 · 작업종류를 고르면 팀 규칙대로 이름이 만들어져요. 작업자 이니셜은 한 번만 넣으면 기억해요.', keys:['더블클릭','편집'], where:'렌더큐 → 출력 설정' },
-  { id:'namebtn', tag:'new', scene:'namebtn', title:'배치리네이머처럼 숫자 올리기', line:'페이지는 [−][+], 수정 차수는 retuch 로 하나씩 올려요. 캠페인·작업내용은 +1, 글자는 찾아 바꾸기로.', keys:['−  +','retuch','찾아 바꾸기'], where:'파일명 규칙 창' },
+  { id:'namebtn', tag:'new', scene:'namebtn', title:'배치리네이머처럼 숫자 올리기', line:'페이지는 [−][+], 수정 차수는 retuch 로 하나씩 올려요. 캠페인·작업내용은 +1, 글자는 찾아 바꾸기로.', keys:['−  +','retuch','찾아 바꾸기'], where:'파일명 편집 창' },
   { id:'namemulti', tag:'new', scene:'namemulti', title:'여러 카드 이름 한 번에', line:'여러 장을 골라 작업자 · 작업종류를 한 번에 붙여요.', keys:['드래그 선택','F2'], where:'렌더큐' },
   { id:'livecard', tag:'imp', scene:'livecard', title:'렌더 중에도 새 카드', line:'렌더가 도는 동안 연결한 작업도 바로 대기 카드로 나타나요.', where:'렌더큐' },
   { id:'typenum', tag:'imp', scene:'typenum', title:'숫자를 바로 입력', line:'미리보기 크기 %는 눌러서 직접 입력, 해상도는 1440*1800 처럼 * 도 돼요.', where:'합성 미리보기 · 크기 입력칸' },
@@ -890,7 +890,7 @@ SCENES.namebtn = async (st, R) => {
   const q = h('div', 'k-q nq', '<div class="k-qh"><span>Render Queue</span><span>1</span></div>', st);
   const c1 = h('div', 'k-card sel', '<div class="t"><div class="k-vid"></div></div><div class="x"><div class="nm">' + (from + '.mp4').replace(/_/g, '_<wbr>') + '</div><div class="mt">1080×1920 · 봄시즌.mp4</div><div class="k-prog"><i></i></div></div>', q);
   const dim = h('div', 'k-dim on', '', st);
-  const md = h('div', 'k-modal nmr', '<div class="nmr-hd"><span class="hi">' + ICO + '</span><b>파일명 규칙</b><span class="nmr-cnt">카드 1장</span><span class="nmr-x">' + X + '</span></div>'
+  const md = h('div', 'k-modal nmr', '<div class="nmr-hd"><span class="hi">' + ICO + '</span><b>파일명 편집</b><span class="nmr-cnt">카드 1장</span><span class="nmr-x">' + X + '</span></div>'
     + '<div class="nmr-bd"><div class="nmr-grid">'
     + '<label class="nmr-lb">날짜</label><div class="nmr-cell"><span class="nmr-ro">' + f.date + '<i>자동</i></span><span class="mini">오늘로</span></div>'
     + '<label class="nmr-lb">광고주</label><div class="nmr-cell"><div class="k-in nmr-in"><span class="tx">봄시즌</span></div></div>'
@@ -954,7 +954,7 @@ SCENES.namebtn = async (st, R) => {
 
 </script>
 <script>
-/* 여러 카드 이름 한 번에 — 렌더큐 드래그 선택(#marquee) → F2 → 「파일명 규칙」 모달 N장 모드(고른 항목만 기존 이름 뒤에 얹기).
+/* 여러 카드 이름 한 번에 — 렌더큐 드래그 선택(#marquee) → F2 → 「파일명 편집」 창 N장 모드(고른 항목만 기존 이름 뒤에 얹기).
    앱 근거: index.html openNameRule(N장: 페이지·작업자·작업종류·작업구분만) · brcApplyTail · nmrSync(「N장에 적용」) · nmrApply 토스트.
    작업종류 = 드롭다운(.nmr-ddb · 2026-11-26). 단순화: 카드 5장(앱 예시는 18장), 합성·완료 기록 제외 상황 생략, 작업자 이니셜은 가상 값. */
 SCENES.namemulti = async (st, R) => {
@@ -1040,7 +1040,7 @@ SCENES.namemulti = async (st, R) => {
     btn.firstElementChild.innerHTML = o.innerHTML;
   };
   const dim = h('div', 'k-dim', '', st);
-  const md = h('div', 'k-modal nmr', '<div class="nmr-hd"><span class="hi">' + ICO + '</span><b>파일명 규칙</b><span class="nmr-cnt">카드 ' + n + '장</span><span class="nmr-x">' + X + '</span></div>'
+  const md = h('div', 'k-modal nmr', '<div class="nmr-hd"><span class="hi">' + ICO + '</span><b>파일명 편집</b><span class="nmr-cnt">카드 ' + n + '장</span><span class="nmr-x">' + X + '</span></div>'
     + '<div class="nmr-bd"><div class="nmr-grid">'
     + '<label class="nmr-lb">페이지</label><div><span class="nmr-in">그대로</span></div>'
     + '<label class="nmr-lb">작업자</label><div style="display:flex;align-items:center;gap:6px"><span class="nmr-in" style="color:var(--txt)">KSY</span><span class="nmr-memo">한 번 넣으면 기억해요</span></div>'
@@ -1100,7 +1100,7 @@ SCENES.namemulti = async (st, R) => {
 
 </script>
 <script>
-/* 파일명을 항목으로 짓기 — 렌더큐 카드 더블클릭 → 「출력 설정」 팝오버 → [편집] → 「파일명 규칙」 모달(1장 = 조립기).
+/* 파일명을 항목으로 짓기 — 렌더큐 카드 더블클릭 → 「출력 설정」 팝오버 → [편집] → 「파일명 편집」 창(1장 = 조립기).
    앱 근거: index.html openJobEdit(.je-*) · openNameRule(.nmr-*) · brcBuild 순서(날짜_광고주_캠페인_해상도_작업자_@작업종류_작업구분).
    작업종류 = 드롭다운(.nmr-ddb · 2026-11-26). 단순화: 페이지·작업내용 칸 생략, 작업자 이니셜은 가상 값(실제 팀원 이니셜 노출 금지). */
 SCENES.namerule = async (st, R) => {
@@ -1210,7 +1210,7 @@ SCENES.namerule = async (st, R) => {
     btn.firstElementChild.innerHTML = o.innerHTML;
   };
   const dim = h('div', 'k-dim', '', st);
-  const md = h('div', 'k-modal nmr', '<div class="nmr-hd"><span class="hi">' + ICO + '</span><b>파일명 규칙</b><span class="nmr-cnt">카드 1장</span><span class="nmr-x">' + X + '</span></div>'
+  const md = h('div', 'k-modal nmr', '<div class="nmr-hd"><span class="hi">' + ICO + '</span><b>파일명 편집</b><span class="nmr-cnt">카드 1장</span><span class="nmr-x">' + X + '</span></div>'
     + '<div class="nmr-bd"><div class="nmr-grid">'
     + '<label class="nmr-lb">날짜</label><div class="nmr-cell"><span class="nmr-ro">' + D + '<i>자동</i></span></div>'
     + '<label class="nmr-lb">광고주</label><div class="nmr-cell"><div class="k-in nmr-in" id="inC"><span class="tx hl">봄시즌</span></div><span class="nmr-tag">추측</span></div>'

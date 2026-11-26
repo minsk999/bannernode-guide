@@ -464,7 +464,7 @@ html.pwl #pwl{display:flex;position:fixed;inset:0;overflow-y:auto;overscroll-beh
 
     </div>
 
-    <span class="ver">v1.0.200</span>
+    <span class="ver">v1.0.204</span>
 
     <span class="spacer"></span><button type="button" id="pwl-out" aria-label="로그아웃" data-tip="로그아웃"><svg viewBox="0 0 24 24"><path d="M6.6 3H12v2.9H7.9v12.2H12V21H6.6A1.6 1.6 0 0 1 5 19.4V4.6A1.6 1.6 0 0 1 6.6 3z"/><path d="M11.4 10.5h5.5V7.5L21.9 12l-5 4.5v-3h-5.5z"/></svg></button>
 
@@ -629,7 +629,7 @@ html.pwl #pwl{display:flex;position:fixed;inset:0;overflow-y:auto;overscroll-beh
 
           <div class="dl-head">
 
-            <div><h3 style="margin:0">다운로드</h3><p class="dl-sub">다운로드를 준비하고 있어요. 준비되면 이 자리의 버튼이 열립니다 — 아래 설치 안내는 미리 읽어 두셔도 좋아요.</p></div>
+            <div><h3 style="margin:0">다운로드<span class="dl-ver">v1.0.204</span></h3><p class="dl-sub">무설치 — 압축만 풀면 바로 실행돼요. <span id="dlSubOs">Windows는 <code>BannerNode.exe</code> 더블클릭</span>.</p></div>
 
             <div class="dl-detect" id="dlDetect" role="status">접속 기기 확인 중…</div>
 
@@ -637,7 +637,7 @@ html.pwl #pwl{display:flex;position:fixed;inset:0;overflow-y:auto;overscroll-beh
 
           <div class="dl-btns" id="dlBtns">
 
-            <a class="dl-btn soon" id="dlWin" aria-disabled="true" tabindex="-1"><svg viewBox="0 0 24 24"><path d="M3 5.3l7.7-1.1v7.3H3zM12.2 4l8.8-1.3v8.8h-8.8zM3 13h7.7v7.3L3 19.2zM12.2 13H21v8.8L12.2 20.5z"/></svg>Windows용 다운로드<small>준비 중</small></a>
+            <a class="dl-btn" id="dlWin" href="https://github.com/minsk999/bannernode-guide/releases/download/v1.0.204/BannerNode-Windows.zip"><svg viewBox="0 0 24 24"><path d="M3 5.3l7.7-1.1v7.3H3zM12.2 4l8.8-1.3v8.8h-8.8zM3 13h7.7v7.3L3 19.2zM12.2 13H21v8.8L12.2 20.5z"/></svg>Windows용 다운로드<small>.zip</small></a>
 
             <a class="dl-btn soon" id="dlMacArm" aria-disabled="true" tabindex="-1"><svg viewBox="0 0 24 24"><path d="M16.36 12.76c0-2.28 1.86-3.38 1.95-3.43-1.06-1.55-2.72-1.77-3.31-1.79-1.4-.15-2.75.83-3.46.83-.72 0-1.82-.81-3-.79-1.54.02-2.96.9-3.75 2.28-1.6 2.78-.41 6.89 1.15 9.15.76 1.11 1.67 2.35 2.86 2.3 1.15-.05 1.58-.74 2.97-.74s1.78.74 3 .72c1.24-.02 2.02-1.12 2.78-2.24.87-1.28 1.23-2.52 1.25-2.59-.03-.01-2.4-.92-2.44-3.7zM14.1 5.86c.63-.77 1.06-1.83.94-2.9-.91.04-2.02.61-2.67 1.37-.59.68-1.1 1.77-.96 2.81 1.02.08 2.05-.52 2.69-1.28z"/></svg>macOS · Apple 실리콘<small>준비 중</small></a>
 
@@ -1178,24 +1178,24 @@ html.pwl #pwl{display:flex;position:fixed;inset:0;overflow-y:auto;overscroll-beh
 
 
 
-<footer>BannerNode v1.0.200 · ADEF</footer>
+<footer>BannerNode v1.0.204 · ADEF</footer>
 
 
 
 <script>
 
   (function(){
-    const MAC_READY = false;
-    const BASE = '';
-    const MAC_TAG = 'v1.0.200';
-    const MAC_BASE = '';
+    const MAC_READY = true;
+    const BASE = 'https://github.com/minsk999/bannernode-guide/releases/latest/download/';
+    const MAC_TAG = 'v1.0.204';
+    const MAC_BASE = 'https://github.com/minsk999/bannernode-guide/releases/download/' + MAC_TAG + '/';
     const MAC_URL_ARM = MAC_BASE + 'BannerNode-macOS-arm64.zip';
     const MAC_URL_X64 = MAC_BASE + 'BannerNode-macOS-x86_64.zip';
     const isMac = /Mac|iPhone|iPad/.test(navigator.platform || '') || /Macintosh/.test(navigator.userAgent || '');
     const det = document.getElementById('dlDetect'), btns = document.getElementById('dlBtns');
-    const win = null;
+    const win = document.getElementById('dlWin');
     const macs = [[document.getElementById('dlMacArm'), MAC_URL_ARM], [document.getElementById('dlMacX64'), MAC_URL_X64]];
-    if(det) det.innerHTML = '접속 기기: <b>' + (isMac ? 'macOS' : 'Windows') + '</b>';
+    if(det) det.innerHTML = '접속 기기: <b>' + (isMac ? 'macOS' : 'Windows') + '</b> · 맞는 버튼을 앞에 보여드려요';
     if(MAC_READY){
       macs.forEach(function(p){ const el = p[0]; if(!el) return;
         el.classList.remove('soon'); el.setAttribute('href', p[1]);
@@ -1205,8 +1205,8 @@ html.pwl #pwl{display:flex;position:fixed;inset:0;overflow-y:auto;overscroll-beh
     }
     if(isMac && btns){
       macs.slice().reverse().forEach(function(p){ if(p[0]) btns.prepend(p[0]); });
-      const note = null; if(note) note.hidden = false;
-      const _so = null;
+      const note = document.getElementById('dlMacNote'); if(note) note.hidden = false;
+      const _so = document.getElementById('dlSubOs');
       if(_so && _so.parentNode) _so.parentNode.innerHTML = '무설치 — 압축을 풀어 <b>응용 프로그램</b> 폴더로 옮기면 돼요. 처음 한 번만 아래 안내대로 열기를 허용해 주세요.';
       if(!MAC_READY && win) win.classList.add('primary');
     } else if(win){ win.classList.add('primary'); }

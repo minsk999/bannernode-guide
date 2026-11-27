@@ -1163,6 +1163,7 @@ def rules(d):
     # #shortcuts(1161 · 1163 · 1167 · 1175 · 1193)
     d.drop(sel('div', cls='key-row', text='렌더큐 · NAS 전환', inside=sec('shortcuts')), why='단축키 Tab 행(①#16·⑤#34)')
     d.drop(sel('div', cls='key-row', text='NAS 캐시 비우기', inside=sec('shortcuts')), why='단축키 NAS 캐시 비우기 행(①#19·⑤#38) — 「캐시 모두 비우기」 행은 남는다')
+    d.drop(sel('div', cls='key-row', text='NAS 즐겨찾기', inside=sec('shortcuts')), count=2, why='단축키 NAS 즐겨찾기 넣기·빼기(Ctrl+B)·바로 이동(Alt+1~9) 행 — 2026-11-27 추가, NAS 전용')
     # 1163 — ①#17·②#24 (⑤#35 는 꼬리말이 「고정 · 렌더큐 대기 카드를 하나 골랐을 때」)
     d.sub('이름 바꾸기 / 출력 설정 <small>고정 · NAS 항목 / 렌더큐 대기 카드</small>',
           '출력 설정 <small>고정 · 렌더큐 대기 카드</small>', inside=sec('shortcuts'), why='단축키 F2 — 이름 바꾸기는 NAS 전용')

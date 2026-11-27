@@ -224,8 +224,8 @@ const SLIDES = [
   { kind:'cover', sub:'편집은 더 자유롭게, 작업은 더 빠르게' },
   { kind:'toc', title:'목차', groups:[
     { name:'영상 편집', items:['multicut','pick','fill','shrink','place','batchall','xfsync'] },
-    { name:'노드 · 렌더큐', items:['wirecut','namerule','namebtn','namemulti','livecard','typenum'] },
-    { name:'열기 · 공유 · 수리', items:['frame','newer','partner','fixes'] },
+    { name:'노드 · 렌더큐 · NAS', items:['wirecut','namerule','namebtn','namemulti','livecard','nasfav'] },
+    { name:'입력 · 열기 · 공유 · 수리', items:['typenum','caret','frame','newer','partner','fixes'] },
   ]},
   { id:'multicut', tag:'new', scene:'multicut', title:'여러 컷 이어붙이기', line:'한 영상에서 구간을 여러 개 골라, 순서대로 이어 붙여 한 편으로 렌더해요. A/D 로 한 프레임씩 옮기고 W/S 로 시작·끝을 찍어요.', keys:['A/D 1프레임','W/S 시작·끝'], where:'컷편집 창 · 크기·배경 변환 창' },
   { id:'pick', tag:'imp', scene:'pick', title:'크기 고르기 새 화면', line:'자주 쓰는 크기는 칩으로, 없는 크기는 직접 입력. 여러 개를 한 번에 골라요.', where:'크기·배경 변환 창' },
@@ -239,7 +239,9 @@ const SLIDES = [
   { id:'namebtn', tag:'new', scene:'namebtn', title:'배치리네이머처럼 숫자 올리기', line:'페이지는 [−][+], 수정 차수는 retuch 로 하나씩 올려요. 캠페인·작업내용은 +1, 글자는 찾아 바꾸기로.', keys:['−  +','retuch','찾아 바꾸기'], where:'파일명 편집 창' },
   { id:'namemulti', tag:'new', scene:'namemulti', title:'여러 카드 이름 한 번에', line:'여러 장을 골라 작업자 · 작업종류를 한 번에 붙여요.', keys:['드래그 선택','F2'], where:'렌더큐' },
   { id:'livecard', tag:'imp', scene:'livecard', title:'렌더 중에도 새 카드', line:'렌더가 도는 동안 연결한 작업도 바로 대기 카드로 나타나요.', where:'렌더큐' },
+  { id:'nasfav', tag:'new', scene:'nasfav', title:'NAS 즐겨찾기', line:'자주 가는 폴더를 고정해 두면 한 번에 들어가요. 최근에 들어간 세 곳도 저절로 모여요.', keys:['Ctrl+B 고정','Alt+1~9 이동'], where:'NAS 브라우저 · 출력 폴더 창' },
   { id:'typenum', tag:'imp', scene:'typenum', title:'숫자를 바로 입력', line:'미리보기 크기 %는 눌러서 직접 입력, 해상도는 1440*1800 처럼 * 도 돼요.', where:'합성 미리보기 · 크기 입력칸' },
+  { id:'caret', tag:'imp', scene:'caret', title:'부드러운 타자', line:'글자를 치면 커서가 건너뛰지 않고 미끄러져 따라가요. 한글을 칠 때 글자 줄이 위아래로 흔들리던 것도 고쳤어요. (오른쪽 화면은 잘 보이게 10배 느리게 재생해요)', where:'모든 글자 칸' },
   { id:'frame', tag:'fix', scene:'frame', title:'액자형 배너도 제자리에', line:'테두리가 반투명한 액자형 배너도 영상이 안쪽 구멍에 정확히 들어가요.', where:'배너 가져오기 · 프로젝트 열기' },
   { id:'newer', tag:'new', scene:'newer', title:'새 버전 파일 알림', line:'더 새 버전에서 저장한 프로젝트를 열면 먼저 알려 줘요 — 설정이 사라지지 않게.', where:'프로젝트 열기' },
   { id:'partner', tag:'new', scene:'partner', title:'협력사도 쓸 수 있어요', line:'협력사는 발급받은 패스워드로 로그인해, 회사 자료 없이 같은 앱을 써요.', where:'로그인 화면' },
@@ -393,6 +395,88 @@ ${P} .k-card .nm{white-space:normal;overflow-wrap:anywhere;font-size:9.5px;line-
   await toast;
   await R.move(300, 370, 700);
   await R.wait(600);
+};
+
+</script>
+<script>
+/* 부드러운 타자 — 「파일명 편집」 창 두 개(위 = 전, 아래 = 후)로 비교. 표식은 frame.js 처럼 창 바깥 모서리에 k-ba.
+   앱 근거: index.html 「부드러운 커서(2026-11-27」 블록 · #scaret CSS(폭 2px·강조색·radius 1 · 깜빡임 1.06s steps .53s 지연).
+   전 = 기본 커서(글자색 1px, 글자마다 다음 자리로 바로 건너뜀). 후 = 남은 거리를 지수 감쇠로 줄이며 미끄러짐.
+   실제 시간 상수 28ms 는 발표 화면에서 안 보여서 아래 칸은 10배(280ms)로 늦춰 보여 준다 — 화면에 적지 않고 발표자가 말로 설명.
+   글자 간격(360ms)을 TAU 보다 길게 둬서 한 글자의 미끄러짐이 눈에 보이게 한다.
+   창 = .nmr 머리(13/15 · 아이콘 19 · 제목 14.5)와 .nmr-in(높이 34·radius 9·12.5px·굵기 400) 을 통째로 1.25배(무대 640×400 에 창 둘) — 위계 유지.
+   단순화: 창마다 작업내용 칸 하나만(앱의 1장 편집 모양). 위치는 숨은 줄(ruler) 실측. */
+SCENES.caret = async (st, R) => {
+  st.classList.add('s-caret');
+  const TAU = 280, PER = 360, K = 1.25;   // 앱 28ms × 10 · 무대 640×400 에 창 둘이 들어가는 배율
+  h('style', '', `
+.s-caret .win{left:40px;width:560px;opacity:0;transition:opacity .3s}
+.s-caret .win.on{opacity:1}
+.s-caret .hd{display:flex;align-items:center;gap:${9 * K}px;padding:${13 * K}px ${15 * K}px;border-bottom:1px solid var(--stroke)}
+.s-caret .hd svg{width:${19 * K}px;height:${19 * K}px;color:var(--acc);display:block}
+.s-caret .hd b{font-size:${14.5 * K}px;font-weight:600;letter-spacing:-.01em}
+.s-caret .bd{padding:${15 * K}px;display:grid;grid-template-columns:${66 * K}px minmax(0,1fr);gap:${12 * K}px;align-items:center}
+.s-caret .k-ba{left:0;top:-26px}
+.s-caret .lb{font-size:${11.5 * K}px;color:var(--mut);font-weight:600;text-align:right}
+.s-caret .fd{position:relative;height:${34 * K}px;border-radius:${9 * K}px;border:1px solid var(--stroke);background:var(--field);padding:0 ${11 * K}px;font-size:${12.5 * K}px;font-weight:400;display:flex;align-items:center;white-space:pre;overflow:hidden;transition:border-color .2s}
+.s-caret .fd.focus{border-color:var(--acc)}
+.s-caret .ru{position:absolute;left:-9999px;top:0;visibility:hidden;white-space:pre}
+.s-caret .cr{position:absolute;left:0;width:2px;border-radius:1px;background:var(--acc);display:none}
+.s-caret .cr.old{width:1px;border-radius:0;background:var(--txt)}
+.s-caret .fd.focus .cr{display:block}
+.s-caret .cr.bl{animation:s-caret-bl 1.06s steps(1,end) .53s infinite}
+@keyframes s-caret-bl{0%{opacity:0}50%{opacity:1}}
+`, st);
+  const ICO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 2.8 12V4.8A2 2 0 0 1 4.8 2.8H12a2 2 0 0 1 1.4.6l7.2 7.2a2 2 0 0 1 0 2.8Z"/><path d="M7.5 7.5h.01"/></svg>';
+  const mk = (top, ba, txt, old) => { const w = h('div', 'k-win win', '<span class="k-ba ' + ba + '">' + txt + '</span><div class="hd">' + ICO + '<b>파일명 편집</b></div><div class="bd"><label class="lb">작업내용</label><div class="fd"><span class="tx"></span><span class="ru"></span><i class="cr' + (old ? ' old' : '') + '"></i></div></div>', st);
+    w.style.top = top + 'px'; return w; };
+  const W0 = mk(32, 'before', '전', true), W1 = mk(207, 'after', '후', false);
+  const F0 = W0.querySelector('.fd'), F1 = W1.querySelector('.fd');
+
+  // 커서 자리 = 칸 왼쪽 여백 + 숨은 줄로 잰 글자 폭(배율 적용 전 px). 높이 = 글자 크기×1.25, 칸 가운데 — 앱 goal() 과 같은 식
+  const goal = f => { const tx = f.querySelector('.tx'), ru = f.querySelector('.ru'), cs = getComputedStyle(f);
+    ru.textContent = tx.textContent; const s = f.getBoundingClientRect().width / f.offsetWidth;
+    return parseFloat(cs.paddingLeft) + ru.getBoundingClientRect().width / s; };
+  const place = f => { const c = f.querySelector('.cr'), fs = parseFloat(getComputedStyle(f).fontSize), hh = Math.round(fs * 1.25);
+    c.style.height = hh + 'px'; c.style.top = ((f.clientHeight - hh) / 2) + 'px'; };
+  [F0, F1].forEach(place);
+  // 전: 바로 그 자리 · 후: 지수 감쇠로 따라감
+  let xo = goal(F1), last = 0;
+  F0.querySelector('.cr').style.left = (goal(F0) - .5) + 'px';
+  F1.querySelector('.cr').style.left = (xo - 1) + 'px';
+  const tick = t => { if (R.dead || !F1.isConnected) return;
+    const g = goal(F1), dt = last ? Math.max(1, t - last) : 16; last = t;
+    xo = xo + (g - xo) * (1 - Math.exp(-dt / TAU)); if (Math.abs(g - xo) < .3) xo = g;
+    F1.querySelector('.cr').style.left = (xo - 1) + 'px';
+    requestAnimationFrame(tick); };
+  requestAnimationFrame(tick);
+  const blink = f => { const c = f.querySelector('.cr'); c.classList.remove('bl'); void c.offsetWidth; c.classList.add('bl'); };   // 치는 동안 켜짐 · 쉬면 깜빡
+  const typeIn = async (f, text) => { const tx = f.querySelector('.tx');
+    for (const ch of text) { tx.textContent += ch; blink(f);
+      if (f === F0) f.querySelector('.cr').style.left = (goal(f) - .5) + 'px';
+      await R.wait(PER); } };
+
+  R.cursor(560, 372);
+  requestAnimationFrame(() => { W0.classList.add('on'); W1.classList.add('on'); });   // 회차 경계를 페이드로 잇기(끝에서 다시 0)
+  await R.wait(500);
+  // ① 전 — 툭툭 건너뜀
+  await R.to(F0, 700, 120, 6);
+  await R.click(null);
+  F0.classList.add('focus'); blink(F0);
+  await R.wait(300);
+  await typeIn(F0, '봄시즌_컷편집');
+  await R.wait(500);
+  // ② 후 — 미끄러짐
+  await R.to(F1, 550, 120, 6);
+  await R.click(null);
+  F0.classList.remove('focus'); F1.classList.add('focus'); blink(F1);
+  await R.wait(300);
+  await typeIn(F1, '봄시즌_컷편집');
+  await R.wait(300);
+  await R.move(560, 372, 700);
+  await R.wait(900);   // 쉬면 530ms 로 깜빡임
+  W0.classList.remove('on'); W1.classList.remove('on');
+  await R.wait(300);
 };
 
 </script>
@@ -1271,6 +1355,188 @@ SCENES.namerule = async (st, R) => {
   R.toast('1장의 이름을 바꿨어요');
   await R.move(330, 330, 700);
   await R.wait(1300);
+};
+
+</script>
+<script>
+/* NAS 즐겨찾기 — NAS 패널 목록 위 「즐겨찾기」·「최근 폴더」 두 구획(앱 2026-11-26 · 시안 C 이식).
+   앱 근거: index.html favSecHTML · renderFav(.nfav-*) · favRecentShown(최근 = 지금 위치·즐겨찾기 빼고 세 곳) · addFav(토스트)
+   · favPaintAll(경로 칸 별 툴팁) · nasEnsureChrome(경로 칸 .nfav-pstar · 검색 칸) · nasPaint(폴더 타일 「폴더 · 즐겨찾기」).
+   흐름: /cr → 봄시즌 들어감 → 경로 칸 ☆ → 즐겨찾기 줄 + 라임 별 → 02_편집 으로 이동 → 즐겨찾기 줄 한 번 클릭으로 복귀 → 접혀 있던 「최근 폴더」 펼침.
+   폴더 이름은 가상. 단순화: 출력 폴더 창 왼쪽 칼럼은 넣지 않음(NAS 패널만). */
+SCENES.nasfav = async (st, R) => {
+  st.classList.add('s-nasfav');
+  h('style', '', `
+.s-nasfav .pn{left:140px;top:8px;width:360px;height:384px;overflow:hidden;display:flex;flex-direction:column}
+.s-nasfav .ph{display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;flex:none}
+.s-nasfav .ph svg{width:15px;height:15px;color:var(--acc)}
+.s-nasfav .ph b{font-size:12px;font-weight:500;letter-spacing:.04em;text-transform:uppercase}
+.s-nasfav .rw{display:flex;align-items:center;gap:5px;padding:0 12px 8px;flex:none}
+.s-nasfav .in{flex:1;min-width:0;position:relative;height:28px;border-radius:8px;border:1px solid var(--stroke);background:var(--field);display:flex;align-items:center;padding:0 9px;font-size:10.5px;white-space:nowrap;overflow:hidden}
+.s-nasfav .in.q{padding-left:26px;color:var(--dim)}
+.s-nasfav .in.q svg{position:absolute;left:8px;width:12px;height:12px;color:var(--dim)}
+.s-nasfav .pst{position:absolute;right:4px;top:50%;margin-top:-10px;width:20px;height:20px;border-radius:6px;display:grid;place-items:center;color:var(--dim);transition:color .2s,background .2s,transform .12s}
+.s-nasfav .pst svg{width:12px;height:12px}
+.s-nasfav .pst.hov{color:var(--txt);background:rgba(255,255,255,.06)}
+.s-nasfav .pst.on{color:var(--acc)}
+.s-nasfav .nb{width:28px;height:28px;flex:none;border-radius:8px;display:grid;place-items:center;background:rgba(255,255,255,.045);border:1px solid var(--stroke);color:var(--mut)}
+.s-nasfav .nb svg{width:13px;height:13px}
+.s-nasfav .nb.off{opacity:.4}
+.s-nasfav .fv{padding:0 10px;flex:none}
+.s-nasfav .sec{margin-bottom:2px}
+.s-nasfav .hd{display:flex;align-items:center;gap:6px;height:26px;padding:0 4px 0 6px;border-radius:8px;color:var(--dim);transition:color .15s}
+.s-nasfav .hd.hov{color:var(--mut)}
+.s-nasfav .chev{width:10px;height:10px;flex:none;opacity:.7;transition:transform .22s var(--ease)}
+.s-nasfav .fold>.hd .chev{transform:rotate(-90deg)}
+.s-nasfav .t{font-size:8.5px;text-transform:uppercase;letter-spacing:.09em;font-weight:700}
+.s-nasfav .cnt{margin-left:2px;font-size:10px;line-height:1.4;color:var(--mut);background:rgba(255,255,255,.06);padding:3.5px 9px;min-width:21px;display:inline-flex;justify-content:center;border-radius:20px;font-variant-numeric:tabular-nums}
+.s-nasfav .hb{margin-left:auto;width:20px;height:20px;flex:none;display:grid;place-items:center;opacity:.45;color:var(--dim)}
+.s-nasfav .hb svg{width:11px;height:11px}
+.s-nasfav .bd{display:grid;grid-template-rows:1fr;transition:grid-template-rows .26s var(--ease)}
+.s-nasfav .fold>.bd{grid-template-rows:0fr}
+.s-nasfav .clip{min-height:0;overflow:hidden}
+.s-nasfav .ls{padding:1px 0 4px}
+.s-nasfav .fr{position:relative;display:flex;align-items:center;gap:7px;height:26px;padding:0 3px 0 8px;margin-bottom:1px;border-radius:8px;transition:background .15s}
+.s-nasfav .fr.hov{background:rgba(255,255,255,.045)}
+.s-nasfav .fr .ic{display:flex;flex:none;color:var(--mut);transition:color .15s}
+.s-nasfav .fr .ic svg{width:14px;height:14px}
+.s-nasfav .fr.hov .ic,.s-nasfav .fr.here .ic{color:var(--acc)}
+.s-nasfav .fr.here{background:rgba(var(--accRGB),.08)}
+.s-nasfav .fr.here::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:2px;border-radius:2px;background:var(--acc)}
+.s-nasfav .fr .nm{font-size:11px;white-space:nowrap}
+.s-nasfav .fr .sub{flex:1;min-width:0;font-size:9.5px;color:var(--dim);white-space:nowrap;overflow:hidden}
+.s-nasfav .fr .sr{margin-left:auto;width:20px;height:20px;flex:none;display:grid;place-items:center;color:var(--dim);opacity:0;transition:opacity .15s}
+.s-nasfav .fr .sub+.sr{margin-left:0}
+.s-nasfav .fr .sr.on{color:var(--acc)}
+.s-nasfav .fr.hov .sr{opacity:1}
+.s-nasfav .fr .sr svg{width:11px;height:11px}
+.s-nasfav .em{font-size:10px;color:var(--dim);line-height:1.6;padding:2px 8px 8px}
+.s-nasfav .em svg{display:inline-block;width:10px;height:10px;vertical-align:-1px;color:var(--mut)}
+.s-nasfav .sep{height:1px;background:var(--stroke);margin:4px 14px 8px;flex:none}
+.s-nasfav .gl{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:min-content;gap:8px;padding:2px 12px 12px;align-content:start;flex:1;min-height:0;overflow:hidden}
+.s-nasfav .tile{border-radius:10px;border:1px solid transparent;background:rgba(255,255,255,.045);overflow:hidden;animation:nasfavIn .32s var(--ease) both;transition:border-color .15s}
+.s-nasfav .tile.hov{border-color:var(--stroke2)}
+.s-nasfav .tt{position:relative;aspect-ratio:16/10;background:#0b0d13;display:grid;place-items:center}
+.s-nasfav .tt .ico{width:28px;height:28px;color:var(--mut);transition:color .15s}
+.s-nasfav .tile.hov .tt .ico{color:var(--acc)}
+.s-nasfav .tt .fg{position:absolute;left:6px;top:6px;display:flex}
+.s-nasfav .tt .fg svg{width:13px;height:13px;color:var(--acc)}
+.s-nasfav .mt{padding:5px 8px 7px;display:flex;flex-direction:column;gap:1px}
+.s-nasfav .mt b{font-size:10.5px;font-weight:500}
+.s-nasfav .mt span{font-size:9px;color:var(--dim)}
+.s-nasfav .new{animation:nasfavIn .32s var(--ease) both}
+.s-nasfav .tp{position:absolute;z-index:80;white-space:nowrap;font-size:10.5px;font-weight:500;line-height:1.5;background:#14171f;color:var(--txt);padding:5px 10px 5px 11px;border-radius:8px;border:1px solid var(--stroke);border-left:2.5px solid var(--acc);box-shadow:0 8px 22px rgba(0,0,0,.4);opacity:0;transform:translateY(6px);transition:opacity .15s var(--ease),transform .22s var(--ease);pointer-events:none}
+.s-nasfav .tp.on{opacity:1;transform:none}
+.s-nasfav .tp b{color:var(--acc);font-weight:700;margin-right:5px}
+.s-nasfav .ph .rf{margin-left:auto;width:27px;height:27px}
+.s-nasfav .ph .rf svg{width:13px;height:13px;color:inherit}
+.s-nasfav .vb{position:absolute;right:5px;width:4px;border-radius:999px;background:rgba(255,255,255,.14);opacity:0;transition:top .26s var(--ease),height .26s var(--ease),opacity .2s}
+@keyframes nasfavIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+`, st);
+
+  // 아이콘 = 앱 원본(_IC_STAR · _IC_STAR_O · _ICF_FOLDER · _IC_FCHEV · _IC_FPLUS · _CI.clear · _IC_NAS · nasEnsureChrome 의 IC_*)
+  const SP = 'M12 2.8l2.83 5.74 6.33.92-4.58 4.47 1.08 6.3L12 17.27l-5.66 2.96 1.08-6.3-4.58-4.47 6.33-.92z';
+  const STAR = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="' + SP + '"/></svg>';
+  const STAR_O = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="' + SP + '"/></svg>';
+  const FOLDER = '<svg class="ico" viewBox="0 0 24 24" fill="currentColor"><path d="M4 5h5l2 2h9a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/></svg>';
+  const CHEV = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>';
+  const PLUS = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M10.5 4h3v6.5H20v3h-6.5V20h-3v-6.5H4v-3h6.5z"/></svg>';
+  const CLR = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.5 3h5a1 1 0 0 1 1 1v1h-7V4a1 1 0 0 1 1-1z"/><path d="M4 5.5h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z"/><path fill-rule="evenodd" d="M5.7 8.5h12.6l-1 11.3a1.7 1.7 0 0 1-1.7 1.55H8.4a1.7 1.7 0 0 1-1.7-1.55L5.7 8.5zM9 11v7h1.4v-7H9zm4.6 0v7H15v-7h-1.4z"/></svg>';
+  const NAS = '<svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M3.5 5h17a1.4 1.4 0 0 1 1.4 1.4v3.2a1.4 1.4 0 0 1-1.4 1.4h-17A1.4 1.4 0 0 1 2.1 9.6V6.4A1.4 1.4 0 0 1 3.5 5zm1.6 1.9v2.2h2.2V6.9z"/><path fill-rule="evenodd" d="M3.5 13h17a1.4 1.4 0 0 1 1.4 1.4v3.2a1.4 1.4 0 0 1-1.4 1.4h-17A1.4 1.4 0 0 1 2.1 17.6v-3.2A1.4 1.4 0 0 1 3.5 13zm1.6 1.9v2.2h2.2v-2.2z"/></svg>';
+  const ARW = r => '<svg viewBox="0 0 24 24" fill="currentColor"><path transform="translate(12 12)' + r + ' scale(0.046) translate(-183.435 -169.44)" d="M366.87 169.44L176.53 0V114.67H0V224.21H176.53V338.88Z"/></svg>';
+  const SRCH = '<svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M10.5 3a7.5 7.5 0 1 0 4.55 13.46l4.24 4.25 1.42-1.42-4.25-4.24A7.5 7.5 0 0 0 10.5 3zm0 2.4a5.1 5.1 0 1 1 0 10.2 5.1 5.1 0 0 1 0-10.2z"/></svg>';
+  const SORT = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.5 4.5h17l-6.6 7.8v5.2l-3.8 2.3v-7.5z"/></svg>';
+  const RF = '<svg viewBox="0 0 24 24" fill="currentColor"><path transform="translate(12 12) scale(0.005615) translate(-1341.43 -1602.75)" d="M2486.74,1165.72l-14.23-23.36-416.4,308.09,10.38,19.1c65.66,120.8,100.37,257.22,100.37,394.52,0,455.14-370.29,825.42-825.44,825.42s-825.44-370.28-825.44-825.42c0-333.04,202.62-634.72,507.83-761.83v459.04l1072.29-780.64L1023.82,0v560.81c-130.31,31.8-254.85,82.99-370.49,152.29-121.71,72.95-230.72,164.28-323.99,271.47-103.99,119.5-185.24,254.74-241.51,401.97C29.55,1539.05,0,1699.72,0,1864.08c0,739.66,601.76,1341.42,1341.43,1341.42s1341.43-601.76,1341.43-1341.42c0-246.27-67.82-487.76-196.12-698.35Z"/></svg>';
+  const ORD = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.6l3.4 3.8H8.2v11H5.8v-11H3.6zM13 6h8v2.4h-8zM13 11h6v2.4h-6zM13 16h4v2.4h-4z"/></svg>';
+  const G2 = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/></svg>';
+
+  const sec = (cls, title) => '<div class="sec ' + cls + '"><div class="hd">' + CHEV + '<span class="t">' + title + '</span><span class="cnt">0</span><span class="hb"></span></div><div class="bd"><div class="clip"><div class="ls"></div></div></div></div>';
+  const pn = h('div', 'k-win pn',
+    '<div class="ph">' + NAS + '<b>NAS Browser</b><span class="nb rf">' + RF + '</span></div>'
+    + '<div class="rw"><div class="in" id="pin"><span class="tx"></span><span class="pst"></span></div><span class="nb">' + ARW(' rotate(180)') + '</span><span class="nb off">' + ARW('') + '</span><span class="nb">' + ARW(' rotate(-90)') + '</span></div>'
+    + '<div class="rw"><div class="in q">' + SRCH + '이 폴더 검색 · Enter=전체</div><span class="nb">' + SORT + '</span><span class="nb">' + ORD + '</span><span class="nb">' + G2 + '</span></div>'
+    + '<div class="fv">' + sec('sf', '즐겨찾기') + sec('sr2 fold', '최근 폴더') + '</div><div class="sep"></div><div class="gl"></div>', st);
+  const secF = pn.querySelector('.sf'), secR = pn.querySelector('.sr2'), gl = pn.querySelector('.gl');
+  const pin = pn.querySelector('#pin'), pst = pin.querySelector('.pst');
+  // 앱 .vsb 모양 — 넘치는 타일 목록이 스크롤 목록임을 보여 준다(넘치지 않으면 숨김)
+  const vb = h('div', 'vb', '', pn);
+  const sb = () => { const r = gl.clientHeight / gl.scrollHeight; vb.style.opacity = r < .99 ? 1 : 0; vb.style.top = (gl.offsetTop + 2) + 'px'; vb.style.height = Math.max(18, (gl.clientHeight - 14) * r) + 'px'; };
+
+  // 상태 — 앱 favS() 와 같은 규칙(최근 = 지금 위치·즐겨찾기 빼고 세 곳, '/cr' 같은 공유 루트는 안 쌓음)
+  let cur = '/cr', favs = [], recent = ['/cr/추석_특집', '/cr/배경음악'], flash = null;
+  const base = p => p.slice(p.lastIndexOf('/') + 1), parent = p => p.slice(0, p.lastIndexOf('/')) || '/';
+  const isRoot = p => p.split('/').filter(Boolean).length <= 1;
+  const shown = () => recent.filter(p => !isRoot(p) && p !== cur && !favs.includes(p)).slice(0, 3);
+  const TILES = { '/cr': ['봄시즌', '여름_리뷰', '추석_특집', '배경음악'], '/cr/봄시즌': ['01_원본', '02_편집', '03_최종'], '/cr/봄시즌/02_편집': ['1080x1920', '1080x1080'] };
+  const row = (p, fav) => '<div class="fr' + (p === cur ? ' here' : '') + (p === flash ? ' new' : '') + '" data-p="' + p + '"><span class="ic">' + FOLDER + '</span><span class="nm">' + base(p) + '</span>'
+    + (fav ? '' : '<span class="sub">' + parent(p) + '</span>') + '<span class="sr' + (fav ? ' on' : '') + '">' + (fav ? STAR : STAR_O) + '</span></div>';
+  const paint = () => {
+    const rec = shown(), on = favs.includes(cur);
+    secF.querySelector('.ls').innerHTML = favs.length ? favs.map(p => row(p, true)).join('')
+      : '<div class="em">자주 가는 폴더를 고정해 두면 한 번에 들어가요. 경로 칸의 ' + STAR_O + ' 을 누르거나 폴더를 우클릭해 「즐겨찾기에 추가」를 고르세요. 폴더를 여기로 끌어 놓아도 돼요.</div>';
+    secF.querySelector('.cnt').textContent = favs.length; secF.querySelector('.hb').innerHTML = on ? '' : PLUS;
+    secR.querySelector('.ls').innerHTML = rec.length ? rec.map(p => row(p, false)).join('') : '<div class="em">다른 폴더에 들어가면 여기에 최근 세 곳이 쌓여요.</div>';
+    secR.querySelector('.cnt').textContent = rec.length; secR.querySelector('.hb').innerHTML = rec.length ? CLR : '';
+    pin.querySelector('.tx').textContent = cur; pst.classList.toggle('on', on); pst.innerHTML = on ? STAR : STAR_O;
+    flash = null;
+  };
+  const tiles = () => { gl.innerHTML = (TILES[cur] || []).map(n => '<div class="tile" data-n="' + n + '"><div class="tt">' + FOLDER + (favs.includes(cur + '/' + n) ? '<span class="fg">' + STAR + '</span>' : '') + '</div><div class="mt"><b>' + n + '</b><span>폴더' + (favs.includes(cur + '/' + n) ? ' · 즐겨찾기' : '') + '</span></div></div>').join(''); };
+  const visit = p => { cur = p; if (!isRoot(p)) recent = [p, ...recent.filter(x => x !== p)].slice(0, 8); paint(); tiles(); sb(); };
+  const tile = n => gl.querySelector('.tile[data-n="' + n + '"]');
+  // 앱 툴팁(#tooltip) 모양 — 대상 위에 띄운다
+  const tip = async (el, html) => {
+    const t = h('div', 'tp', html, st), p = R.pos(el);
+    t.style.left = Math.min(632 - t.offsetWidth, Math.max(8, p.x - t.offsetWidth / 2)) + 'px'; t.style.top = (p.t - t.offsetHeight - 6) + 'px';
+    await R.wait(16); t.classList.add('on');
+    return () => { t.classList.remove('on'); setTimeout(() => t.remove(), 220); };
+  };
+  paint(); tiles(); sb();
+
+  // ── 박자 ──
+  // 시작 커서 = 마지막 박자의 끝 자리(최근 폴더 첫 줄) — 반복 경계에서 순간 이동하지 않게
+  const h0 = R.pos(secR.querySelector('.hd'));
+  R.cursor(h0.x - 40, h0.y + 30);
+  await R.wait(400);
+  // ① 봄시즌 폴더로 들어감
+  let tl = tile('봄시즌');
+  await R.to(tl, 700, 10, -10); tl.classList.add('hov'); await R.wait(180);
+  await R.click(); // 앱 폴더 타일 = 한 번 누르면 들어감(nasRowPointerDown)
+  visit('/cr/봄시즌');
+  await R.wait(350);
+  // ② 경로 칸 끝 ☆ — 툴팁에 Ctrl+B
+  await R.to(pst, 650, 3, 3); pst.classList.add('hov');
+  let un = await tip(pst, '이 폴더를 즐겨찾기에 추가 (Ctrl+B)');
+  await R.wait(520);
+  await R.click(pst); un(); pst.classList.remove('hov');
+  favs.push(cur); flash = cur; paint();
+  R.toast('즐겨찾기에 추가했어요 · 봄시즌').catch(() => {});
+  await R.wait(700);
+  // ③ 다른 폴더로 이동(02_편집)
+  tl = tile('02_편집');
+  await R.to(tl, 650, 10, -10); tl.classList.add('hov'); await R.wait(120);
+  await R.click();
+  visit('/cr/봄시즌/02_편집');
+  await R.wait(350);
+  // ④ 즐겨찾기 줄 한 번 클릭으로 돌아옴 — 툴팁에 Alt+1
+  const fr = secF.querySelector('.fr');
+  await R.to(fr, 600, -60, 3); fr.classList.add('hov');
+  un = await tip(fr, '<b>Alt+1</b> /cr/봄시즌');
+  await R.wait(560);
+  await R.click(); un();
+  visit('/cr/봄시즌');
+  const fr2 = secF.querySelector('.fr'); fr2.classList.add('hov'); // 다시 그려도 커서는 그 줄 위 — 호버 유지
+  await R.wait(380);
+  // ⑤ 접혀 있던 「최근 폴더」 펼치기
+  const rh = secR.querySelector('.hd');
+  fr2.classList.remove('hov');
+  await R.to(rh, 550, -130, 3); rh.classList.add('hov'); await R.wait(120);
+  await R.click();
+  secR.classList.remove('fold');
+  await R.wait(300); sb();
+  await R.wait(220);
+  const rr = secR.querySelector('.fr');
+  await R.to(rr, 500, -40, 3); rr.classList.add('hov');
+  await R.wait(1000);
 };
 
 </script>
